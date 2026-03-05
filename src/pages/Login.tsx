@@ -26,9 +26,8 @@ function Login() {
       );
 
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.user.role);
 
-      login(res.data.token);
+      login(res.data.token, res.data.user);
 
       toast.success("Login successful");
 
