@@ -74,7 +74,7 @@ function AdminServices() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/services", {
+      const res = await axios.get("https://servixobackend.vercel.app/api/admin/services", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setServices(res.data);
@@ -94,7 +94,7 @@ function AdminServices() {
     
     setDeleteLoading(id);
     try {
-      await axios.delete(`http://localhost:5000/api/admin/service/${id}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/admin/service/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchServices();

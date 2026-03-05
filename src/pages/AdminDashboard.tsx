@@ -75,13 +75,13 @@ function AdminDashboard() {
         const token = localStorage.getItem("token");
 
         const [statsRes, bookingsRes, usersRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/admin/stats", {
+          axios.get("https://servixobackend.vercel.app/api/admin/stats", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/admin/bookings", {
+          axios.get("https://servixobackend.vercel.app/api/admin/bookings", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/admin/users", {
+          axios.get("https://servixobackend.vercel.app/api/admin/users", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

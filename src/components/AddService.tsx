@@ -56,7 +56,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5000/api/services",
+        "https://servixobackend.vercel.app/api/services",
         form,
         {
           headers: {

@@ -21,7 +21,7 @@ function Home() {
   const [services, setServices] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/services?limit=4").then((res) => {
+    axios.get("https://servixobackend.vercel.app/api/services?limit=4").then((res) => {
       setServices(res.data.slice(0, 4));
     }).catch(() => {});
   }, []);

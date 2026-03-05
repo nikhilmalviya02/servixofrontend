@@ -49,7 +49,7 @@ function Services() {
     });
 
     const res = await axios.get(
-      `http://localhost:5000/api/services?${params}`
+      `https://servixobackend.vercel.app/api/services?${params}`
     );
 
     setServices(res.data);
@@ -65,7 +65,7 @@ function Services() {
     if (!token) return;
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/user/address",
+        "https://servixobackend.vercel.app/api/user/address",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAddresses(res.data);
@@ -93,7 +93,7 @@ function Services() {
       setBookingLoading(true);
 
       await axios.post(
-        "http://localhost:5000/api/bookings",
+        "https://servixobackend.vercel.app/api/bookings",
         {
           serviceId: selectedService._id,
           address: addresses[selectedAddressIndex],
@@ -123,7 +123,7 @@ function Services() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/reviews",
+        "https://servixobackend.vercel.app/api/reviews",
         {
           serviceId: reviewServiceId,
           rating,
@@ -146,7 +146,7 @@ function Services() {
     setReviewsLoading(true);
     setSelectedServiceName(serviceName);
     try {
-      const res = await axios.get(`http://localhost:5000/api/reviews/${serviceId}`);
+      const res = await axios.get(`https://servixobackend.vercel.app/api/reviews/${serviceId}`);
       setReviewsList(res.data);
       setViewReviewsModal(true);
     } catch (error) {

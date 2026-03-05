@@ -14,7 +14,7 @@ function UserDashboard() {
   // Fetch bookings
   const fetchBookings = () => {
     axios
-      .get("http://localhost:5000/api/bookings/user", {
+      .get("https://servixobackend.vercel.app/api/bookings/user", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setBookings(res.data))
@@ -29,7 +29,7 @@ function UserDashboard() {
   const cancelBooking = async (id: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/cancel/${id}`,
+        `https://servixobackend.vercel.app/api/bookings/cancel/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -43,7 +43,7 @@ function UserDashboard() {
   const rescheduleBooking = async (id: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/reschedule/${id}`,
+        `https://servixobackend.vercel.app/api/bookings/reschedule/${id}`,
         {
           date: newDate,
           timeSlot: newSlot,

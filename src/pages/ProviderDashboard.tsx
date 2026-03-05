@@ -40,7 +40,7 @@ function ProviderDashboard() {
 
       // Fetch provider's services
       const servicesRes = await axios.get(
-        "http://localhost:5000/api/services",
+        "https://servixobackend.vercel.app/api/services",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -53,7 +53,7 @@ function ProviderDashboard() {
 
       // Fetch provider's bookings
       const bookingsRes = await axios.get(
-        "http://localhost:5000/api/bookings",
+        "https://servixobackend.vercel.app/api/bookings",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -92,7 +92,7 @@ function ProviderDashboard() {
     if (!confirm("Are you sure you want to delete this service?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/services/${serviceId}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/services/${serviceId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Service deleted successfully");
@@ -105,7 +105,7 @@ function ProviderDashboard() {
   const updateBookingStatus = async (id: string, status: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/${id}`,
+        `https://servixobackend.vercel.app/api/bookings/${id}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -12,7 +12,7 @@ function ProviderBookings() {
   const fetchBookings = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/bookings",
+        "https://servixobackend.vercel.app/api/bookings",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -33,7 +33,7 @@ function ProviderBookings() {
   const updateStatus = async (id: string, status: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/${id}`,
+        `https://servixobackend.vercel.app/api/bookings/${id}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

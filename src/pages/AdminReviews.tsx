@@ -80,7 +80,7 @@ function AdminReviews() {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/reviews", {
+      const res = await axios.get("https://servixobackend.vercel.app/api/admin/reviews", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setReviews(res.data);
@@ -100,7 +100,7 @@ function AdminReviews() {
 
     setDeleteLoading(id);
     try {
-      await axios.delete(`http://localhost:5000/api/admin/review/${id}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/admin/review/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchReviews();

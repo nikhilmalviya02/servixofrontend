@@ -90,7 +90,7 @@ function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/users", {
+      const res = await axios.get("https://servixobackend.vercel.app/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -109,7 +109,7 @@ function AdminUsers() {
     setActionLoading(`verify-${id}`);
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/verify/${id}`,
+        `https://servixobackend.vercel.app/api/admin/verify/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -127,7 +127,7 @@ function AdminUsers() {
 
     setActionLoading(`delete-${id}`);
     try {
-      await axios.delete(`http://localhost:5000/api/admin/user/${id}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/admin/user/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();

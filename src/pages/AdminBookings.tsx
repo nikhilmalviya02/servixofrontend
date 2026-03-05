@@ -82,7 +82,7 @@ function AdminBookings() {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/bookings", {
+      const res = await axios.get("https://servixobackend.vercel.app/api/admin/bookings", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(res.data);
@@ -102,7 +102,7 @@ function AdminBookings() {
 
     setDeleteLoading(id);
     try {
-      await axios.delete(`http://localhost:5000/api/admin/booking/${id}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/admin/booking/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchBookings();

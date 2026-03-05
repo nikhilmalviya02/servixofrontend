@@ -80,7 +80,7 @@ function AdminCategories() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/categories", {
+      const res = await axios.get("https://servixobackend.vercel.app/api/admin/categories", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCategories(res.data);
@@ -102,7 +102,7 @@ function AdminCategories() {
     setActionLoading(true);
     try {
       await axios.post(
-        "http://localhost:5000/api/admin/categories",
+        "https://servixobackend.vercel.app/api/admin/categories",
         { name: categoryName.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -123,7 +123,7 @@ function AdminCategories() {
     setActionLoading(true);
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/categories",
+        "https://servixobackend.vercel.app/api/admin/categories",
         { oldName: editingCategory, newName: newCategoryName.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -142,7 +142,7 @@ function AdminCategories() {
 
     setActionLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/admin/categories/${encodeURIComponent(name)}`, {
+      await axios.delete(`https://servixobackend.vercel.app/api/admin/categories/${encodeURIComponent(name)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchCategories();

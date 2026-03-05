@@ -23,7 +23,7 @@ function Register() {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post("https://servixobackend.vercel.app/api/auth/register", form);
 
       toast.success("Registered successfully 🎉");
 

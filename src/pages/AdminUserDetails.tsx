@@ -107,7 +107,7 @@ function AdminUserDetails() {
 
   const fetchUserDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/admin/user/${id}/details`, {
+      const res = await axios.get(`https://servixobackend.vercel.app/api/admin/user/${id}/details`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data);

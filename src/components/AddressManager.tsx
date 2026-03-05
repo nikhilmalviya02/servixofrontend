@@ -17,7 +17,7 @@ function AddressManager() {
 
   const fetchAddresses = () => {
     axios
-      .get("http://localhost:5000/api/user/address", {
+      .get("https://servixobackend.vercel.app/api/user/address", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setAddresses(res.data));
@@ -33,7 +33,7 @@ function AddressManager() {
     if (editingId) {
       // Update
       await axios.put(
-        `http://localhost:5000/api/user/address/${editingId}`,
+        `https://servixobackend.vercel.app/api/user/address/${editingId}`,
         form,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -41,7 +41,7 @@ function AddressManager() {
     } else {
       // Add
       await axios.post(
-        "http://localhost:5000/api/user/address",
+        "https://servixobackend.vercel.app/api/user/address",
         form,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -60,7 +60,7 @@ function AddressManager() {
 
   const handleDelete = async (id: string) => {
     await axios.delete(
-      `http://localhost:5000/api/user/address/${id}`,
+      `https://servixobackend.vercel.app/api/user/address/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 

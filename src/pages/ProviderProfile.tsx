@@ -9,7 +9,7 @@ function ProviderProfile() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/user/provider/${id}`)
+      .get(`https://servixobackend.vercel.app/api/user/provider/${id}`)
       .then((res) => {
         setProvider(res.data.provider);
         setServices(res.data.services);

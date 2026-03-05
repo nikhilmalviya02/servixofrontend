@@ -18,9 +18,11 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
+    const url =  process.env.NODE_ENV === "development" ? "http://localhost:5000/api/auth/login" : "https://servixobackend.vercel.app/api/auth/login";
+
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        url,
         { email, password }
       );
 
