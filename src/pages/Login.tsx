@@ -18,7 +18,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const url = "https://servixofrontend.vercel.app/api/auth/login"
+    const url = "https://servixobackend.vercel.app/api/auth/login"
     try {
       const res = await axios.post(
         url,
