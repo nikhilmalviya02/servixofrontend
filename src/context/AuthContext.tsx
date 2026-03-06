@@ -10,7 +10,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (token: string) => void;
+  login: (token: string, userData?: User) => void;
   logout: () => void;
 }
 
@@ -53,21 +53,28 @@ export const AuthProvider = ({ children }: Props) => {
     initAuth();
   }, []);
 
-  const login = (token: string) => {
+  const login = (token: string, userData?: User) => {
     localStorage.setItem("token", token);
-    // Decode JWT to get user info (basic implementation)
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      const userData = {
-        id: payload.id || payload._id || "",
-        name: payload.name || "",
-        email: payload.email || "",
-        role: payload.role || "",
-      };
+    
+    if (userData) {
+      // Use provided user data (from API response)
       localStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
-    } catch {
-      setUser(null);
+    } else {
+      // Fallback: Decode JWT to get user info
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const decodedUser = {
+          id: payload.id || payload._id || "",
+          name: payload.name || "",
+          email: payload.email || "",
+          role: payload.role || "",
+        };
+        localStorage.setItem("user", JSON.stringify(decodedUser));
+        setUser(decodedUser);
+      } catch {
+        setUser(null);
+      }
     }
   };
 

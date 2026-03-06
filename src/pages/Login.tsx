@@ -25,12 +25,13 @@ function Login() {
         { email, password }
       );
 
-      // ... existing code ...
+      // Store user data and token
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      login(res.data.token);
+      // Call login with both token and user data
+      login(res.data.token, res.data.user);
 
       toast.success("Login successful");
 
