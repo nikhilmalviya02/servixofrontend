@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { Suspense, lazy } from "react";
@@ -45,11 +45,14 @@ function NotFound() {
   );
 }
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300 pt-16">
+    <div className={`min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300 ${isAdminRoute ? '' : 'pt-16'}`}>
       <Suspense fallback={<Loader />}>
-        <Navbar />
+        {!isAdminRoute && <Navbar />}
 
         <Routes>
 
@@ -170,6 +173,14 @@ function App() {
         </Routes>
       </Suspense>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="*" element={<AppContent />} />
+    </Routes>
   );
 }
 

@@ -63,6 +63,12 @@ const CloseIcon = () => (
   </svg>
 );
 
+const LogoutIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+  </svg>
+);
+
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg className={`w-4 h-4 ${filled ? "text-yellow-400 fill-current" : "text-gray-300"}`} viewBox="0 0 20 20">
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -100,6 +106,12 @@ function AdminReviews() {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.location.href = "/login";
+  };
 
   const fetchReviews = async () => {
     try {
@@ -199,6 +211,21 @@ function AdminReviews() {
           );
         })}
       </nav>
+
+      {mobile && (
+        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => {
+              onItemClick?.();
+              handleLogout();
+            }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition w-full"
+          >
+            <LogoutIcon />
+            Logout
+          </button>
+        </div>
+      )}
     </>
   );
 
@@ -213,8 +240,19 @@ function AdminReviews() {
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
       {/* Desktop Sidebar */}
-      <div className="w-64 bg-white dark:bg-gray-800 shadow-lg p-6 fixed h-full hidden md:block">
-        <SidebarContent />
+      <div className="w-64 bg-white dark:bg-gray-800 shadow-lg p-6 fixed h-full hidden md:block flex flex-col">
+        <div className="flex-1 overflow-y-auto">
+          <SidebarContent />
+        </div>
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition w-full"
+          >
+            <LogoutIcon />
+            Logout
+          </button>
+        </div>
       </div>
 
       {/* Mobile Sidebar Overlay */}
@@ -260,7 +298,13 @@ function AdminReviews() {
             <MenuIcon />
           </button>
           <h1 className="text-lg font-bold text-gray-800 dark:text-white">Reviews</h1>
-          <div className="w-10" />
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-red-600"
+            title="Logout"
+          >
+            <LogoutIcon />
+          </button>
         </div>
 
         {/* Desktop Header */}
