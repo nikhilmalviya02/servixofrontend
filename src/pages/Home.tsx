@@ -113,7 +113,7 @@ function Home() {
             {...fadeInUp}
             className="text-3xl md:text-4xl font-bold text-gray-900"
           >
-            Why Choose Servixo?
+            Why Choose ServexaGo?
           </motion.h2>
 
           <motion.div 
@@ -381,7 +381,7 @@ function Home() {
               </h2>
 
               <p className="mt-4 text-white/90">
-                Join thousands of users already using Servixo.
+                Join thousands of users already using ServexaGo.
               </p>
 
               <Link
