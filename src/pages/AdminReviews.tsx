@@ -51,6 +51,18 @@ const SearchIcon = () => (
   </svg>
 );
 
+const MenuIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg className={`w-4 h-4 ${filled ? "text-yellow-400 fill-current" : "text-gray-300"}`} viewBox="0 0 20 20">
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -71,11 +83,22 @@ interface Review {
   createdAt: string;
 }
 
+// Sidebar navigation items
+const navItems = [
+  { to: "/admin", label: "Dashboard", icon: DashboardIcon },
+  { to: "/admin/users", label: "Manage Users", icon: UsersIcon },
+  { to: "/admin/services", label: "Manage Services", icon: ServicesIcon },
+  { to: "/admin/bookings", label: "Manage Bookings", icon: BookingsIcon },
+  { to: "/admin/categories", label: "Categories", icon: CategoriesIcon },
+  { to: "/admin/reviews", label: "Reviews", icon: ReviewsIcon },
+];
+
 function AdminReviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
 
   const fetchReviews = async () => {
@@ -144,6 +167,41 @@ function AdminReviews() {
     );
   };
 
+  // Sidebar content component
+  const SidebarContent = ({ mobile = false, onItemClick }: { mobile?: boolean; onItemClick?: () => void }) => (
+    <>
+      <h2 className={`text-xl font-bold mb-6 text-indigo-600 flex items-center gap-2 ${mobile ? 'px-2' : ''}`}>
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Admin Panel
+      </h2>
+
+      <nav className="space-y-1">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.to === "/admin/reviews";
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onItemClick}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+                isActive
+                  ? "bg-indigo-50 text-indigo-700 font-medium"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+            >
+              <Icon />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </>
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -154,93 +212,97 @@ function AdminReviews() {
 
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <div className="w-64 bg-white dark:bg-gray-800 shadow-lg p-6 fixed h-full hidden md:block">
-        <h2 className="text-xl font-bold mb-6 text-indigo-600 flex items-center gap-2">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          Admin Panel
-        </h2>
+        <SidebarContent />
+      </div>
 
-        <nav className="space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <DashboardIcon />
-            Dashboard
-          </Link>
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
-          <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <UsersIcon />
-            Manage Users
-          </Link>
-
-          <Link to="/admin/services" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <ServicesIcon />
-            Manage Services
-          </Link>
-
-          <Link to="/admin/bookings" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <BookingsIcon />
-            Manage Bookings
-          </Link>
-
-          <Link to="/admin/categories" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <CategoriesIcon />
-            Categories
-          </Link>
-
-          <Link to="/admin/reviews" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-50 text-indigo-700 font-medium">
-            <ReviewsIcon />
-            Reviews
-          </Link>
-        </nav>
+      {/* Mobile Sidebar Drawer */}
+      <div className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 md:hidden ${
+        mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-indigo-600 flex items-center gap-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Admin Panel
+            </h2>
+            <button 
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <SidebarContent mobile onItemClick={() => setMobileMenuOpen(false)} />
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 md:ml-64 p-8 overflow-y-auto h-screen pt-4">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Reviews Management
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-              Moderate and manage customer reviews
-            </p>
-          </div>
+      <div className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 overflow-y-auto min-h-screen">
+        {/* Mobile Header with Menu Button */}
+        <div className="flex items-center justify-between mb-6 md:hidden">
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <MenuIcon />
+          </button>
+          <h1 className="text-lg font-bold text-gray-800 dark:text-white">Reviews</h1>
+          <div className="w-10" />
+        </div>
+
+        {/* Desktop Header */}
+        <div className="hidden md:block mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Reviews Management
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+            Moderate and manage customer reviews
+          </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Total Reviews</p>
-            <p className="text-2xl font-bold text-gray-800 dark:text-white">{stats.total}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Total Reviews</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">{stats.total}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Average Rating</p>
-            <p className="text-2xl font-bold text-yellow-600">{stats.average}</p>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Average Rating</p>
+            <p className="text-xl sm:text-2xl font-bold text-yellow-600">{stats.average}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">5 Star</p>
-            <p className="text-2xl font-bold text-green-600">{stats.fiveStar}</p>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">5 Star</p>
+            <p className="text-xl sm:text-2xl font-bold text-green-600">{stats.fiveStar}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">4 Star</p>
-            <p className="text-2xl font-bold text-blue-600">{stats.fourStar}</p>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">4 Star</p>
+            <p className="text-xl sm:text-2xl font-bold text-blue-600">{stats.fourStar}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">3 Star</p>
-            <p className="text-2xl font-bold text-yellow-600">{stats.threeStar}</p>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">3 Star</p>
+            <p className="text-xl sm:text-2xl font-bold text-yellow-600">{stats.threeStar}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">1-2 Star</p>
-            <p className="text-2xl font-bold text-red-600">{stats.oneStar + stats.twoStar}</p>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">1-2 Star</p>
+            <p className="text-xl sm:text-2xl font-bold text-red-600">{stats.oneStar + stats.twoStar}</p>
           </div>
         </div>
 
         {/* Search */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <div className="relative max-w-md">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <SearchIcon />
@@ -250,13 +312,70 @@ function AdminReviews() {
               placeholder="Search by service, user, or comment..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
             />
           </div>
         </div>
 
-        {/* Reviews Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        {/* Mobile Reviews Cards */}
+        <div className="md:hidden space-y-3 mb-6">
+          {filteredReviews.map((review) => (
+            <div key={review._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-800 dark:text-white truncate">
+                    {review.service?.title || "Unknown Service"}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => deleteReview(review._id)}
+                  disabled={deleteLoading === review._id}
+                  className="ml-2 p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-50"
+                  title="Delete Review"
+                >
+                  {deleteLoading === review._id ? (
+                    <div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <TrashIcon />
+                  )}
+                </button>
+              </div>
+              
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
+                  {review.user?.name?.charAt(0).toUpperCase() || "U"}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-800 dark:text-white truncate">
+                    {review.user?.name || "Unknown"}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    {review.user?.email}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mb-2">
+                {renderStars(review.rating)}
+              </div>
+
+              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+                {review.comment || "No comment"}
+              </p>
+            </div>
+          ))}
+          {filteredReviews.length === 0 && (
+            <div className="p-8 text-center text-gray-500 bg-white dark:bg-gray-800 rounded-xl">
+              {searchTerm ? "No reviews found matching your search" : "No reviews available"}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Reviews Table */}
+        <div className="hidden md:block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
