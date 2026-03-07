@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   BarChart,
@@ -12,7 +12,8 @@ import {
   Pie,
   Legend,
 } from "recharts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 // Icons
 const UsersIcon = () => (
@@ -64,10 +65,18 @@ const TrendUpIcon = () => (
 );
 
 function AdminDashboard() {
+  const { logout }: any = useContext(AuthContext);
+  const navigate = useNavigate();
   const [stats, setStats] = useState<any>({});
   const [recentBookings, setRecentBookings] = useState<any[]>([]);
   const [recentUsers, setRecentUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -208,6 +217,19 @@ function AdminDashboard() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Logout Button */}
+        <div className="mt-auto pt-6">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition w-full font-medium"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
         </div>
       </div>
 
