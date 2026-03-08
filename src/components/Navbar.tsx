@@ -119,25 +119,7 @@ function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-xl">
           <div className="container-modern py-4 space-y-2">
-            {!user ? (
-              <div className="space-y-2">
-                <Link
-                  to="/login"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition"
-                >
-                  <UserCircle className="w-5 h-5" />
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold"
-                >
-                  Get Started
-                </Link>
-              </div>
-            ) : (
+            {!user ? null : (
               <div className="space-y-2">
                 {role === "provider" && (
                   <>
