@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Shield, Clock, Star } from "lucide-react";
-import { motion } from "framer-motion";
 
 function Login() {
   const { login, user }: any = useContext(AuthContext);
@@ -63,7 +62,7 @@ function Login() {
 
   if (user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
@@ -73,14 +72,7 @@ function Login() {
     <div className="min-h-screen flex bg-white">
       {/* Left Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
-        >
-          {/* Logo */}
-
+        <div className="w-full max-w-md">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
@@ -190,21 +182,13 @@ function Login() {
               Create account
             </Link>
           </p>
-        </motion.div>
+        </div>
       </div>
 
       {/* Right Side - Illustration */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-        
+      <div className="hidden lg:flex lg:w-1/2 bg-indigo-600 relative overflow-hidden">
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <div>
             <h2 className="text-4xl font-bold mb-6 leading-tight">
               Book Trusted Services<br />in Minutes
             </h2>
@@ -215,7 +199,7 @@ function Login() {
             {/* Features */}
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Shield className="w-6 h-6" />
                 </div>
                 <div>
@@ -225,7 +209,7 @@ function Login() {
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Clock className="w-6 h-6" />
                 </div>
                 <div>
@@ -235,7 +219,7 @@ function Login() {
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Star className="w-6 h-6" />
                 </div>
                 <div>
@@ -244,10 +228,8 @@ function Login() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-
-
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white rounded-lg p-8 shadow-md">
+        <div className="bg-white rounded-lg p-8 border border-gray-200">
           {/* Header */}
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Create Account</h2>

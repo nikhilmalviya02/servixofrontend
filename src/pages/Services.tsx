@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, Filter, Star, Clock, MapPin, Calendar, 
   X, ChevronDown, Shield
@@ -175,26 +174,17 @@ function Services() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50/30 pt-20 pb-12">
       {/* Header Section */}
       <div className="container-modern mb-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center py-12"
-        >
+        <div className="text-center py-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Find <span className="gradient-text">Expert Services</span>
+            Find <span className="text-indigo-600">Expert Services</span>
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Browse through our curated list of professional services and book with confidence
           </p>
-        </motion.div>
+        </div>
 
         {/* Search & Filter Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-4 md:p-6"
-        >
+        <div className="bg-white rounded-2xl border border-gray-200 p-4 md:p-6">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
@@ -223,14 +213,8 @@ function Services() {
           </div>
 
           {/* Expandable Filters */}
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
+          {showFilters && (
+            <div className="overflow-hidden">
                 <div className="grid md:grid-cols-4 gap-4 pt-4 mt-4 border-t border-gray-100">
                   <select
                     className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
@@ -272,10 +256,9 @@ function Services() {
                     <option value="rating">Top Rated</option>
                   </select>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Results Count */}
@@ -304,31 +287,27 @@ function Services() {
       {!loading && (
         <div className="container-modern">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((s, index) => (
-              <motion.div
+            {filtered.map((s) => (
+              <div
                 key={s._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                className="bg-white rounded-2xl overflow-hidden border border-gray-100"
               >
                 {/* Image */}
                 <div className="relative h-52 overflow-hidden">
                   <img
                     src={s.image || "https://via.placeholder.com/400x300"}
                     alt={s.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   
                   {/* Price Badge */}
-                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2 rounded-xl shadow-lg">
+                  <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-xl">
                     <span className="text-lg font-bold text-indigo-600">₹{s.price}</span>
                   </div>
 
                   {/* Category Badge */}
                   <div className="absolute bottom-4 left-4">
-                    <span className="px-3 py-1 bg-white/20 backdrop-blur text-white text-sm font-medium rounded-lg">
+                    <span className="px-3 py-1 bg-black/50 text-white text-sm font-medium rounded-lg">
                       {s.category || "Service"}
                     </span>
                   </div>
@@ -336,7 +315,7 @@ function Services() {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">
                     {s.title}
                   </h2>
 
@@ -350,7 +329,7 @@ function Services() {
                     </div>
                     <button
                       onClick={() => fetchReviews(s._id, s.title)}
-                      className="text-sm text-gray-500 hover:text-indigo-600 underline transition"
+                      className="text-sm text-gray-500 hover:text-indigo-600 underline"
                     >
                       {s.totalReviews || 0} reviews
                     </button>
@@ -362,7 +341,7 @@ function Services() {
 
                   {/* Provider */}
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">
                       {s.provider?.name?.charAt(0).toUpperCase() || "P"}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -390,13 +369,13 @@ function Services() {
                   {role === "user" && (
                     <div className="space-y-2">
                       <button
-                        className="w-full btn-primary py-3 text-sm"
+                        className="w-full bg-indigo-600 text-white py-3 text-sm rounded-xl font-medium hover:bg-indigo-700"
                         onClick={() => setSelectedService(s)}
                       >
                         Book Now
                       </button>
                       <button
-                        className="w-full btn-secondary py-3 text-sm"
+                        className="w-full border border-gray-200 text-gray-700 py-3 text-sm rounded-xl font-medium hover:bg-gray-50"
                         onClick={() => {
                           setReviewModal(true);
                           setReviewServiceId(s._id);
@@ -413,7 +392,7 @@ function Services() {
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
@@ -430,22 +409,11 @@ function Services() {
       )}
 
       {/* BOOKING MODAL */}
-      <AnimatePresence>
-        {selectedService && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl"
-            >
-              {/* Header */}
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+      {selectedService && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden">
+            {/* Header */}
+            <div className="bg-indigo-600 p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-bold">Book Service</h2>
@@ -528,14 +496,14 @@ function Services() {
 
                 <div className="flex gap-3 pt-4">
                   <button
-                    className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
+                    className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50"
                     onClick={() => setSelectedService(null)}
                   >
                     Cancel
                   </button>
                   <button
                     disabled={bookingLoading}
-                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
+                    className="flex-1 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50"
                     onClick={handleConfirmBooking}
                   >
                     {bookingLoading ? (
@@ -546,159 +514,134 @@ function Services() {
                   </button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
 
       {/* REVIEW MODAL */}
-      <AnimatePresence>
-        {reviewModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl"
-            >
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Write a Review</h2>
-              
-              <div className="flex gap-2 mb-4 justify-center">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    className={`text-3xl transition-transform hover:scale-110 ${
-                      star <= rating ? "text-yellow-400" : "text-gray-200"
-                    }`}
-                    onClick={() => setRating(star)}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
-
-              <textarea
-                placeholder="Share your experience..."
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 resize-none"
-                rows={4}
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-
-              <div className="flex gap-3 mt-6">
+      {reviewModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Write a Review</h2>
+            
+            <div className="flex gap-2 mb-4 justify-center">
+              {[1, 2, 3, 4, 5].map((star) => (
                 <button
-                  onClick={() => setReviewModal(false)}
-                  className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
+                  key={star}
+                  className={`text-3xl ${
+                    star <= rating ? "text-yellow-400" : "text-gray-200"
+                  }`}
+                  onClick={() => setRating(star)}
                 >
-                  Cancel
+                  ★
                 </button>
-                <button
-                  className="flex-1 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition"
-                  onClick={submitReview}
-                >
-                  Submit Review
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              ))}
+            </div>
+
+            <textarea
+              placeholder="Share your experience..."
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 resize-none"
+              rows={4}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setReviewModal(false)}
+                className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                className="flex-1 py-3 bg-yellow-500 text-white rounded-xl font-medium hover:bg-yellow-600"
+                onClick={submitReview}
+              >
+                Submit Review
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* VIEW REVIEWS MODAL */}
-      <AnimatePresence>
-        {viewReviewsModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] overflow-hidden shadow-2xl"
-            >
-              {/* Header */}
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-purple-50">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Reviews</h2>
-                  <p className="text-sm text-gray-500">{selectedServiceName}</p>
-                </div>
-                <button
-                  onClick={() => setViewReviewsModal(false)}
-                  className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+      {viewReviewsModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] overflow-hidden">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Reviews</h2>
+                <p className="text-sm text-gray-500">{selectedServiceName}</p>
               </div>
+              <button
+                onClick={() => setViewReviewsModal(false)}
+                className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              {/* Reviews List */}
-              <div className="p-6 overflow-y-auto max-h-[60vh]">
-                {reviewsLoading ? (
-                  <div className="flex justify-center py-8">
-                    <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+            {/* Reviews List */}
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              {reviewsLoading ? (
+                <div className="flex justify-center py-8">
+                  <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : reviewsList.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Star className="w-8 h-8 text-gray-400" />
                   </div>
-                ) : reviewsList.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Star className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <p className="text-gray-500">No reviews yet. Be the first!</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {reviewsList.map((review) => (
-                      <div
-                        key={review._id}
-                        className="bg-gray-50 rounded-xl p-4"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                              {review.user?.name?.charAt(0).toUpperCase() || "U"}
-                            </div>
-                            <div>
-                              <span className="font-medium text-gray-900 block">
-                                {review.user?.name || "Anonymous"}
-                              </span>
-                              <span className="text-xs text-gray-400">
-                                {new Date(review.createdAt).toLocaleDateString()}
-                              </span>
-                            </div>
+                  <p className="text-gray-500">No reviews yet. Be the first!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {reviewsList.map((review) => (
+                    <div
+                      key={review._id}
+                      className="bg-gray-50 rounded-xl p-4"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">
+                            {review.user?.name?.charAt(0).toUpperCase() || "U"}
                           </div>
-                          <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
-                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                            <span className="font-semibold text-yellow-700">{review.rating}</span>
+                          <div>
+                            <span className="font-medium text-gray-900 block">
+                              {review.user?.name || "Anonymous"}
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
-                        <p className="text-gray-600 text-sm">
-                          {review.comment || "No comment provided"}
-                        </p>
+                        <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                          <span className="font-semibold text-yellow-700">{review.rating}</span>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      <p className="text-gray-600 text-sm">
+                        {review.comment || "No comment provided"}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-              {/* Footer */}
-              <div className="p-4 border-t border-gray-100 bg-gray-50">
-                <button
-                  onClick={() => setViewReviewsModal(false)}
-                  className="w-full py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {/* Footer */}
+            <div className="p-4 border-t border-gray-100 bg-gray-50">
+              <button
+                onClick={() => setViewReviewsModal(false)}
+                className="w-full py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -172,14 +172,10 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex bg-gray-50">
       {/* Desktop Sidebar */}
-      <div className="w-64 bg-white dark:bg-gray-800 shadow-lg p-6 fixed h-full hidden md:block flex flex-col">
-        <h2 className="text-xl font-bold mb-6 text-indigo-600 flex items-center gap-2">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+      <div className="w-64 bg-white border-r border-gray-200 p-6 fixed h-full hidden md:block flex flex-col">
+        <h2 className="text-xl font-bold mb-6 text-indigo-600">
           Admin Panel
         </h2>
 
@@ -189,64 +185,43 @@ function AdminDashboard() {
             Dashboard
           </Link>
 
-          <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Link to="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             Manage Users
           </Link>
 
-          <Link to="/admin/services" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Link to="/admin/services" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             Manage Services
           </Link>
 
-          <Link to="/admin/bookings" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Link to="/admin/bookings" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             Manage Bookings
           </Link>
 
-          <Link to="/admin/categories" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Link to="/admin/categories" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <CategoriesIcon />
             Categories
           </Link>
 
-          <Link to="/admin/reviews" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Link to="/admin/reviews" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             <ReviewsIcon />
             Reviews
           </Link>
         </nav>
 
-        {/* Quick Stats in Sidebar */}
-        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">System Status</p>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 dark:text-gray-400">API Status</span>
-              <span className="flex items-center gap-1 text-sm text-green-600">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                Online
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Database</span>
-              <span className="flex items-center gap-1 text-sm text-green-600">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                Connected
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* Logout Button */}
         <div className="mt-auto pt-6">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition w-full font-medium"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition w-full font-medium"
           >
             <LogoutIcon />
             Logout
@@ -263,21 +238,17 @@ function AdminDashboard() {
       )}
 
       {/* Mobile Sidebar Drawer */}
-      <div className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 md:hidden ${
+      <div className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 md:hidden ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="p-6 h-full flex flex-col">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-indigo-600 flex items-center gap-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+            <h2 className="text-xl font-bold text-indigo-600">
               Admin Panel
             </h2>
             <button 
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="p-2 rounded-lg hover:bg-gray-100"
             >
               <CloseIcon />
             </button>
@@ -289,46 +260,46 @@ function AdminDashboard() {
               Dashboard
             </Link>
 
-            <Link to="/admin/users" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <Link to="/admin/users" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               Manage Users
             </Link>
 
-            <Link to="/admin/services" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <Link to="/admin/services" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Manage Services
             </Link>
 
-            <Link to="/admin/bookings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <Link to="/admin/bookings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Manage Bookings
             </Link>
 
-            <Link to="/admin/categories" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <Link to="/admin/categories" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
               <CategoriesIcon />
               Categories
             </Link>
 
-            <Link to="/admin/reviews" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <Link to="/admin/reviews" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition">
               <ReviewsIcon />
               Reviews
             </Link>
           </nav>
 
           {/* Mobile Logout Button */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-gray-200">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 handleLogout();
               }}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition w-full font-medium"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition w-full font-medium"
             >
               <LogoutIcon />
               Logout
@@ -343,21 +314,21 @@ function AdminDashboard() {
         <div className="flex items-center justify-between mb-6 md:hidden">
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
+            className="p-2 rounded-lg bg-white border border-gray-200"
           >
             <MenuIcon />
           </button>
-          <h1 className="text-lg font-bold text-gray-800 dark:text-white">Dashboard</h1>
+          <h1 className="text-lg font-bold text-gray-800">Dashboard</h1>
           <div className="w-10"></div>
         </div>
 
         {/* Desktop Header */}
         <div className="hidden md:flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            <h1 className="text-3xl font-bold text-gray-800">
               Dashboard Overview
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Welcome back! Here's what's happening with your platform.
             </p>
           </div>
@@ -377,7 +348,7 @@ function AdminDashboard() {
           {statCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition"
+              className="bg-white p-4 sm:p-5 rounded-xl border border-gray-100"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`p-2 rounded-lg bg-${card.color}-100 text-${card.color}-600`}>
@@ -388,7 +359,7 @@ function AdminDashboard() {
                   {card.trend}
                 </span>
               </div>
-              <h3 className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{card.title}</h3>
+              <h3 className="text-xs sm:text-sm text-gray-500">{card.title}</h3>
               <p className={`text-xl sm:text-2xl font-bold text-${card.color}-600 mt-1`}>
                 {card.value?.toLocaleString() || 0}
               </p>
@@ -399,8 +370,8 @@ function AdminDashboard() {
         {/* Charts Section */}
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Bar Chart */}
-          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100">
+            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
               Platform Statistics
             </h2>
             <ResponsiveContainer width="100%" height={250}>
@@ -425,8 +396,8 @@ function AdminDashboard() {
           </div>
 
           {/* Pie Chart */}
-          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100">
+            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
               Booking Status Distribution
             </h2>
             <ResponsiveContainer width="100%" height={250}>
@@ -461,24 +432,24 @@ function AdminDashboard() {
         {/* Recent Activity Section */}
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Recent Bookings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
                 Recent Bookings
               </h2>
               <Link to="/admin/bookings" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
                 View All
               </Link>
             </div>
-            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            <div className="divide-y divide-gray-100">
               {recentBookings.map((booking) => (
-                <div key={booking._id} className="p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                <div key={booking._id} className="p-3 sm:p-4 hover:bg-gray-50">
                   <div className="flex items-center justify-between">
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-gray-800 dark:text-white truncate">
+                      <p className="font-medium text-gray-800 truncate">
                         {booking.service?.title || "Unknown Service"}
                       </p>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-xs sm:text-sm text-gray-500">
                         by {booking.user?.name || "Unknown User"}
                       </p>
                     </div>
@@ -486,7 +457,7 @@ function AdminDashboard() {
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
                         {booking.status}
                       </span>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
                         ₹{booking.service?.price || 0}
                       </p>
                     </div>
@@ -502,25 +473,25 @@ function AdminDashboard() {
           </div>
 
           {/* Recent Users */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
                 Recent Users
               </h2>
               <Link to="/admin/users" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
                 View All
               </Link>
             </div>
-            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            <div className="divide-y divide-gray-100">
               {recentUsers.map((user) => (
-                <div key={user._id} className="p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                <div key={user._id} className="p-3 sm:p-4 hover:bg-gray-50">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
                       {user.name?.charAt(0).toUpperCase() || "U"}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-800 dark:text-white truncate">{user.name}</p>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                      <p className="font-medium text-gray-800 truncate">{user.name}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 truncate">{user.email}</p>
                     </div>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${
                       user.role === "admin" ? "bg-red-100 text-red-800" :

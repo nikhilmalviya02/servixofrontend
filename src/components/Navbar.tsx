@@ -47,13 +47,13 @@ function Navbar() {
     >
       <div className="container-modern">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* Brand Name */}
           <Link
             to="/"
-            className="flex items-center gap-2 text-2xl font-bold gradient-text"
+            className="text-2xl font-bold text-indigo-600"
             onClick={closeMenu}
           >
-            <span>ServexaGo</span>
+            ServexaGo
           </Link>
 
           {/* Desktop Menu */}
