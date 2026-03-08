@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Home, Grid3X3, LayoutDashboard, CalendarDays, UserCircle, LogOut, Menu, X, Sparkles } from "lucide-react";
+import { LayoutDashboard, CalendarDays, LogOut, Menu, X, UserCircle } from "lucide-react";
 
 function Navbar() {
   const { user, logout }: any = useContext(AuthContext);
@@ -27,8 +27,6 @@ function Navbar() {
   const closeMenu = () => {
     setMenuOpen(false);
   };
-
-  const showHome = !user || role === "user";
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 ${
@@ -58,35 +56,7 @@ function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-1">
-            {showHome && (
-              <NavLink to="/" className={navLinkClass}>
-                <Home className="w-4 h-4" />
-                Home
-              </NavLink>
-            )}
-
-            <NavLink to="/services" className={navLinkClass}>
-              <Grid3X3 className="w-4 h-4" />
-              Services
-            </NavLink>
-
-            {!user ? (
-              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200">
-                <Link
-                  to="/login"
-                  className="px-5 py-2 text-gray-600 font-medium hover:text-indigo-600 transition"
-                >
-                  Sign In
-                </Link>
-
-                <Link
-                  to="/register"
-                  className="btn-primary text-sm"
-                >
-                  Get Started
-                </Link>
-              </div>
-            ) : (
+            {user ? (
               <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
                 {role === "provider" && (
                   <>
@@ -132,7 +102,7 @@ function Navbar() {
                   </button>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
 
           {/* Mobile toggle */}
@@ -149,28 +119,8 @@ function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-xl">
           <div className="container-modern py-4 space-y-2">
-            {showHome && (
-              <Link
-                to="/"
-                onClick={closeMenu}
-                className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-              >
-                <Home className="w-5 h-5" />
-                Home
-              </Link>
-            )}
-            
-            <Link
-              to="/services"
-              onClick={closeMenu}
-              className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-            >
-              <Grid3X3 className="w-5 h-5" />
-              Services
-            </Link>
-
             {!user ? (
-              <div className="pt-2 border-t border-gray-100 space-y-2">
+              <div className="space-y-2">
                 <Link
                   to="/login"
                   onClick={closeMenu}
@@ -184,12 +134,11 @@ function Navbar() {
                   onClick={closeMenu}
                   className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold"
                 >
-                  <Sparkles className="w-5 h-5" />
                   Get Started
                 </Link>
               </div>
             ) : (
-              <div className="pt-2 border-t border-gray-100 space-y-2">
+              <div className="space-y-2">
                 {role === "provider" && (
                   <>
                     <Link
