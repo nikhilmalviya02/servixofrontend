@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Search, Filter, Star, Clock, MapPin, Calendar, 
+  X, ChevronDown, Sparkles, Shield, User, ArrowRight 
+} from "lucide-react";
 
 function Services() {
   const role = localStorage.getItem("role");
@@ -27,40 +32,39 @@ function Services() {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
-  // View Reviews states
   const [viewReviewsModal, setViewReviewsModal] = useState(false);
   const [reviewsList, setReviewsList] = useState<any[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [selectedServiceName, setSelectedServiceName] = useState("");
 
+  const [showFilters, setShowFilters] = useState(false);
+
   const token = localStorage.getItem("token");
 
-  // 🔹 Fetch Services
   const fetchServices = async () => {
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const params = new URLSearchParams({
-      search,
-      category,
-      minRating,
-      maxPrice,
-      sort,
-    });
+      const params = new URLSearchParams({
+        search,
+        category,
+        minRating,
+        maxPrice,
+        sort,
+      });
 
-    const res = await axios.get(
-      `https://servixobackend.vercel.app/api/services?${params}`
-    );
+      const res = await axios.get(
+        `https://servixobackend.vercel.app/api/services?${params}`
+      );
 
-    setServices(res.data);
-  } catch {
-    toast.error("Failed to load services");
-  } finally {
-    setLoading(false);
-  }
-};
+      setServices(res.data);
+    } catch {
+      toast.error("Failed to load services");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // 🔹 Fetch Addresses
   const fetchAddresses = async () => {
     if (!token) return;
     try {
@@ -75,14 +79,13 @@ function Services() {
   };
 
   useEffect(() => {
-  fetchServices();
+    fetchServices();
   }, [search, category, minRating, maxPrice, sort]);
 
   useEffect(() => {
     fetchAddresses();
   }, []);
 
-  // 🔹 Booking Handler
   const handleConfirmBooking = async () => {
     if (!token) return toast.error("Please login first");
     if (selectedAddressIndex === null) return toast.error("Select address");
@@ -117,7 +120,6 @@ function Services() {
     }
   };
 
-  // 🔹 Submit Review
   const submitReview = async () => {
     if (!token) return toast.error("Login required");
 
@@ -135,13 +137,12 @@ function Services() {
       toast.success("Review added ⭐");
       setReviewModal(false);
       setComment("");
-      fetchServices(); // Refresh rating
+      fetchServices();
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to add review");
     }
   };
 
-  // 🔹 Fetch Reviews for a service
   const fetchReviews = async (serviceId: string, serviceName: string) => {
     setReviewsLoading(true);
     setSelectedServiceName(serviceName);
@@ -160,362 +161,544 @@ function Services() {
     s.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const categories = [
+    { value: "", label: "All Categories", icon: "✨" },
+    { value: "Plumbing", label: "Plumbing", icon: "🔧" },
+    { value: "Electrician", label: "Electrical", icon: "⚡" },
+    { value: "Cleaning", label: "Cleaning", icon: "🧹" },
+    { value: "AC Repair", label: "AC & Appliances", icon: "❄️" },
+    { value: "Painting", label: "Painting", icon: "🎨" },
+    { value: "Carpentry", label: "Carpentry", icon: "🔨" },
+  ];
+
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen p-6 pt-20">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-          Explore Services
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Find trusted professionals near you.
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50/30 pt-20 pb-12">
+      {/* Header Section */}
+      <div className="container-modern mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Find <span className="gradient-text">Expert Services</span>
+          </h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Browse through our curated list of professional services and book with confidence
+          </p>
+        </motion.div>
+
+        {/* Search & Filter Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-4 md:p-6"
+        >
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                placeholder="Search services..."
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+
+            {/* Filter Toggle */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                showFilters 
+                  ? "bg-indigo-600 text-white" 
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              <Filter className="w-5 h-5" />
+              Filters
+              <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+
+          {/* Expandable Filters */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="grid md:grid-cols-4 gap-4 pt-4 mt-4 border-t border-gray-100">
+                  <select
+                    className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    onChange={(e) => setCategory(e.target.value)}
+                    value={category}
+                  >
+                    {categories.map(cat => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.icon} {cat.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    onChange={(e) => setMinRating(e.target.value)}
+                    value={minRating}
+                  >
+                    <option value="">⭐ Any Rating</option>
+                    <option value="4">4+ Stars</option>
+                    <option value="3">3+ Stars</option>
+                  </select>
+
+                  <input
+                    type="number"
+                    placeholder="💰 Max Price"
+                    className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                  />
+
+                  <select
+                    className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    onChange={(e) => setSort(e.target.value)}
+                    value={sort}
+                  >
+                    <option value="">📊 Sort By</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                  </select>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+
+      {/* Results Count */}
+      <div className="container-modern mb-6">
+        <p className="text-gray-600">
+          Showing <span className="font-semibold text-gray-900">{filtered.length}</span> services
         </p>
       </div>
 
-      {/* Search */}
-      <div className="max-w-6xl mx-auto mb-6">
-        <input
-          placeholder="Search services..."
-          className="w-full border p-3 rounded-lg dark:bg-gray-800 dark:text-white"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
-      <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-3 mb-6">
-        <select
-          className="border p-2 rounded-lg dark:bg-gray-800 dark:text-white"
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="">All Categories</option>
-          <option value="Plumbing">Plumbing</option>
-          <option value="Electrician">Electrician</option>
-          <option value="Cleaning">Cleaning</option>
-        </select>
-
-        <select
-          className="border p-2 rounded-lg dark:bg-gray-800 dark:text-white"
-          onChange={(e) => setMinRating(e.target.value)}
-        >
-          <option value="">Min Rating</option>
-          <option value="3">3+</option>
-          <option value="4">4+</option>
-        </select>
-
-        <input
-          type="number"
-          placeholder="Max Price"
-          className="border p-2 rounded-lg dark:bg-gray-800 dark:text-white"
-          onChange={(e) => setMaxPrice(e.target.value)}
-        />
-
-        <select
-          className="border p-2 rounded-lg dark:bg-gray-800 dark:text-white"
-          onChange={(e) => setSort(e.target.value)}
-          value={sort}
-        >
-          <option value="">Sort</option>
-          <option value="price_asc">Price Low → High</option>
-          <option value="price_desc">Price High → Low</option>
-          <option value="rating">Top Rated</option>
-        </select>
-      </div>
-
+      {/* Loading State */}
       {loading && (
-        <div className="text-center text-blue-600 font-semibold">
-          Loading services...
+        <div className="container-modern">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-white rounded-2xl p-4 animate-pulse">
+                <div className="h-48 bg-gray-200 rounded-xl mb-4" />
+                <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-200 rounded w-1/2" />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Services Grid */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filtered.map((s) => (
-          <div
-            key={s._id}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 hover:shadow-lg transition"
-          >
-            {s.image && (
-              <img
-                src={s.image}
-                alt={s.title}
-                className="w-full h-40 object-cover rounded mb-3"
-              />
-            )}
-
-            <h2 className="font-semibold text-lg text-blue-600">
-              {s.title}
-            </h2>
-
-            {/* ⭐ Rating */}
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-yellow-500 font-semibold">
-                ⭐ {s.averageRating ? s.averageRating.toFixed(1) : "0.0"}
-              </span>
-              <button
-                onClick={() => fetchReviews(s._id, s.title)}
-                className="text-gray-500 text-sm dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 underline"
+      {!loading && (
+        <div className="container-modern">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((s, index) => (
+              <motion.div
+                key={s._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
-                ({s.totalReviews || 0} reviews)
-              </button>
-            </div>
+                {/* Image */}
+                <div className="relative h-52 overflow-hidden">
+                  <img
+                    src={s.image || "https://via.placeholder.com/400x300"}
+                    alt={s.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  
+                  {/* Price Badge */}
+                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2 rounded-xl shadow-lg">
+                    <span className="text-lg font-bold text-indigo-600">₹{s.price}</span>
+                  </div>
 
-            <p className="text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
-              {s.description}
-            </p>
+                  {/* Category Badge */}
+                  <div className="absolute bottom-4 left-4">
+                    <span className="px-3 py-1 bg-white/20 backdrop-blur text-white text-sm font-medium rounded-lg">
+                      {s.category || "Service"}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Provider + Verified Badge */}
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {s.provider?._id ? (
-                <Link
-                  to={`/provider/profile/${s.provider._id}`}
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  {s.provider?.name}
-                </Link>
-              ) : (
-                s.provider?.name
-              )}
+                {/* Content */}
+                <div className="p-5">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                    {s.title}
+                  </h2>
 
-              {s.provider?.isVerified && (
-                <span className="ml-2 text-green-600 font-semibold">
-                  ✔ Verified
-                </span>
-              )}
-            </div>
+                  {/* Rating */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <span className="font-semibold text-yellow-700">
+                        {s.averageRating ? s.averageRating.toFixed(1) : "0.0"}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => fetchReviews(s._id, s.title)}
+                      className="text-sm text-gray-500 hover:text-indigo-600 underline transition"
+                    >
+                      {s.totalReviews || 0} reviews
+                    </button>
+                  </div>
 
-            {/* Buttons - Only show Book Now and Add Review for customers (user role) */}
-            {role === "user" && (
-              <>
-                <button
-                  className="bg-blue-600 text-white w-full mt-4 py-2 rounded-lg hover:bg-blue-700"
-                  onClick={() => setSelectedService(s)}
-                >
-                  Book Now
-                </button>
+                  <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                    {s.description}
+                  </p>
 
-                <button
-                  className="border border-yellow-500 text-yellow-600 w-full mt-2 py-2 rounded-lg hover:bg-yellow-50"
-                  onClick={() => {
-                    setReviewModal(true);
-                    setReviewServiceId(s._id);
-                  }}
-                >
-                  Add Review
-                </button>
-              </>
-            )}
-            {role === "provider" && (
-              <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center text-sm text-gray-600 dark:text-gray-400">
-                Provider Account - Manage your services from Dashboard
-              </div>
-            )}
-            {role === "admin" && (
-              <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center text-sm text-gray-600 dark:text-gray-400">
-                Admin Account - Manage all services from Admin Panel
-              </div>
-            )}
+                  {/* Provider */}
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      {s.provider?.name?.charAt(0).toUpperCase() || "P"}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      {s.provider?._id ? (
+                        <Link
+                          to={`/provider/profile/${s.provider._id}`}
+                          className="font-medium text-gray-900 hover:text-indigo-600 truncate block"
+                        >
+                          {s.provider?.name}
+                        </Link>
+                      ) : (
+                        <span className="font-medium text-gray-900 truncate block">
+                          {s.provider?.name}
+                        </span>
+                      )}
+                      {s.provider?.isVerified && (
+                        <span className="flex items-center gap-1 text-xs text-green-600">
+                          <Shield className="w-3 h-3" /> Verified
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  {role === "user" && (
+                    <div className="space-y-2">
+                      <button
+                        className="w-full btn-primary py-3 text-sm"
+                        onClick={() => setSelectedService(s)}
+                      >
+                        Book Now
+                      </button>
+                      <button
+                        className="w-full btn-secondary py-3 text-sm"
+                        onClick={() => {
+                          setReviewModal(true);
+                          setReviewServiceId(s._id);
+                        }}
+                      >
+                        Write a Review
+                      </button>
+                    </div>
+                  )}
+                  
+                  {(role === "provider" || role === "admin") && (
+                    <div className="p-3 bg-gray-50 rounded-xl text-center text-sm text-gray-500">
+                      {role === "provider" ? "Provider View" : "Admin View"}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
-        ))}
-      </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Search className="w-10 h-10 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No services found</h3>
+              <p className="text-gray-500">Try adjusting your search or filters</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* BOOKING MODAL */}
-      {selectedService && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h2 className="text-xl font-bold mb-4 dark:text-white">
-              Book {selectedService.title}
-            </h2>
-
-            <select
-              className="border p-2 w-full mb-3 dark:bg-gray-700 dark:text-white"
-              value={selectedAddressIndex ?? ""}
-              onChange={(e) =>
-                setSelectedAddressIndex(
-                  e.target.value === "" ? null : Number(e.target.value)
-                )
-              }
+      <AnimatePresence>
+        {selectedService && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl"
             >
-              <option value="">Select Address</option>
-              {addresses.map((addr, index) => (
-                <option key={index} value={index}>
-                  {addr.label} - {addr.city}
-                </option>
-              ))}
-            </select>
+              {/* Header */}
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-bold">Book Service</h2>
+                    <p className="text-white/80 text-sm">{selectedService.title}</p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedService(null)}
+                    className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
 
-            <input
-              type="date"
-              className="border p-2 w-full mb-3 dark:bg-gray-700 dark:text-white"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
+              {/* Form */}
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <MapPin className="w-4 h-4 inline mr-1" /> Select Address
+                  </label>
+                  <select
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    value={selectedAddressIndex ?? ""}
+                    onChange={(e) =>
+                      setSelectedAddressIndex(
+                        e.target.value === "" ? null : Number(e.target.value)
+                      )
+                    }
+                  >
+                    <option value="">Choose an address</option>
+                    {addresses.map((addr, index) => (
+                      <option key={index} value={index}>
+                        {addr.label} - {addr.city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <select
-              className="border p-2 w-full mb-3 dark:bg-gray-700 dark:text-white"
-              value={timeSlot}
-              onChange={(e) => setTimeSlot(e.target.value)}
-            >
-              <option value="">Select Time Slot</option>
-              <option>10AM - 12PM</option>
-              <option>12PM - 2PM</option>
-              <option>2PM - 4PM</option>
-            </select>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Calendar className="w-4 h-4 inline mr-1" /> Select Date
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
 
-            <label className="flex items-center gap-2 mb-3 dark:text-white">
-              <input
-                type="checkbox"
-                checked={isEmergency}
-                onChange={(e) => setIsEmergency(e.target.checked)}
-              />
-              Emergency Booking
-            </label>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Clock className="w-4 h-4 inline mr-1" /> Time Slot
+                  </label>
+                  <select
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    value={timeSlot}
+                    onChange={(e) => setTimeSlot(e.target.value)}
+                  >
+                    <option value="">Select time</option>
+                    <option>10:00 AM - 12:00 PM</option>
+                    <option>12:00 PM - 2:00 PM</option>
+                    <option>2:00 PM - 4:00 PM</option>
+                    <option>4:00 PM - 6:00 PM</option>
+                  </select>
+                </div>
 
-            <div className="flex justify-between">
-              <button
-                className="bg-gray-400 px-4 py-1 rounded"
-                onClick={() => setSelectedService(null)}
-              >
-                Cancel
-              </button>
+                <label className="flex items-center gap-3 p-4 bg-red-50 rounded-xl cursor-pointer hover:bg-red-100 transition">
+                  <input
+                    type="checkbox"
+                    checked={isEmergency}
+                    onChange={(e) => setIsEmergency(e.target.checked)}
+                    className="w-5 h-5 text-red-600 rounded focus:ring-red-500"
+                  />
+                  <div>
+                    <span className="font-medium text-red-700">Emergency Booking</span>
+                    <p className="text-sm text-red-600/70">Priority service within 2 hours</p>
+                  </div>
+                </label>
 
-              <button
-                disabled={bookingLoading}
-                className="bg-green-600 text-white px-4 py-1 rounded"
-                onClick={handleConfirmBooking}
-              >
-                {bookingLoading ? "Booking..." : "Confirm"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                <div className="flex gap-3 pt-4">
+                  <button
+                    className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
+                    onClick={() => setSelectedService(null)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    disabled={bookingLoading}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
+                    onClick={handleConfirmBooking}
+                  >
+                    {bookingLoading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto" />
+                    ) : (
+                      "Confirm Booking"
+                    )}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* REVIEW MODAL */}
-      {reviewModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-96 shadow-lg">
-            <h2 className="text-lg font-semibold mb-3 dark:text-white">
-              Add Review
-            </h2>
+      <AnimatePresence>
+        {reviewModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl"
+            >
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Write a Review</h2>
+              
+              <div className="flex gap-2 mb-4 justify-center">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    className={`text-3xl transition-transform hover:scale-110 ${
+                      star <= rating ? "text-yellow-400" : "text-gray-200"
+                    }`}
+                    onClick={() => setRating(star)}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
 
-            <div className="flex gap-2 mb-3">
-              {[1, 2, 3, 4, 5].map((star) => (
+              <textarea
+                placeholder="Share your experience..."
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 resize-none"
+                rows={4}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+
+              <div className="flex gap-3 mt-6">
                 <button
-                  key={star}
-                  className={`text-2xl ${
-                    star <= rating ? "text-yellow-500" : "text-gray-300"
-                  }`}
-                  onClick={() => setRating(star)}
+                  onClick={() => setReviewModal(false)}
+                  className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
                 >
-                  ★
+                  Cancel
                 </button>
-              ))}
-            </div>
-
-            <textarea
-              placeholder="Write your experience..."
-              className="border w-full p-2 rounded dark:bg-gray-700 dark:text-white"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-
-            <div className="flex justify-end gap-2 mt-4">
-              <button onClick={() => setReviewModal(false)}>
-                Cancel
-              </button>
-              <button
-                className="bg-yellow-500 text-white px-4 py-2 rounded"
-                onClick={submitReview}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                <button
+                  className="flex-1 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition"
+                  onClick={submitReview}
+                >
+                  Submit Review
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* VIEW REVIEWS MODAL */}
-      {viewReviewsModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg max-h-[80vh] overflow-hidden shadow-2xl">
-            {/* Header */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Reviews
-                </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {selectedServiceName}
-                </p>
+      <AnimatePresence>
+        {viewReviewsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] overflow-hidden shadow-2xl"
+            >
+              {/* Header */}
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-purple-50">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Reviews</h2>
+                  <p className="text-sm text-gray-500">{selectedServiceName}</p>
+                </div>
+                <button
+                  onClick={() => setViewReviewsModal(false)}
+                  className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={() => setViewReviewsModal(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 transition"
-              >
-                ✕
-              </button>
-            </div>
 
-            {/* Reviews List */}
-            <div className="p-6 overflow-y-auto max-h-[60vh]">
-              {reviewsLoading ? (
-                <div className="flex justify-center py-8">
-                  <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-                </div>
-              ) : reviewsList.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="text-4xl mb-2">📝</div>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    No reviews yet. Be the first to review!
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {reviewsList.map((review) => (
-                    <div
-                      key={review._id}
-                      className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
-                            {review.user?.name?.charAt(0).toUpperCase() || "U"}
-                          </div>
-                          <span className="font-medium text-gray-800 dark:text-white">
-                            {review.user?.name || "Anonymous"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-yellow-500">⭐</span>
-                          <span className="font-semibold text-gray-700 dark:text-gray-300">
-                            {review.rating}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300 text-sm">
-                        {review.comment || "No comment"}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-2">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </p>
+              {/* Reviews List */}
+              <div className="p-6 overflow-y-auto max-h-[60vh]">
+                {reviewsLoading ? (
+                  <div className="flex justify-center py-8">
+                    <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : reviewsList.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Star className="w-8 h-8 text-gray-400" />
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    <p className="text-gray-500">No reviews yet. Be the first!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {reviewsList.map((review) => (
+                      <div
+                        key={review._id}
+                        className="bg-gray-50 rounded-xl p-4"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                              {review.user?.name?.charAt(0).toUpperCase() || "U"}
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-900 block">
+                                {review.user?.name || "Anonymous"}
+                              </span>
+                              <span className="text-xs text-gray-400">
+                                {new Date(review.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
+                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                            <span className="font-semibold text-yellow-700">{review.rating}</span>
+                          </div>
+                        </div>
+                        <p className="text-gray-600 text-sm">
+                          {review.comment || "No comment provided"}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/30">
-              <button
-                onClick={() => setViewReviewsModal(false)}
-                className="w-full py-2.5 rounded-xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              {/* Footer */}
+              <div className="p-4 border-t border-gray-100 bg-gray-50">
+                <button
+                  onClick={() => setViewReviewsModal(false)}
+                  className="w-full py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
