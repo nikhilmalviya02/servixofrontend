@@ -143,22 +143,22 @@ function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden px-5 pb-5 space-y-3 bg-white/90 backdrop-blur-xl border-t">
+        <div className="md:hidden px-5 pb-5 space-y-3 bg-white/90 backdrop-blur-xl border-t flex flex-col">
           {showHome && (
-            <Link to="/" onClick={closeMenu}>
+            <Link to="/" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
               Home
             </Link>
           )}
-          <Link to="/services" onClick={closeMenu}>
+          <Link to="/services" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
             Services
           </Link>
 
           {!user ? (
             <>
-              <Link to="/login" onClick={closeMenu}>
+              <Link to="/login" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                 Login
               </Link>
-              <Link to="/register" onClick={closeMenu}>
+              <Link to="/register" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                 Register
               </Link>
             </>
@@ -166,30 +166,30 @@ function Navbar() {
             <>
               {role === "provider" && (
                 <>
-                  <Link to="/provider" onClick={closeMenu}>
+                  <Link to="/provider" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                     Dashboard
                   </Link>
-                  <Link to="/provider/bookings" onClick={closeMenu}>
+                  <Link to="/provider/bookings" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                     Bookings
                   </Link>
                 </>
               )}
 
               {role === "user" && (
-                <Link to="/user" onClick={closeMenu}>
+                <Link to="/user" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                   My Bookings
                 </Link>
               )}
 
               {role === "admin" && (
-                <Link to="/admin" onClick={closeMenu}>
+                <Link to="/admin" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
                   Admin
                 </Link>
               )}
 
               <button
                 onClick={handleLogout}
-                className="text-red-500"
+                className="text-left py-2 text-red-500 hover:text-red-600 transition"
               >
                 Logout
               </button>
