@@ -182,14 +182,29 @@ function Navbar() {
               )}
 
               {role === "admin" && (
-                <Link to="/admin" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
-                  Admin
-                </Link>
+                <>
+                  <Link to="/admin" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition">
+                    Admin Panel
+                  </Link>
+                  <Link to="/admin/users" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition pl-4">
+                    - Users
+                  </Link>
+                  <Link to="/admin/services" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition pl-4">
+                    - Services
+                  </Link>
+                  <Link to="/admin/bookings" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition pl-4">
+                    - Bookings
+                  </Link>
+                  <Link to="/admin/reviews" onClick={closeMenu} className="py-2 text-gray-700 hover:text-indigo-600 transition pl-4">
+                    - Reviews
+                  </Link>
+                </>
               )}
 
+              <div className="border-t border-gray-200 my-2"></div>
               <button
                 onClick={handleLogout}
-                className="text-left py-2 text-red-500 hover:text-red-600 transition"
+                className="text-left py-2 px-3 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition font-medium"
               >
                 Logout
               </button>
