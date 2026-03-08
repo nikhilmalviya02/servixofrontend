@@ -348,13 +348,7 @@ function AdminDashboard() {
             <MenuIcon />
           </button>
           <h1 className="text-lg font-bold text-gray-800 dark:text-white">Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-red-600"
-            title="Logout"
-          >
-            <LogoutIcon />
-          </button>
+          <div className="w-10"></div>
         </div>
 
         {/* Desktop Header */}
