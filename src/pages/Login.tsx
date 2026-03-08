@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles, Shield, Clock, Star } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Shield, Clock, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 function Login() {

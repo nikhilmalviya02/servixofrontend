@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, Filter, Star, Clock, MapPin, Calendar, 
-  X, ChevronDown, Sparkles, Shield, User, ArrowRight 
+  X, ChevronDown, Shield
 } from "lucide-react";
 
 function Services() {
