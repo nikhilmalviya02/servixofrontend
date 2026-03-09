@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -12,11 +12,13 @@ function Register() {
     email: "",
     password: "",
     role: "user",
+    servicesOffered: [] as string[],
   });
 
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [availableServices, setAvailableServices] = useState<string[]>([]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -39,6 +41,51 @@ function Register() {
     { value: "user", label: "Customer", icon: "👤", desc: "Book services" },
     { value: "provider", label: "Service Provider", icon: "🛠️", desc: "Offer services" },
   ];
+
+  // Service categories available for providers
+  const serviceCategories = [
+    { name: "Cleaning", icon: "🧹" },
+    { name: "Plumbing", icon: "🔧" },
+    { name: "Electrical", icon: "⚡" },
+    { name: "AC & Appliances", icon: "❄️" },
+    { name: "Painting", icon: "🎨" },
+    { name: "Gardening", icon: "🪴" },
+    { name: "Vehicle Care", icon: "🚗" },
+    { name: "Carpentry", icon: "🔨" },
+    { name: "Pest Control", icon: "🐜" },
+    { name: "Home Security", icon: "🔒" },
+    { name: "Interior Design", icon: "🏠" },
+    { name: "Moving & Packing", icon: "📦" },
+  ];
+
+  // Fetch available services from backend
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await axios.get("https://servixobackend.vercel.app/api/services");
+        // Extract unique categories from services
+        const categories = [...new Set(res.data.map((s: any) => s.category))] as string[];
+        if (categories.length > 0) {
+          setAvailableServices(categories);
+        }
+      } catch (error) {
+        // If API fails, use default categories
+        setAvailableServices(serviceCategories.map(s => s.name));
+      }
+    };
+    fetchServices();
+  }, []);
+
+  const toggleService = (serviceName: string) => {
+    setForm((prev) => {
+      const currentServices = prev.servicesOffered || [];
+      if (currentServices.includes(serviceName)) {
+        return { ...prev, servicesOffered: currentServices.filter((s) => s !== serviceName) };
+      } else {
+        return { ...prev, servicesOffered: [...currentServices, serviceName] };
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -126,7 +173,7 @@ function Register() {
                   <button
                     key={option.value}
                     type="button"
-                    onClick={() => setForm({ ...form, role: option.value })}
+                    onClick={() => setForm({ ...form, role: option.value, servicesOffered: [] })}
                     className={`p-3 rounded-xl border-2 transition-all duration-200 text-left ${
                       form.role === option.value
                         ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30"
@@ -146,6 +193,79 @@ function Register() {
                 ))}
               </div>
             </div>
+
+            {/* Service Selection for Providers */}
+            {form.role === "provider" && (
+              <div className="animate-fadeIn">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Which services do you want to offer? <span className="text-red-500">*</span>
+                </label>
+                <p className="text-xs text-gray-500 mb-3">Select at least one service category</p>
+                
+                {/* Service Dropdown */}
+                <div className="relative">
+                  <select
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value && !form.servicesOffered?.includes(value)) {
+                        toggleService(value);
+                      }
+                      e.target.value = ""; // Reset dropdown after selection
+                    }}
+                    className="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg text-gray-800 bg-white
+                      focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 appearance-none cursor-pointer"
+                  >
+                    <option value="">-- Select a service --</option>
+                    {serviceCategories.map((service) => (
+                      <option 
+                        key={service.name} 
+                        value={service.name}
+                        disabled={form.servicesOffered?.includes(service.name)}
+                      >
+                        {service.icon} {service.name}
+                        {form.servicesOffered?.includes(service.name) ? " (Selected)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Custom arrow */}
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Selected Services Tags */}
+                {form.servicesOffered && form.servicesOffered.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-xs text-gray-500 mb-2">Selected services:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {form.servicesOffered.map((serviceName) => {
+                        const service = serviceCategories.find(s => s.name === serviceName);
+                        return (
+                          <span
+                            key={serviceName}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium"
+                          >
+                            <span>{service?.icon}</span>
+                            <span>{serviceName}</span>
+                            <button
+                              type="button"
+                              onClick={() => toggleService(serviceName)}
+                              className="ml-1 w-4 h-4 flex items-center justify-center rounded-full hover:bg-indigo-200 transition-colors"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Terms Checkbox */}
             <div className="flex items-start gap-3">
