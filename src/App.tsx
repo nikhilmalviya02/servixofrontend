@@ -6,6 +6,7 @@ import { Suspense, lazy } from "react";
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Home = lazy(() => import("./pages/Home"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Services = lazy(() => import("./pages/Services"));
 const ProviderDashboard = lazy(() => import("./pages/ProviderDashboard"));
 const ProviderBookings = lazy(() => import("./pages/ProviderBookings"));
@@ -56,9 +57,12 @@ function AppContent() {
 
         <Routes>
 
-          {/* Protected Home */}
+          {/* Public Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Protected User Home/Dashboard */}
           <Route
-            path="/"
+            path="/home"
             element={
               <ProtectedRoute>
                 <Home />

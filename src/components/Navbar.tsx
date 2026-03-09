@@ -49,7 +49,7 @@ function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Brand Name */}
           <Link
-            to="/"
+            to={user ? "/home" : "/"}
             className="text-2xl font-bold text-indigo-600"
             onClick={closeMenu}
           >
@@ -59,7 +59,7 @@ function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-1">
             {showHome && (
-              <NavLink to="/" className={navLinkClass}>
+              <NavLink to={user ? "/home" : "/"} className={navLinkClass}>
                 <Home className="w-4 h-4" />
                 Home
               </NavLink>
@@ -151,7 +151,7 @@ function Navbar() {
           <div className="container-modern py-4 space-y-2">
             {showHome && (
               <Link
-                to="/"
+                to={user ? "/home" : "/"}
                 onClick={closeMenu}
                 className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
               >
