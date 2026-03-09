@@ -76,7 +76,7 @@ function Register() {
           {/* Header */}
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Create Account</h2>
-            <p className="text-gray-600">Join Servixo and start your journey</p>
+            <p className="text-gray-600">Join ServexaGo and start your journey</p>
           </div>
 
           <form
