@@ -15,13 +15,10 @@ import {
   Clock,
   Award,
   MapPin,
-  Zap,
   HeartHandshake,
   Sparkles,
   ChevronRight,
   Play,
-  Users,
-  TrendingUp,
   BadgeCheck
 } from "lucide-react";
 
