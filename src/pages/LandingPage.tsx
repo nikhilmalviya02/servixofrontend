@@ -16,7 +16,6 @@ import {
   Award,
   MapPin,
   HeartHandshake,
-  Sparkles,
   ChevronRight,
   Play,
   BadgeCheck

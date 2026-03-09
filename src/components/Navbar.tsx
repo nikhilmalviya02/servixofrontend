@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Home, Grid3X3, LayoutDashboard, CalendarDays, UserCircle, LogOut, Menu, X, Sparkles } from "lucide-react";
+import { Home, Grid3X3, LayoutDashboard, CalendarDays, UserCircle, LogOut, Menu, X,} from "lucide-react";
 
 function Navbar() {
   const { user, logout }: any = useContext(AuthContext);
