@@ -184,7 +184,6 @@ function Navbar() {
                   onClick={closeMenu}
                   className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold"
                 >
-                  <Sparkles className="w-5 h-5" />
                   Get Started
                 </Link>
               </div>

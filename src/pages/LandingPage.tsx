@@ -137,11 +137,10 @@ function LandingPage() {
             {/* Left Content */}
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 rounded-full text-indigo-700 text-sm font-medium mb-6">
-                <Sparkles className="w-4 h-4" />
                 <span>Trusted by 10,000+ Customers</span>
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
                 Find Trusted{" "}
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   Services
@@ -244,7 +243,7 @@ function LandingPage() {
             <span className="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4">
               Why Choose Us
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-4xl font-bold text-gray-900">
               The Better Way to Get Things Done
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -279,10 +278,7 @@ function LandingPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
-                Browse Categories
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+              <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
                 Services We Offer
               </h2>
               <p className="mt-4 text-lg text-gray-600 max-w-xl">
@@ -324,10 +320,7 @@ function LandingPage() {
       <section id="how-it-works" data-animate className="py-12 bg-gradient-to-b from-indigo-50/50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1.5 bg-pink-100 text-pink-700 rounded-full text-sm font-medium mb-4">
-              Simple Process
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
               How It Works
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -363,10 +356,7 @@ function LandingPage() {
       <section id="popular" data-animate className="py-12">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-              Most Popular
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
               Trending Services
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -424,10 +414,7 @@ function LandingPage() {
       <section id="testimonials" data-animate className="py-12 bg-gray-50/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium mb-4">
-              Testimonials
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-4xl font-bold text-gray-900">
               What Our Customers Say
             </h2>
             <p className="mt-4 text-lg text-gray-600">
