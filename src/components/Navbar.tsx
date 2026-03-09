@@ -65,7 +65,7 @@ function Navbar() {
               </NavLink>
             )}
 
-            <NavLink to="/services" className={navLinkClass}>
+            <NavLink to={user ? "/services" : "/login"} className={navLinkClass}>
               <Grid3X3 className="w-4 h-4" />
               Services
             </NavLink>
@@ -161,7 +161,7 @@ function Navbar() {
             )}
             
             <Link
-              to="/services"
+              to={user ? "/services" : "/login"}
               onClick={closeMenu}
               className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
             >
