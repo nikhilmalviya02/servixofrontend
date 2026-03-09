@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -18,7 +18,6 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [availableServices, setAvailableServices] = useState<string[]>([]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -57,24 +56,6 @@ function Register() {
     { name: "Interior Design", icon: "🏠" },
     { name: "Moving & Packing", icon: "📦" },
   ];
-
-  // Fetch available services from backend
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await axios.get("https://servixobackend.vercel.app/api/services");
-        // Extract unique categories from services
-        const categories = [...new Set(res.data.map((s: any) => s.category))] as string[];
-        if (categories.length > 0) {
-          setAvailableServices(categories);
-        }
-      } catch (error) {
-        // If API fails, use default categories
-        setAvailableServices(serviceCategories.map(s => s.name));
-      }
-    };
-    fetchServices();
-  }, []);
 
   const toggleService = (serviceName: string) => {
     setForm((prev) => {
