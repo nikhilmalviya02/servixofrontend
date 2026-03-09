@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AddressManager from "../components/AddressManager";
 import BookingTimeline from "../components/BookingTimeline";
 
 function UserDashboard() {
@@ -62,15 +61,7 @@ function UserDashboard() {
 
   return (
     <div className="min-h-screen px-6 py-10 pt-4 bg-gray-50 text-gray-800">
-      <h1 className="text-3xl font-bold mb-10">
-        User Dashboard
-      </h1>
-
-      {/* ADDRESS SECTION */}
-      <div className="mb-14 bg-white p-6 rounded-2xl border border-gray-200">
-        <AddressManager />
-      </div>
-
+      
       {/* BOOKINGS SECTION */}
       <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8">
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">

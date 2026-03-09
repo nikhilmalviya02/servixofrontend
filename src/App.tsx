@@ -11,6 +11,7 @@ const Services = lazy(() => import("./pages/Services"));
 const ProviderDashboard = lazy(() => import("./pages/ProviderDashboard"));
 const ProviderBookings = lazy(() => import("./pages/ProviderBookings"));
 const UserDashboard = lazy(() => import("./pages/UserDashboard"));
+const AddressPage = lazy(() => import("./pages/AddressPage"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const AdminUsers = lazy(() => import("./pages/AdminUsers"));
 const AdminServices = lazy(() => import("./pages/AdminServices"));
@@ -103,6 +104,16 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Addresses */}
+          <Route
+            path="/addresses"
+            element={
+              <ProtectedRoute>
+                <AddressPage />
               </ProtectedRoute>
             }
           />

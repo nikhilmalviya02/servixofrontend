@@ -22,7 +22,7 @@ function Login() {
       } else if (role === "admin") {
         navigate("/admin", { replace: true });
       } else {
-        navigate("/", { replace: true });
+        navigate("/home", { replace: true });
       }
     }
   }, [user, navigate]);
@@ -47,11 +47,11 @@ function Login() {
       toast.success("Welcome back! 🎉");
 
       if (res.data.user.role === "provider") {
-        navigate("/provider");
+        navigate("/provider", { replace: true });
       } else if (res.data.user.role === "admin") {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
       } else {
-        navigate("/");
+        navigate("/home", { replace: true });
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Login failed");
