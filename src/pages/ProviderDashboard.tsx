@@ -20,7 +20,6 @@ import {
   Search,
   ChevronRight,
   BarChart3,
-  Users,
   Zap
 } from "lucide-react";
 
@@ -157,20 +156,6 @@ function ProviderDashboard() {
     }
   };
 
-  const statusColor = (status: string) => {
-    switch (status) {
-      case "accepted":
-        return "bg-green-100 text-green-700";
-      case "rejected":
-        return "bg-red-100 text-red-700";
-      case "completed":
-        return "bg-blue-100 text-blue-700";
-      case "cancelled":
-        return "bg-gray-200 text-gray-700";
-      default:
-        return "bg-yellow-100 text-yellow-700";
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 pt-4">
