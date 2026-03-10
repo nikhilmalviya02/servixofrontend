@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -13,9 +13,13 @@ import {
   ChevronRight
 } from "lucide-react";
 import PasswordStrengthChecker from "../components/PasswordStrengthChecker";
+import { AuthContext } from "../context/AuthContext";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth, provider } from "../firebase";
 
 function Register() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     name: "",
@@ -29,12 +33,52 @@ function Register() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
+  // Google Sign Up
+  const handleGoogleSignUp = async () => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, provider);
+      const firebaseUser = result.user;
+      
+      // Get the Google Access Token
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = await firebaseUser.getIdToken();
+
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/google",
+        { token }
+      );
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.user.role);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      login(res.data.token, res.data.user);
+
+      toast.success("Account created with Google 🚀");
+
+      if (res.data.user.role === "provider") {
+        navigate("/provider", { replace: true });
+      } else if (res.data.user.role === "admin") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
+    } catch (error: any) {
+      console.error("Google Sign Up Error:", error);
+      const errorMessage = error?.response?.data?.message || error?.response?.data?.error || error?.message || "Google sign up failed";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await axios.post("https://servixobackend.vercel.app/api/auth/register", form);
+      await axios.post("http://localhost:5000/api/auth/register", form);
       toast.success("Registered successfully 🎉");
       navigate("/login");
     } catch (error: any) {
@@ -336,13 +380,27 @@ function Register() {
 
             {/* Divider */}
             <div className="flex items-center my-6">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-              <span className="px-4 text-gray-400 text-sm font-medium">or</span>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+              <div className="flex-grow border-t"></div>
+              <span className="mx-4 text-gray-400 text-sm">OR</span>
+              <div className="flex-grow border-t"></div>
             </div>
 
+            {/* Google Sign Up */}
+            <button
+              onClick={handleGoogleSignUp}
+              disabled={loading}
+              className="w-full border rounded-lg py-3 flex items-center justify-center gap-3 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="google"
+                className="w-5 h-5"
+              />
+              Continue with Google
+            </button>
+
             {/* Login Link */}
-            <p className="text-center text-gray-600">
+            <p className="text-center text-gray-600 mt-6">
               Already have an account?{" "}
               <Link to="/login" className="inline-flex items-center gap-1 text-indigo-600 font-semibold hover:text-indigo-700 transition-colors group">
                 Sign in
