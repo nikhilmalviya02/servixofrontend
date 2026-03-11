@@ -1,15 +1,22 @@
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight,} from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
 function Login() {
 
-  const { login, user } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext not found");
+  }
+
+  const { login, user } = authContext;
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -32,7 +39,7 @@ function Login() {
   }, [user, navigate]);
 
   // Normal Login
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -60,7 +67,11 @@ function Login() {
       }
 
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
+
+      const err = error as AxiosError<{ message: string }>;
+
+      toast.error(err.response?.data?.message || "Login failed");
+
     } finally {
       setLoading(false);
     }
@@ -98,7 +109,11 @@ function Login() {
       }
 
     } catch (error) {
-      toast.error("Google login failed");
+
+      const err = error as AxiosError;
+
+      toast.error(err.message || "Google login failed");
+
     }
   };
 
@@ -111,7 +126,6 @@ function Login() {
   }
 
   return (
-
     <div className="min-h-screen flex bg-white">
 
       {/* Left Side */}
@@ -175,7 +189,6 @@ function Login() {
 
             </div>
 
-            {/* Sign In */}
             <button
               type="submit"
               disabled={loading}
@@ -194,7 +207,6 @@ function Login() {
           </form>
 
           {/* Divider */}
-
           <div className="flex items-center my-6">
             <div className="flex-grow border-t"></div>
             <span className="mx-4 text-gray-400 text-sm">OR</span>
@@ -202,7 +214,6 @@ function Login() {
           </div>
 
           {/* Google Login */}
-
           <button
             onClick={handleGoogleLogin}
             className="w-full border rounded-lg py-3 flex items-center justify-center gap-3 hover:bg-gray-50"
@@ -253,7 +264,6 @@ function Login() {
       </div>
 
     </div>
-
   );
 }
 
