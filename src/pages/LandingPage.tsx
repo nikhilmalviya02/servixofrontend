@@ -557,7 +557,7 @@ function LandingPage() {
               <ul className="space-y-3 text-gray-400">
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <span>+91 123 456 7890</span>
+                  <span>+91 63678 15433</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />

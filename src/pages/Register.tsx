@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import axios from "axios";
+import { useState } from "react";
+import axios, { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { 
@@ -13,13 +13,13 @@ import {
   ChevronRight
 } from "lucide-react";
 import PasswordStrengthChecker from "../components/PasswordStrengthChecker";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
 function Register() {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     name: "",
@@ -41,11 +41,11 @@ function Register() {
       const firebaseUser = result.user;
       
       // Get the Google Access Token
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      GoogleAuthProvider.credentialFromResult(result);
       const token = await firebaseUser.getIdToken();
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/google",
+        "https://servixobackend.vercel.app/api/auth/google",
         { token }
       );
 
@@ -64,9 +64,10 @@ function Register() {
       } else {
         navigate("/home", { replace: true });
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Google Sign Up Error:", error);
-      const errorMessage = error?.response?.data?.message || error?.response?.data?.error || error?.message || "Google sign up failed";
+      const axiosError = error as AxiosError<{ message: string; error: string }>;
+      const errorMessage = axiosError.response?.data?.message || axiosError.response?.data?.error || (error as Error)?.message || "Google sign up failed";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -78,11 +79,12 @@ function Register() {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post("https://servixobackend.vercel.app/api/auth/register", form);
       toast.success("Registered successfully 🎉");
       navigate("/login");
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Registration failed");
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      toast.error(axiosError.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

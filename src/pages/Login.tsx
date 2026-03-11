@@ -3,8 +3,8 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Shield, Clock, Star } from "lucide-react";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Mail, Lock, Eye, EyeOff, ArrowRight,} from "lucide-react";
+import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
 function Login() {
@@ -39,7 +39,7 @@ function Login() {
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://servixobackend.vercel.app/api/auth/login",
         { email, password }
       );
 
@@ -73,14 +73,11 @@ function Login() {
       const result = await signInWithPopup(auth, provider);
 
       const firebaseUser = result.user;
-      
-      // Get the Google Access Token
-      const credential = GoogleAuthProvider.credentialFromResult(result);
 
       const token = await firebaseUser.getIdToken();
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/google",
+        "https://servixobackend.vercel.app/api/auth/google",
         { token }
       );
 
@@ -100,10 +97,8 @@ function Login() {
         navigate("/home", { replace: true });
       }
 
-    } catch (error: any) {
-      console.error("Google Login Error:", error);
-      const errorMessage = error?.response?.data?.message || error?.response?.data?.error || error?.message || "Google login failed";
-      toast.error(errorMessage);
+    } catch (error) {
+      toast.error("Google login failed");
     }
   };
 
