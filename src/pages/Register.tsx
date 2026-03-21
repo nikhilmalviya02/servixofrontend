@@ -46,7 +46,7 @@ function Register() {
 
       const res = await axios.post(
         "https://servixobackend.vercel.app/api/auth/google",
-        { token }
+        { token, role: form.role }
       );
 
       localStorage.setItem("token", res.data.token);
