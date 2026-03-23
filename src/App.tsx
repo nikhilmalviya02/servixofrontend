@@ -52,7 +52,7 @@ function AppContent() {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <div className={`min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300 ${isAdminRoute ? '' : 'pt-16'}`}>
+    <div className={`min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300 ${isAdminRoute ? '' : 'pt-[64px]'}`}>
       <Suspense fallback={<Loader />}>
         {!isAdminRoute && <Navbar />}
 
