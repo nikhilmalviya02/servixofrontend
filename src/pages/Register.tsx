@@ -2,21 +2,379 @@ import { useState } from "react";
 import axios, { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { 
-  User, 
-  Mail, 
-  CheckCircle, 
-  ArrowRight, 
-  ShieldCheck, 
-  Clock, 
+import {
+  User,
+  Mail,
+  CheckCircle,
+  ArrowRight,
+  ShieldCheck,
+  Clock,
   Award,
-  ChevronRight
+  ChevronRight,
+  Zap,
 } from "lucide-react";
 import PasswordStrengthChecker from "../components/PasswordStrengthChecker";
 import { useAuth } from "../context/AuthContext";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth, provider } from "../firebase";
+import { useEffect } from "react";
 
+/* ─── Inject dark styles ─── */
+const REGISTER_STYLE = `
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --sg-bg: #0a0a0f;
+    --sg-surface: #12121a;
+    --sg-surface2: #1a1a26;
+    --sg-accent: #ff6b35;
+    --sg-accent2: #ffbe0b;
+    --sg-cyan: #00d4ff;
+    --sg-text: #f0f0f8;
+    --sg-muted: #888899;
+    --sg-border: rgba(255,255,255,0.07);
+    --sg-glow: rgba(255,107,53,0.25);
+  }
+
+  .rg-root {
+    min-height: 100vh;
+    display: flex;
+    background: var(--sg-bg);
+    color: var(--sg-text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── left panel ── */
+  .rg-left {
+    display: none;
+    position: relative;
+    overflow: hidden;
+    background: var(--sg-surface);
+    border-right: 1px solid var(--sg-border);
+  }
+  @media(min-width:1024px){ .rg-left { display:flex; width:42%; } }
+
+  .rg-left-mesh {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 30%, rgba(255,107,53,.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(0,212,255,.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* grid dots */
+  .rg-left-grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .rg-left-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 3.5rem;
+    width: 100%;
+  }
+
+  .rg-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.7rem;
+    letter-spacing: -.5px;
+    color: var(--sg-text);
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    display: inline-block;
+  }
+  .rg-brand span { color: var(--sg-accent); }
+
+  .rg-left-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+    font-weight: 800; line-height: 1.15;
+    letter-spacing: -1px;
+    color: var(--sg-text);
+    margin-bottom: .8rem;
+  }
+  .rg-left-title em {
+    font-style: normal;
+    -webkit-text-stroke: 1.5px var(--sg-accent);
+    color: transparent;
+  }
+  .rg-left-sub {
+    color: var(--sg-muted); font-size: .95rem;
+    font-weight: 300; line-height: 1.7;
+    margin-bottom: 2.5rem; max-width: 340px;
+  }
+
+  /* benefit rows */
+  .rg-benefit {
+    display: flex; align-items: center; gap: .9rem;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--sg-border);
+    border-radius: 14px;
+    padding: .95rem 1.1rem;
+    margin-bottom: .7rem;
+    transition: background .2s, border-color .2s;
+  }
+  .rg-benefit:hover { background: rgba(255,107,53,.07); border-color: rgba(255,107,53,.2); }
+  .rg-benefit-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .rg-benefit span { font-size: .88rem; font-weight: 500; color: var(--sg-text); }
+
+  /* left stats */
+  .rg-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .rg-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem; font-weight: 800; color: var(--sg-text);
+  }
+  .rg-stat-num span { color: var(--sg-accent); }
+  .rg-stat-label { font-size: .7rem; color: var(--sg-muted); margin-top: .2rem; letter-spacing: .5px; text-transform: uppercase; }
+
+  /* ── right panel ── */
+  .rg-right {
+    flex: 1; display: flex;
+    align-items: center; justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+  }
+
+  .rg-card-wrap { width: 100%; max-width: 440px; }
+
+  /* mobile brand */
+  .rg-mobile-brand {
+    text-align: center; margin-bottom: 1.8rem;
+  }
+  .rg-mobile-logo {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: rgba(255,107,53,.15); border: 1px solid rgba(255,107,53,.3);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto .8rem;
+  }
+  .rg-mobile-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem; color: var(--sg-text);
+  }
+  .rg-mobile-sub { color: var(--sg-muted); font-size: .88rem; margin-top: .25rem; }
+
+  /* card */
+  .rg-card {
+    background: var(--sg-surface);
+    border: 1px solid var(--sg-border);
+    border-radius: 24px;
+    padding: 2rem 1.8rem;
+  }
+
+  .rg-card-header { text-align: center; margin-bottom: 1.8rem; }
+  .rg-card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.6rem;
+    color: var(--sg-text); letter-spacing: -.5px;
+  }
+  .rg-card-sub { color: var(--sg-muted); font-size: .88rem; margin-top: .25rem; }
+
+  /* input */
+  .rg-field { margin-bottom: 1.1rem; }
+  .rg-label {
+    display: block; font-size: .78rem; font-weight: 600;
+    color: var(--sg-muted); letter-spacing: .5px; text-transform: uppercase;
+    margin-bottom: .45rem;
+  }
+  .rg-input-wrap { position: relative; }
+  .rg-input-icon {
+    position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+    color: var(--sg-muted); pointer-events: none;
+    transition: color .2s;
+  }
+  .rg-input-wrap:focus-within .rg-input-icon { color: var(--sg-accent); }
+
+  .rg-input {
+    width: 100%;
+    background: var(--sg-surface2);
+    border: 1px solid var(--sg-border);
+    border-radius: 12px;
+    padding: .75rem .9rem .75rem 2.6rem;
+    color: var(--sg-text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .92rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .rg-input::placeholder { color: var(--sg-muted); }
+  .rg-input:focus {
+    border-color: rgba(255,107,53,.5);
+    box-shadow: 0 0 0 3px rgba(255,107,53,.1);
+  }
+
+  /* role selector */
+  .rg-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .rg-role-btn {
+    position: relative;
+    background: var(--sg-surface2);
+    border: 1px solid var(--sg-border);
+    border-radius: 14px; padding: 1rem .9rem;
+    cursor: pointer; text-align: left;
+    transition: border-color .25s, background .25s, transform .2s;
+  }
+  .rg-role-btn:hover { border-color: rgba(255,107,53,.25); transform: translateY(-1px); }
+  .rg-role-btn.active {
+    border-color: var(--sg-accent);
+    background: rgba(255,107,53,.07);
+    box-shadow: 0 0 0 1px rgba(255,107,53,.2);
+  }
+  .rg-role-check {
+    position: absolute; top: 8px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--sg-accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rg-role-icon { font-size: 1.5rem; margin-bottom: .4rem; display: block; }
+  .rg-role-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; color: var(--sg-text); }
+  .rg-role-desc { font-size:.72rem; color:var(--sg-muted); margin-top:.15rem; }
+
+  /* services dropdown */
+  .rg-select {
+    width: 100%;
+    background: var(--sg-surface2);
+    border: 1px solid var(--sg-border);
+    border-radius: 12px;
+    padding: .75rem 2.5rem .75rem .9rem;
+    color: var(--sg-text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    outline: none; appearance: none; cursor: pointer;
+    transition: border-color .2s;
+  }
+  .rg-select:focus { border-color: rgba(255,107,53,.5); }
+  .rg-select option { background: #1a1a26; color: var(--sg-text); }
+
+  /* service tags */
+  .rg-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }
+  .rg-tag {
+    display: inline-flex; align-items: center; gap: .35rem;
+    background: rgba(255,107,53,.12);
+    border: 1px solid rgba(255,107,53,.25);
+    color: var(--sg-accent);
+    border-radius: 100px; padding: .25rem .7rem;
+    font-size: .78rem; font-weight: 500;
+  }
+  .rg-tag-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--sg-accent); display: flex;
+    align-items: center; padding: 0; margin-left: .15rem;
+    opacity: .7; transition: opacity .15s;
+  }
+  .rg-tag-remove:hover { opacity: 1; }
+
+  /* terms */
+  .rg-terms {
+    display: flex; align-items: flex-start; gap: .75rem;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--sg-border);
+    border-radius: 12px; padding: .85rem;
+  }
+  .rg-checkbox {
+    width: 20px; height: 20px; border-radius: 7px;
+    border: 1.5px solid var(--sg-border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; margin-top: 1px;
+    transition: background .2s, border-color .2s;
+    background: var(--sg-surface2);
+  }
+  .rg-checkbox.checked {
+    background: var(--sg-accent);
+    border-color: var(--sg-accent);
+  }
+  .rg-terms p { font-size: .83rem; color: var(--sg-muted); line-height: 1.5; }
+  .rg-terms a { color: var(--sg-accent); text-decoration: none; font-weight: 500; }
+  .rg-terms a:hover { text-decoration: underline; }
+
+  /* submit */
+  .rg-submit {
+    width: 100%; margin-top: 1.2rem;
+    background: var(--sg-accent);
+    color: #fff; border: none; border-radius: 12px;
+    padding: .9rem; font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+    transition: transform .2s, box-shadow .2s, background .2s;
+    box-shadow: 0 0 24px var(--sg-glow);
+  }
+  .rg-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 32px rgba(255,107,53,.45); }
+  .rg-submit:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+
+  .rg-pw-error {
+    font-size: .75rem; color: #ff6b6b;
+    background: rgba(255,107,107,.1); border-radius: 8px;
+    padding: .4rem .75rem; margin-top: .6rem; text-align: center;
+  }
+
+  /* divider */
+  .rg-divider {
+    display: flex; align-items: center; gap: .9rem;
+    margin: 1.4rem 0;
+  }
+  .rg-divider-line { flex:1; height:1px; background:var(--sg-border); }
+  .rg-divider span { font-size: .72rem; color: var(--sg-muted); letter-spacing: 1px; white-space: nowrap; }
+
+  /* google btn */
+  .rg-google {
+    width: 100%;
+    background: var(--sg-surface2);
+    border: 1px solid var(--sg-border);
+    border-radius: 12px; padding: .82rem;
+    display: flex; align-items: center; justify-content: center; gap: .75rem;
+    color: var(--sg-text); font-family:'DM Sans',sans-serif;
+    font-weight: 500; font-size: .92rem; cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .rg-google:hover:not(:disabled) { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.05); }
+  .rg-google:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* login link */
+  .rg-login-link {
+    text-align: center; margin-top: 1.4rem;
+    font-size: .85rem; color: var(--sg-muted);
+  }
+  .rg-login-link a {
+    color: var(--sg-accent); text-decoration: none; font-weight: 600;
+    display: inline-flex; align-items: center; gap: .2rem;
+  }
+  .rg-login-link a:hover { text-decoration: underline; }
+
+  /* trust strip below card */
+  .rg-trust {
+    display: flex; justify-content: center; gap: 1.8rem;
+    margin-top: 1.4rem; flex-wrap: wrap;
+  }
+  .rg-trust-item {
+    display: flex; align-items: center; gap: .4rem;
+    font-size: .75rem; color: var(--sg-muted);
+  }
+`;
+
+function InjectRegisterStyle() {
+  useEffect(() => {
+    if (!document.getElementById("rg-style")) {
+      const el = document.createElement("style");
+      el.id = "rg-style";
+      el.textContent = REGISTER_STYLE;
+      document.head.appendChild(el);
+    }
+  }, []);
+  return null;
+}
+
+/* ═══════════════════════════════════
+   COMPONENT
+═══════════════════════════════════ */
 function Register() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -33,14 +391,12 @@ function Register() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-  // Google Sign Up
+  /* Google Sign Up */
   const handleGoogleSignUp = async () => {
     try {
       setLoading(true);
       const result = await signInWithPopup(auth, provider);
       const firebaseUser = result.user;
-      
-      // Get the Google Access Token
       GoogleAuthProvider.credentialFromResult(result);
       const token = await firebaseUser.getIdToken();
 
@@ -52,23 +408,20 @@ function Register() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-
       login(res.data.token, res.data.user);
-
       toast.success("Account created with Google 🚀");
 
-      if (res.data.user.role === "provider") {
-        navigate("/provider", { replace: true });
-      } else if (res.data.user.role === "admin") {
-        navigate("/admin", { replace: true });
-      } else {
-        navigate("/home", { replace: true });
-      }
+      if (res.data.user.role === "provider") navigate("/provider", { replace: true });
+      else if (res.data.user.role === "admin") navigate("/admin", { replace: true });
+      else navigate("/home", { replace: true });
     } catch (error) {
-      console.error("Google Sign Up Error:", error);
       const axiosError = error as AxiosError<{ message: string; error: string }>;
-      const errorMessage = axiosError.response?.data?.message || axiosError.response?.data?.error || (error as Error)?.message || "Google sign up failed";
-      toast.error(errorMessage);
+      toast.error(
+        axiosError.response?.data?.message ||
+        axiosError.response?.data?.error ||
+        (error as Error)?.message ||
+        "Google sign up failed"
+      );
     } finally {
       setLoading(false);
     }
@@ -77,7 +430,6 @@ function Register() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       await axios.post("https://servixobackend.vercel.app/api/auth/register", form);
       toast.success("Registered successfully 🎉");
@@ -91,377 +443,307 @@ function Register() {
   };
 
   const roleOptions = [
-    { value: "user", label: "Customer", icon: "👤", desc: "Book services" },
-    { value: "provider", label: "Service Provider", icon: "🛠️", desc: "Offer services" },
+    { value: "user",     label: "Customer",         icon: "👤", desc: "Book services" },
+    { value: "provider", label: "Service Provider",  icon: "🛠️", desc: "Offer services" },
   ];
 
   const serviceCategories = [
-    { name: "Cleaning", icon: "🧹" },
-    { name: "Plumbing", icon: "🔧" },
-    { name: "Electrical", icon: "⚡" },
-    { name: "AC & Appliances", icon: "❄️" },
-    { name: "Painting", icon: "🎨" },
-    { name: "Gardening", icon: "🪴" },
-    { name: "Vehicle Care", icon: "🚗" },
-    { name: "Carpentry", icon: "🔨" },
-    { name: "Pest Control", icon: "🐜" },
-    { name: "Home Security", icon: "🔒" },
-    { name: "Interior Design", icon: "🏠" },
+    { name: "Cleaning",         icon: "🧹" },
+    { name: "Plumbing",         icon: "🔧" },
+    { name: "Electrical",       icon: "⚡" },
+    { name: "AC & Appliances",  icon: "❄️" },
+    { name: "Painting",         icon: "🎨" },
+    { name: "Gardening",        icon: "🪴" },
+    { name: "Vehicle Care",     icon: "🚗" },
+    { name: "Carpentry",        icon: "🔨" },
+    { name: "Pest Control",     icon: "🐜" },
+    { name: "Home Security",    icon: "🔒" },
+    { name: "Interior Design",  icon: "🏠" },
     { name: "Moving & Packing", icon: "📦" },
   ];
 
-  const toggleService = (serviceName: string) => {
-    setForm((prev) => {
-      const currentServices = prev.servicesOffered || [];
-      if (currentServices.includes(serviceName)) {
-        return { ...prev, servicesOffered: currentServices.filter((s) => s !== serviceName) };
-      } else {
-        return { ...prev, servicesOffered: [...currentServices, serviceName] };
-      }
-    });
+  const toggleService = (name: string) => {
+    setForm((prev) => ({
+      ...prev,
+      servicesOffered: prev.servicesOffered.includes(name)
+        ? prev.servicesOffered.filter((s) => s !== name)
+        : [...prev.servicesOffered, name],
+    }));
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Left Side - Branding & Benefits (Hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-5/12 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid-register" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid-register)" />
-          </svg>
-        </div>
-        
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center px-12 py-12 text-white">
-          <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-              </svg>
-            </div>
-            <h1 className="text-4xl font-bold mb-4 leading-tight">
-              Start Your Journey With Us
+    <>
+      <InjectRegisterStyle />
+      <div className="rg-root">
+
+        {/* ── LEFT PANEL ── */}
+        <div className="rg-left">
+          <div className="rg-left-mesh" />
+          <div className="rg-left-grid" />
+          <div className="rg-left-content">
+            <Link to="/" className="rg-brand">Servexa<span>Go</span></Link>
+
+            <h1 className="rg-left-title">
+              Start Your<br /><em>Journey</em><br />With Us
             </h1>
-            <p className="text-white/90 text-lg leading-relaxed">
+            <p className="rg-left-sub">
               Join thousands of satisfied customers and service providers on India's most trusted home services platform.
             </p>
-          </div>
 
-          {/* Benefits */}
-          <div className="space-y-4">
             {[
-              { icon: ShieldCheck, text: "Verified & Background Checked Professionals" },
-              { icon: Clock, text: "Same Day Service Available" },
-              { icon: Award, text: "Quality Workmanship Guaranteed" },
-            ].map((benefit, idx) => (
-              <div key={idx} className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/20 transition-all duration-300">
-                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <benefit.icon className="w-5 h-5" />
+              { icon: ShieldCheck, label: "Verified & Background Checked Professionals", color: "#ff6b35" },
+              { icon: Clock,       label: "Same Day Service Available",                  color: "#00d4ff" },
+              { icon: Award,       label: "Quality Workmanship Guaranteed",              color: "#ffbe0b" },
+            ].map((b) => (
+              <div key={b.label} className="rg-benefit">
+                <div className="rg-benefit-icon" style={{ background: `${b.color}18` }}>
+                  <b.icon size={18} style={{ color: b.color }} />
                 </div>
-                <span className="font-medium">{benefit.text}</span>
+                <span>{b.label}</span>
               </div>
             ))}
-          </div>
 
-          {/* Stats */}
-          <div className="mt-12 grid grid-cols-3 gap-6">
-            <div className="text-center">
-              <p className="text-4xl font-bold mb-1">10K+</p>
-              <p className="text-white/80 text-sm">Happy Customers</p>
-            </div>
-            <div className="text-center">
-              <p className="text-4xl font-bold mb-1">500+</p>
-              <p className="text-white/80 text-sm">Verified Providers</p>
-            </div>
-            <div className="text-center">
-              <p className="text-4xl font-bold mb-1">4.9</p>
-              <p className="text-white/80 text-sm">Average Rating</p>
+            <div className="rg-stats">
+              {[
+                { num: "10K", sup: "+", label: "Happy Customers" },
+                { num: "500", sup: "+", label: "Verified Providers" },
+                { num: "4.9", sup: "★", label: "Avg Rating" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="rg-stat-num">{s.num}<span>{s.sup}</span></div>
+                  <div className="rg-stat-label">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 overflow-y-auto">
-        <div className="w-full max-w-md animate-in">
-          {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl mb-4 shadow-lg shadow-indigo-500/30">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Account</h2>
-            <p className="text-gray-600">Join us and start your journey today</p>
-          </div>
+        {/* ── RIGHT PANEL ── */}
+        <div className="rg-right">
+          <div className="rg-card-wrap">
 
-          {/* Card */}
-          <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 sm:p-8 border border-gray-100">
-            {/* Header */}
-            <div className="hidden lg:block text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
-              <p className="text-gray-600">Join us and start your journey today</p>
+            {/* mobile branding */}
+            <div className="rg-mobile-brand" style={{ display: "block" }}
+              // hide on lg via inline — left panel handles branding on large screens
+            >
+              <div className="rg-mobile-logo">
+                <Zap size={22} style={{ color: "#ff6b35" }} />
+              </div>
+              <div className="rg-mobile-title">Servexa<span style={{ color: "#ff6b35" }}>Go</span></div>
+              <div className="rg-mobile-sub">Create your free account</div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name Field */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">
-                  Full Name
-                </label>
-                <div className="relative group">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors duration-200" />
-                  <input
-                    type="text"
-                    required
-                    placeholder="John Doe"
-                    className="input-modern pl-10"
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  />
-                </div>
+            <div className="rg-card">
+              {/* card header — shown only lg+ */}
+              <div className="rg-card-header" style={{ display: "none" }} id="rg-desk-header">
+                <div className="rg-card-title">Create Account</div>
+                <div className="rg-card-sub">Join us and start your journey today</div>
               </div>
 
-              {/* Email Field */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">
-                  Email Address
-                </label>
-                <div className="relative group">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors duration-200" />
-                  <input
-                    type="email"
-                    required
-                    placeholder="name@example.com"
-                    className="input-modern pl-10"
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  />
-                </div>
-              </div>
+              <form onSubmit={handleSubmit}>
 
-              {/* Password Field with Strength Checker */}
-              <div className="space-y-2">
-                <PasswordStrengthChecker
-                  password={form.password}
-                  onPasswordChange={(password) => setForm({ ...form, password })}
-                  onStrengthChange={(_strength, isValid) => setIsPasswordValid(isValid)}
-                  label="Password"
-                  placeholder="Create a strong password"
-                  required
-                />
-              </div>
-
-              {/* Role Selection */}
-              <div className="space-y-3">
-                <label className="text-sm font-semibold text-gray-700">
-                  I want to
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  {roleOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => setForm({ ...form, role: option.value, servicesOffered: [] })}
-                      className={`relative p-4 rounded-xl border-2 transition-all duration-300 text-left group ${
-                        form.role === option.value
-                          ? "border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-md"
-                          : "border-gray-200 hover:border-indigo-300 hover:shadow-sm bg-white"
-                      }`}
-                    >
-                      {form.role === option.value && (
-                        <div className="absolute top-2 right-2 w-5 h-5 bg-indigo-600 rounded-full flex items-center justify-center">
-                          <CheckCircle className="w-3 h-3 text-white" />
-                        </div>
-                      )}
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform duration-200">{option.icon}</div>
-                      <div className={`font-semibold text-sm mb-1 ${form.role === option.value ? "text-indigo-700" : "text-gray-700"}`}>
-                        {option.label}
-                      </div>
-                      <div className="text-xs text-gray-500">{option.desc}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Service Selection for Providers */}
-              {form.role === "provider" && (
-                <div className="space-y-3 animate-in">
-                  <label className="text-sm font-semibold text-gray-700">
-                    Which services do you want to offer? <span className="text-red-500">*</span>
-                  </label>
-                  <p className="text-xs text-gray-500">Select at least one service category</p>
-                  
-                  <div className="relative">
-                    <select
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value && !form.servicesOffered?.includes(value)) {
-                          toggleService(value);
-                        }
-                        e.target.value = "";
-                      }}
-                      className="w-full pl-4 pr-10 py-3 border border-gray-200 rounded-xl text-gray-800 bg-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer transition-all duration-200"
-                    >
-                      <option value="">-- Select a service --</option>
-                      {serviceCategories.map((service) => (
-                        <option 
-                          key={service.name} 
-                          value={service.name}
-                          disabled={form.servicesOffered?.includes(service.name)}
-                        >
-                          {service.icon} {service.name}
-                          {form.servicesOffered?.includes(service.name) ? " (Selected)" : ""}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
+                {/* Name */}
+                <div className="rg-field">
+                  <label className="rg-label">Full Name</label>
+                  <div className="rg-input-wrap">
+                    <User size={16} className="rg-input-icon" />
+                    <input
+                      type="text" required placeholder="John Doe"
+                      className="rg-input"
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    />
                   </div>
+                </div>
 
-                  {form.servicesOffered && form.servicesOffered.length > 0 && (
-                    <div className="mt-3">
-                      <p className="text-xs text-gray-500 mb-2">Selected services:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {form.servicesOffered.map((serviceName) => {
-                          const service = serviceCategories.find(s => s.name === serviceName);
+                {/* Email */}
+                <div className="rg-field">
+                  <label className="rg-label">Email Address</label>
+                  <div className="rg-input-wrap">
+                    <Mail size={16} className="rg-input-icon" />
+                    <input
+                      type="email" required placeholder="name@example.com"
+                      className="rg-input"
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div className="rg-field">
+                  {/* PasswordStrengthChecker — pass dark-mode class or wrap */}
+                  <PasswordStrengthChecker
+                    password={form.password}
+                    onPasswordChange={(password) => setForm({ ...form, password })}
+                    onStrengthChange={(_s, isValid) => setIsPasswordValid(isValid)}
+                    label="Password"
+                    placeholder="Create a strong password"
+                    required
+                  />
+                </div>
+
+                {/* Role */}
+                <div className="rg-field">
+                  <label className="rg-label">I want to</label>
+                  <div className="rg-role-grid">
+                    {roleOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`rg-role-btn ${form.role === opt.value ? "active" : ""}`}
+                        onClick={() => setForm({ ...form, role: opt.value, servicesOffered: [] })}
+                      >
+                        {form.role === opt.value && (
+                          <div className="rg-role-check">
+                            <CheckCircle size={11} color="#fff" />
+                          </div>
+                        )}
+                        <span className="rg-role-icon">{opt.icon}</span>
+                        <div className="rg-role-name">{opt.label}</div>
+                        <div className="rg-role-desc">{opt.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Services (provider only) */}
+                {form.role === "provider" && (
+                  <div className="rg-field">
+                    <label className="rg-label">
+                      Services You Offer <span style={{ color: "#ff6b6b" }}>*</span>
+                    </label>
+                    <p style={{ fontSize: ".72rem", color: "var(--sg-muted)", marginBottom: ".45rem" }}>
+                      Select at least one category
+                    </p>
+                    <div style={{ position: "relative" }}>
+                      <select
+                        className="rg-select"
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          if (v && !form.servicesOffered.includes(v)) toggleService(v);
+                          e.target.value = "";
+                        }}
+                      >
+                        <option value="">-- Select a service --</option>
+                        {serviceCategories.map((s) => (
+                          <option
+                            key={s.name} value={s.name}
+                            disabled={form.servicesOffered.includes(s.name)}
+                          >
+                            {s.icon} {s.name}{form.servicesOffered.includes(s.name) ? " ✓" : ""}
+                          </option>
+                        ))}
+                      </select>
+                      <div style={{ position:"absolute", right:"12px", top:"50%", transform:"translateY(-50%)", pointerEvents:"none", color:"var(--sg-muted)" }}>
+                        <ChevronRight size={16} style={{ transform: "rotate(90deg)" }} />
+                      </div>
+                    </div>
+
+                    {form.servicesOffered.length > 0 && (
+                      <div className="rg-tags">
+                        {form.servicesOffered.map((name) => {
+                          const s = serviceCategories.find((x) => x.name === name);
                           return (
-                            <span
-                              key={serviceName}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium"
-                            >
-                              <span>{service?.icon}</span>
-                              <span>{serviceName}</span>
-                              <button
-                                type="button"
-                                onClick={() => toggleService(serviceName)}
-                                className="ml-1 w-4 h-4 flex items-center justify-center rounded-full hover:bg-indigo-200 transition-colors"
-                              >
-                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            <span key={name} className="rg-tag">
+                              {s?.icon} {name}
+                              <button type="button" className="rg-tag-remove" onClick={() => toggleService(name)}>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                  <path d="M18 6L6 18M6 6l12 12"/>
                                 </svg>
                               </button>
                             </span>
                           );
                         })}
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                )}
+
+                {/* Terms */}
+                <div className="rg-terms" style={{ marginBottom: "1rem" }}>
+                  <div
+                    className={`rg-checkbox ${agreedToTerms ? "checked" : ""}`}
+                    onClick={() => setAgreedToTerms(!agreedToTerms)}
+                  >
+                    {agreedToTerms && <CheckCircle size={12} color="#fff" />}
+                  </div>
+                  <p>
+                    I agree to the{" "}
+                    <Link to="/terms">Terms of Service</Link>
+                    {" "}and{" "}
+                    <Link to="/privacy">Privacy Policy</Link>
+                  </p>
                 </div>
-              )}
 
-              {/* Terms Checkbox */}
-              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                {/* Submit */}
                 <button
-                  type="button"
-                  onClick={() => setAgreedToTerms(!agreedToTerms)}
-                  className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
-                    agreedToTerms 
-                      ? 'bg-indigo-600 border-indigo-600' 
-                      : 'border-gray-300 hover:border-indigo-400 bg-white'
-                  }`}
-                >
-                  {agreedToTerms && <CheckCircle className="w-3.5 h-3.5 text-white" />}
-                </button>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  I agree to the{" "}
-                  <Link to="/terms" className="text-indigo-600 hover:text-indigo-700 font-medium">Terms of Service</Link>
-                  {" "}and{" "}
-                  <Link to="/privacy" className="text-indigo-600 hover:text-indigo-700 font-medium">Privacy Policy</Link>
-                </p>
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-2">
-                <button
+                  type="submit"
+                  className="rg-submit"
                   disabled={loading || !agreedToTerms || !isPasswordValid}
-                  className="w-full btn-primary flex items-center justify-center gap-2 text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {loading ? (
                     <>
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity=".25"/>
+                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity=".75"/>
                       </svg>
-                      Creating account...
+                      Creating account…
                     </>
                   ) : (
-                    <>
-                      Create Account
-                      <ArrowRight className="w-5 h-5" />
-                    </>
+                    <>Create Account <ArrowRight size={17} /></>
                   )}
                 </button>
+
                 {!isPasswordValid && form.password && (
-                  <p className="text-xs text-red-500 mt-3 text-center bg-red-50 py-2 rounded-lg">
-                    Please create a stronger password to continue
-                  </p>
+                  <p className="rg-pw-error">Please create a stronger password to continue</p>
                 )}
+              </form>
+
+              {/* Divider */}
+              <div className="rg-divider">
+                <div className="rg-divider-line" />
+                <span>OR CONTINUE WITH</span>
+                <div className="rg-divider-line" />
               </div>
-            </form>
 
-            {/* Divider */}
-            <div className="flex items-center my-8">
-              <div className="flex-grow border-t border-gray-200"></div>
-              <span className="mx-4 text-gray-400 text-sm font-medium">OR CONTINUE WITH</span>
-              <div className="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            {/* Google Sign Up */}
-            <button
-              onClick={handleGoogleSignUp}
-              disabled={loading}
-              className="w-full bg-white border-2 border-gray-200 rounded-xl py-4 flex items-center justify-center gap-3 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="w-5 h-5 flex items-center justify-center">
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
+              {/* Google */}
+              <button className="rg-google" onClick={handleGoogleSignUp} disabled={loading}>
+                <svg width="18" height="18" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-              </div>
-              <span className="font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
                 Continue with Google
-              </span>
-            </button>
+              </button>
 
-            {/* Login Link */}
-            <p className="text-center text-gray-600 mt-8">
-              Already have an account?{" "}
-              <Link to="/login" className="inline-flex items-center gap-1 text-indigo-600 font-semibold hover:text-indigo-700 transition-colors group">
-                Sign in
-                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
-            </p>
-          </div>
+              {/* Login link */}
+              <p className="rg-login-link">
+                Already have an account?{" "}
+                <Link to="/login">
+                  Sign in <ChevronRight size={14} />
+                </Link>
+              </p>
+            </div>
 
-          {/* Trust Indicators */}
-          <div className="mt-8 flex items-center justify-center gap-6 text-gray-400">
-            <div className="flex items-center gap-1.5 text-xs group">
-              <ShieldCheck className="w-4 h-4 group-hover:text-indigo-500 transition-colors" />
-              <span className="group-hover:text-gray-600 transition-colors">Secure</span>
+            {/* Trust strip */}
+            <div className="rg-trust">
+              {[
+                { icon: ShieldCheck, label: "Secure", color: "#4ade80" },
+                { icon: Award,       label: "Trusted", color: "#ff6b35" },
+                { icon: Clock,       label: "24/7 Support", color: "#00d4ff" },
+              ].map((t) => (
+                <div key={t.label} className="rg-trust-item">
+                  <t.icon size={14} style={{ color: t.color }} />
+                  {t.label}
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-1.5 text-xs group">
-              <Award className="w-4 h-4 group-hover:text-indigo-500 transition-colors" />
-              <span className="group-hover:text-gray-600 transition-colors">Trusted</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs group">
-              <Clock className="w-4 h-4 group-hover:text-indigo-500 transition-colors" />
-              <span className="group-hover:text-gray-600 transition-colors">24/7 Support</span>
-            </div>
+
           </div>
         </div>
+
       </div>
-    </div>
+    </>
   );
 }
 
