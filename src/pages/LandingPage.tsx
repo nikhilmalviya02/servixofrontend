@@ -57,50 +57,6 @@ const GLOBAL_STYLE = `
     z-index: 0;
   }
 
-  /* nav */
-  .sg-nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.1rem 5%;
-    background: rgba(10,10,15,.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--sg-border);
-  }
-  .sg-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.45rem;
-    letter-spacing: -.5px;
-    color: var(--sg-text);
-    text-decoration: none;
-  }
-  .sg-logo span { color: var(--sg-accent); }
-
-  .sg-nav-links {
-    display: flex; gap: 2.2rem; list-style: none; margin: 0; padding: 0;
-  }
-  .sg-nav-links a {
-    text-decoration: none;
-    color: var(--sg-muted);
-    font-size: .88rem;
-    font-weight: 500;
-    transition: color .2s;
-  }
-  .sg-nav-links a:hover { color: var(--sg-text); }
-  .sg-nav-cta {
-    background: var(--sg-accent) !important;
-    color: #fff !important;
-    padding: .5rem 1.3rem;
-    border-radius: 100px;
-    font-weight: 600 !important;
-    transition: background .2s, transform .15s !important;
-  }
-  .sg-nav-cta:hover { background: #ff855a !important; transform: translateY(-1px); }
-
   /* hero */
   .sg-hero {
     position: relative;
@@ -617,18 +573,7 @@ function LandingPage() {
     <>
       <InjectStyle />
       <div className="sg-root sg-mesh">
-
-        {/* ── NAV ── */}
-        <nav className="sg-nav">
-          <Link to="/" className="sg-logo">Servexa<span>Go</span></Link>
-          <ul className="sg-nav-links">
-            <li><a href="#services">Services</a></li>
-            <li><a href="#how-it-works">How it works</a></li>
-            <li><a href="#testimonials">Reviews</a></li>
-            <li><Link to="/register" className="sg-nav-cta">Book Now</Link></li>
-          </ul>
-        </nav>
-
+        
         {/* ── HERO ── */}
         <section className="sg-hero" ref={heroRef}>
           <div className="sg-badge">
