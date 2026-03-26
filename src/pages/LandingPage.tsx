@@ -18,560 +18,938 @@ import {
   HeartHandshake,
   ChevronRight,
   Play,
-  BadgeCheck
+  BadgeCheck,
+  Zap,
 } from "lucide-react";
 
+/* ─────────────────────────────────────────────
+   Inject dark-theme CSS + Syne / DM Sans fonts
+───────────────────────────────────────────── */
+const GLOBAL_STYLE = `
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --sg-bg: #0a0a0f;
+    --sg-surface: #12121a;
+    --sg-surface2: #1a1a26;
+    --sg-accent: #ff6b35;
+    --sg-accent2: #ffbe0b;
+    --sg-cyan: #00d4ff;
+    --sg-text: #f0f0f8;
+    --sg-muted: #888899;
+    --sg-border: rgba(255,255,255,0.07);
+    --sg-glow: rgba(255,107,53,0.25);
+  }
+
+  .sg-root {
+    background: var(--sg-bg);
+    color: var(--sg-text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* mesh background */
+  .sg-mesh::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,107,53,.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(0,212,255,.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* nav */
+  .sg-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 5%;
+    background: rgba(10,10,15,.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--sg-border);
+  }
+  .sg-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.45rem;
+    letter-spacing: -.5px;
+    color: var(--sg-text);
+    text-decoration: none;
+  }
+  .sg-logo span { color: var(--sg-accent); }
+
+  .sg-nav-links {
+    display: flex; gap: 2.2rem; list-style: none; margin: 0; padding: 0;
+  }
+  .sg-nav-links a {
+    text-decoration: none;
+    color: var(--sg-muted);
+    font-size: .88rem;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .sg-nav-links a:hover { color: var(--sg-text); }
+  .sg-nav-cta {
+    background: var(--sg-accent) !important;
+    color: #fff !important;
+    padding: .5rem 1.3rem;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    transition: background .2s, transform .15s !important;
+  }
+  .sg-nav-cta:hover { background: #ff855a !important; transform: translateY(-1px); }
+
+  /* hero */
+  .sg-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 5% 5rem;
+    z-index: 1;
+  }
+  .sg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(255,107,53,.1);
+    border: 1px solid rgba(255,107,53,.3);
+    border-radius: 100px;
+    padding: .38rem 1rem;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--sg-accent);
+    margin-bottom: 1.6rem;
+    animation: sgFadeUp .7s ease both;
+  }
+  .sg-badge::before { content: '●'; font-size: .45rem; animation: sgPulse 1.5s ease infinite; }
+
+  @keyframes sgPulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  @keyframes sgFadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .sg-h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--sg-text);
+    animation: sgFadeUp .7s .1s ease both;
+  }
+  .sg-h1 em {
+    font-style: normal;
+    -webkit-text-stroke: 1.5px var(--sg-accent);
+    color: transparent;
+  }
+  .sg-hero-sub {
+    max-width: 520px;
+    margin: 1.4rem auto 2.2rem;
+    color: var(--sg-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-weight: 300;
+    animation: sgFadeUp .7s .2s ease both;
+  }
+  .sg-hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: sgFadeUp .7s .3s ease both;
+  }
+  .sg-btn-primary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--sg-accent);
+    color: #fff;
+    padding: .82rem 1.9rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: .97rem;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 0 30px var(--sg-glow);
+  }
+  .sg-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px rgba(255,107,53,.45); }
+
+  .sg-btn-ghost {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: transparent;
+    color: var(--sg-text);
+    padding: .82rem 1.9rem;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: .97rem;
+    text-decoration: none;
+    border: 1px solid var(--sg-border);
+    transition: border-color .2s, background .2s;
+  }
+  .sg-btn-ghost:hover { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.04); }
+
+  /* search bar */
+  .sg-search {
+    margin-top: 2.8rem;
+    display: flex; align-items: center;
+    background: var(--sg-surface);
+    border: 1px solid var(--sg-border);
+    border-radius: 16px;
+    padding: .45rem .45rem .45rem 1.3rem;
+    max-width: 540px;
+    width: 100%;
+    gap: .8rem;
+    animation: sgFadeUp .7s .4s ease both;
+    transition: border-color .2s;
+  }
+  .sg-search:focus-within { border-color: rgba(255,107,53,.5); }
+  .sg-search input {
+    flex:1; background: none; border: none; outline: none;
+    color: var(--sg-text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .93rem;
+  }
+  .sg-search input::placeholder { color: var(--sg-muted); }
+  .sg-search button {
+    background: var(--sg-accent); color: #fff; border: none;
+    border-radius: 10px; padding: .65rem 1.3rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer;
+    white-space: nowrap; transition: background .2s;
+  }
+  .sg-search button:hover { background: #ff855a; }
+
+  /* stats */
+  .sg-stats {
+    display: flex; gap: 2.8rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 3.5rem;
+    animation: sgFadeUp .7s .5s ease both;
+  }
+  .sg-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800; color: var(--sg-text);
+  }
+  .sg-stat-num span { color: var(--sg-accent); }
+  .sg-stat-label {
+    font-size: .75rem; color: var(--sg-muted);
+    margin-top: .2rem; letter-spacing: .5px; text-transform: uppercase;
+  }
+
+  /* section common */
+  .sg-section { position: relative; z-index: 1; padding: 5.5rem 5%; }
+  .sg-section-tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sg-accent); margin-bottom: .7rem;
+  }
+  .sg-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    font-weight: 800; letter-spacing: -1px;
+    color: var(--sg-text); margin-bottom: .5rem;
+  }
+  .sg-section-sub {
+    color: var(--sg-muted); font-size: .97rem; font-weight: 300;
+    max-width: 480px; line-height: 1.65; margin-bottom: 2.8rem;
+  }
+
+  /* feature cards */
+  .sg-feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.2rem;
+  }
+  .sg-feat-card {
+    background: var(--sg-surface);
+    border: 1px solid var(--sg-border);
+    border-radius: 22px;
+    padding: 2rem 1.8rem;
+    transition: transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .sg-feat-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,53,.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  }
+  .sg-feat-icon {
+    width: 50px; height: 50px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+  }
+  .sg-feat-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    color: var(--sg-text); margin-bottom: .4rem;
+  }
+  .sg-feat-card p { color: var(--sg-muted); font-size: .85rem; line-height: 1.6; }
+
+  /* category cards */
+  .sg-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1rem;
+  }
+  .sg-cat-card {
+    background: var(--sg-surface);
+    border: 1px solid var(--sg-border);
+    border-radius: 20px;
+    padding: 1.6rem 1.4rem;
+    text-decoration: none;
+    transition: transform .25s, border-color .25s;
+    display: block;
+  }
+  .sg-cat-card:hover { transform: translateY(-4px); border-color: rgba(255,107,53,.25); }
+  .sg-cat-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  }
+  .sg-cat-card h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; color:var(--sg-text); }
+  .sg-cat-card p  { font-size:.75rem; color:var(--sg-muted); margin-top:.25rem; }
+  .sg-cat-arrow   { font-size:1rem; color:var(--sg-accent); margin-top:.9rem; display:block; transition:transform .2s; }
+  .sg-cat-card:hover .sg-cat-arrow { transform: translateX(4px); }
+
+  /* steps */
+  .sg-steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .sg-steps      { display: flex; flex-direction: column; gap: 1.2rem; }
+  .sg-step {
+    display: flex; gap: 1.1rem; align-items: flex-start;
+    background: var(--sg-surface); border: 1px solid var(--sg-border);
+    border-radius: 16px; padding: 1.3rem 1.5rem;
+    transition: border-color .2s;
+  }
+  .sg-step:hover { border-color: rgba(255,107,53,.2); }
+  .sg-step-num {
+    font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem;
+    color:var(--sg-accent); min-width:32px; line-height:1;
+  }
+  .sg-step h4 { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; color:var(--sg-text); margin-bottom:.3rem; }
+  .sg-step p  { color:var(--sg-muted); font-size:.83rem; line-height:1.6; }
+
+  /* phone mockup */
+  .sg-phone {
+    width: 250px;
+    background: var(--sg-surface2);
+    border: 1px solid var(--sg-border);
+    border-radius: 38px;
+    padding: 1.6rem 1.3rem;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 60px rgba(255,107,53,.1);
+    margin: auto;
+  }
+  .sg-phone-notch {
+    width: 80px; height: 11px;
+    background: var(--sg-bg); border-radius:100px;
+    margin: 0 auto 1.4rem;
+  }
+  .sg-phone-row {
+    display: flex; align-items:center; gap:.65rem;
+    background: var(--sg-surface); border-radius:12px;
+    padding: .72rem .85rem; margin-bottom: .6rem;
+  }
+  .sg-phone-title { font-size:.74rem; font-weight:600; color:var(--sg-text); }
+  .sg-phone-sub   { font-size:.63rem; color:var(--sg-muted); }
+  .sg-phone-badge {
+    font-size:.58rem; padding:.13rem .45rem; border-radius:100px;
+    font-weight:600; white-space:nowrap;
+    background:rgba(255,107,53,.15); color:var(--sg-accent);
+  }
+  .sg-phone-badge.cyan { background:rgba(0,212,255,.12); color:var(--sg-cyan); }
+  .sg-phone-map {
+    background: linear-gradient(135deg,#1a1a2e,#16213e);
+    border-radius:14px; height:90px; margin-top:.3rem;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.8rem; position:relative; overflow:hidden;
+  }
+  .sg-phone-map::before {
+    content:''; position:absolute;
+    width:70px; height:70px;
+    border:1px dashed rgba(0,212,255,.35); border-radius:50%;
+    animation: sgRipple 2s linear infinite;
+  }
+  .sg-phone-map::after {
+    content:''; position:absolute;
+    width:110px; height:110px;
+    border:1px dashed rgba(0,212,255,.18); border-radius:50%;
+    animation: sgRipple 2s .6s linear infinite;
+  }
+  @keyframes sgRipple {
+    from{opacity:1;transform:scale(.5)}
+    to  {opacity:0;transform:scale(1.8)}
+  }
+  .sg-phone-track {
+    margin-top:.85rem; background:var(--sg-accent);
+    border-radius:12px; padding:.65rem;
+    text-align:center; font-weight:600; font-size:.82rem;
+    cursor:pointer; color:#fff;
+  }
+
+  /* service cards */
+  .sg-srv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 1.2rem;
+  }
+  .sg-srv-card {
+    background: var(--sg-surface);
+    border: 1px solid var(--sg-border);
+    border-radius: 22px; overflow: hidden;
+    text-decoration: none;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+    display: block;
+  }
+  .sg-srv-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,107,53,.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  }
+  .sg-srv-img {
+    height: 160px; display:flex; align-items:center; justify-content:center;
+    font-size: 4.5rem; position: relative;
+  }
+  .sg-srv-rating {
+    position:absolute; top:10px; right:10px;
+    background:rgba(10,10,15,.8); backdrop-filter:blur(8px);
+    padding:.2rem .6rem; border-radius:100px;
+    font-size:.75rem; font-weight:600; color:var(--sg-text);
+    display:flex; align-items:center; gap:.25rem;
+  }
+  .sg-srv-body { padding: 1.3rem 1.5rem; }
+  .sg-srv-body h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:.97rem; color:var(--sg-text); }
+  .sg-srv-price { color:var(--sg-accent); font-weight:700; font-size:1rem; margin-top:.3rem; }
+  .sg-srv-meta  { display:flex; align-items:center; gap:.4rem; margin-top:.7rem; font-size:.75rem; color:var(--sg-muted); }
+
+  /* testimonials */
+  .sg-tgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.2rem; }
+  .sg-tcard {
+    background:var(--sg-surface); border:1px solid var(--sg-border);
+    border-radius:20px; padding:1.7rem;
+    transition: transform .2s;
+  }
+  .sg-tcard:hover { transform: translateY(-3px); }
+  .sg-stars { color:var(--sg-accent2); font-size:.88rem; margin-bottom:1rem; letter-spacing:2px; }
+  .sg-tcard p { color:var(--sg-muted); font-size:.88rem; line-height:1.7; margin-bottom:1.1rem; font-style:italic; }
+  .sg-avatar {
+    width:38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.9rem; font-weight:700; font-family:'Syne',sans-serif;
+  }
+  .sg-aname { font-weight:600; font-size:.86rem; color:var(--sg-text); }
+  .sg-aloc  { font-size:.73rem; color:var(--sg-muted); }
+
+  /* cta banner */
+  .sg-cta {
+    margin: 0 5% 5.5rem;
+    background: var(--sg-surface);
+    border:1px solid var(--sg-border);
+    border-radius:28px; padding:4rem 5%;
+    text-align:center; position:relative; overflow:hidden; z-index:1;
+  }
+  .sg-cta::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 50% 80% at 50% 50%,rgba(255,107,53,.1) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .sg-cta h2 {
+    font-family:'Syne',sans-serif;
+    font-size:clamp(1.7rem,4vw,2.8rem); font-weight:800;
+    letter-spacing:-1px; color:var(--sg-text); margin-bottom:.9rem;
+  }
+  .sg-cta p { color:var(--sg-muted); font-size:.97rem; margin-bottom:1.8rem; font-weight:300; }
+  .sg-app-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .sg-app-btn {
+    display:flex; align-items:center; gap:.65rem;
+    background:var(--sg-surface2); border:1px solid var(--sg-border);
+    border-radius:14px; padding:.8rem 1.5rem;
+    text-decoration:none; color:var(--sg-text);
+    transition: border-color .2s, background .2s;
+  }
+  .sg-app-btn:hover { border-color:rgba(255,107,53,.3); background:rgba(255,107,53,.06); }
+  .sg-app-label { font-size:.6rem; color:var(--sg-muted); }
+  .sg-app-name  { font-family:'Syne',sans-serif; font-weight:700; font-size:.87rem; color:var(--sg-text); }
+
+  /* trust strip */
+  .sg-trust {
+    border-top:1px solid var(--sg-border); padding:2rem 5%;
+    display:flex; gap:2.5rem; justify-content:center; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .sg-trust-item { display:flex; align-items:center; gap:.6rem; color:var(--sg-muted); font-size:.85rem; font-weight:500; }
+
+  /* footer */
+  .sg-footer {
+    border-top:1px solid var(--sg-border); padding:2.8rem 5%;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:1.3rem; position:relative; z-index:1;
+  }
+  .sg-footer-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:var(--sg-text); text-decoration:none; }
+  .sg-footer-logo span { color:var(--sg-accent); }
+  .sg-footer p { color:var(--sg-muted); font-size:.78rem; }
+  .sg-footer-links { display:flex; gap:1.8rem; }
+  .sg-footer-links a { color:var(--sg-muted); text-decoration:none; font-size:.78rem; transition:color .2s; }
+  .sg-footer-links a:hover { color:var(--sg-text); }
+
+  /* divider line */
+  .sg-divider { border:none; border-top:1px solid var(--sg-border); margin:0; }
+
+  @media(max-width:768px){
+    .sg-steps-wrap { grid-template-columns:1fr; }
+    .sg-phone { display:none; }
+    .sg-nav-links { display:none; }
+  }
+`;
+
+/* ─── inject style once ─── */
+function InjectStyle() {
+  useEffect(() => {
+    if (!document.getElementById("sg-style")) {
+      const el = document.createElement("style");
+      el.id = "sg-style";
+      el.textContent = GLOBAL_STYLE;
+      document.head.appendChild(el);
+    }
+  }, []);
+  return null;
+}
+
+/* ════════════════════════════════
+   MAIN COMPONENT
+════════════════════════════════ */
 function LandingPage() {
   const [services, setServices] = useState<any[]>([]);
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
   const heroRef = useRef<HTMLDivElement>(null);
+  const [searchVal, setSearchVal] = useState("");
 
   useEffect(() => {
-    axios.get("https://servixobackend.vercel.app/api/services?limit=4").then((res) => {
-      setServices(res.data.slice(0, 4));
-    }).catch(() => {});
+    axios
+      .get("https://servixobackend.vercel.app/api/services?limit=4")
+      .then((res) => setServices(res.data.slice(0, 4)))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting)
             setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
-          }
         });
       },
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
-
-    document.querySelectorAll("[data-animate]").forEach((el) => {
-      observer.observe(el);
-    });
-
+    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
+  /* ── data ── */
   const features = [
     {
       icon: ShieldCheck,
       title: "Verified Professionals",
       desc: "All service providers are background checked and verified to ensure trust and quality.",
-      color: "from-indigo-500 to-purple-600",
-      bgColor: "bg-indigo-50"
+      bg: "rgba(255,107,53,.12)", color: "#ff6b35",
     },
     {
       icon: CalendarCheck,
       title: "Easy Booking",
       desc: "Book services in just a few clicks with a smooth and modern experience.",
-      color: "from-purple-500 to-pink-600",
-      bgColor: "bg-purple-50"
+      bg: "rgba(0,212,255,.1)", color: "#00d4ff",
     },
     {
       icon: CreditCard,
       title: "Secure Payments",
-      desc: "Safe and encrypted payment options for complete protection.",
-      color: "from-pink-500 to-rose-600",
-      bgColor: "bg-pink-50"
-    }
+      desc: "Safe and encrypted payment options for complete peace of mind.",
+      bg: "rgba(255,190,11,.1)", color: "#ffbe0b",
+    },
   ];
 
   const categories = [
-    { icon: "🧹", name: "Cleaning", color: "from-green-400 to-emerald-600", count: "50+ services" },
-    { icon: "🔧", name: "Plumbing", color: "from-blue-400 to-cyan-600", count: "30+ services" },
-    { icon: "⚡", name: "Electrical", color: "from-yellow-400 to-orange-600", count: "25+ services" },
-    { icon: "❄️", name: "AC & Appliances", color: "from-cyan-400 to-blue-600", count: "40+ services" },
-    { icon: "🎨", name: "Painting", color: "from-pink-400 to-rose-600", count: "20+ services" },
-    { icon: "🪴", name: "Gardening", color: "from-green-400 to-teal-600", count: "15+ services" },
-    { icon: "🚗", name: "Vehicle Care", color: "from-red-400 to-pink-600", count: "35+ services" },
-    { icon: "🔨", name: "Carpentry", color: "from-orange-400 to-amber-600", count: "18+ services" },
+    { icon: "🧹", name: "Cleaning",      count: "50+ services", c1: "#4ade80", c2: "#059669" },
+    { icon: "🔧", name: "Plumbing",      count: "30+ services", c1: "#60a5fa", c2: "#0891b2" },
+    { icon: "⚡", name: "Electrical",    count: "25+ services", c1: "#fbbf24", c2: "#ea580c" },
+    { icon: "❄️", name: "AC & Appliances",count:"40+ services", c1: "#22d3ee", c2: "#2563eb" },
+    { icon: "🎨", name: "Painting",      count: "20+ services", c1: "#f472b6", c2: "#e11d48" },
+    { icon: "🪴", name: "Gardening",     count: "15+ services", c1: "#4ade80", c2: "#0d9488" },
+    { icon: "🚗", name: "Vehicle Care",  count: "35+ services", c1: "#f87171", c2: "#db2777" },
+    { icon: "🔨", name: "Carpentry",     count: "18+ services", c1: "#fb923c", c2: "#d97706" },
   ];
 
   const steps = [
-    { icon: Search, title: "Search", desc: "Find the service you need from our wide range" },
-    { icon: UserCheck, title: "Choose Provider", desc: "Select from verified professionals" },
-    { icon: Calendar, title: "Book & Pay", desc: "Schedule and pay securely online" },
-    { icon: CheckCircle, title: "Get It Done", desc: "Relax while we handle the rest" },
+    { icon: Search,      title: "Search",           desc: "Find the service you need from our wide range" },
+    { icon: UserCheck,   title: "Choose Provider",  desc: "Select from verified professionals near you" },
+    { icon: Calendar,    title: "Book & Pay",        desc: "Schedule and pay securely in seconds" },
+    { icon: CheckCircle, title: "Get It Done",       desc: "Relax while we handle the rest" },
   ];
 
   const testimonials = [
     {
-      name: "Priya Sharma",
-      role: "Homeowner",
-      content: "The cleaning service was exceptional! The professional arrived on time and did a thorough job. Highly recommend!",
+      name: "Priya Sharma", role: "Homeowner", avatar: "P",
+      avatarBg: "rgba(255,107,53,.15)", avatarColor: "#ff6b35",
       rating: 5,
-      avatar: "PS"
+      content: "The cleaning service was exceptional! Arrived on time, did a thorough job. Highly recommend!",
     },
     {
-      name: "Rahul Patel",
-      role: "Business Owner",
-      content: "Found a great electrician through ServexaGo. The booking process was seamless and the work was top-notch.",
+      name: "Rahul Patel", role: "Business Owner", avatar: "R",
+      avatarBg: "rgba(0,212,255,.12)", avatarColor: "#00d4ff",
       rating: 5,
-      avatar: "RP"
+      content: "Found a great electrician through ServexaGo. Booking was seamless and the work was top-notch.",
     },
     {
-      name: "Anita Desai",
-      role: "Working Professional",
-      content: "Love the convenience! Booked AC repair on Sunday evening and it was fixed by Monday morning. Great service!",
+      name: "Anita Desai", role: "Working Professional", avatar: "A",
+      avatarBg: "rgba(180,120,255,.15)", avatarColor: "#b478ff",
       rating: 5,
-      avatar: "AD"
-    }
+      content: "Booked AC repair Sunday evening, fixed by Monday morning. Incredible service!",
+    },
   ];
 
+  const fallbackServices = [
+    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#ff6b35" },
+    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#00d4ff" },
+    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#ffbe0b" },
+    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa" },
+  ];
+
+  const displayServices = services.length > 0 ? services : fallbackServices;
+
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50" />
-        
-        {/* Animated Background Shapes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-200/30 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-indigo-100/50 to-purple-100/50 rounded-full blur-3xl" />
-        </div>
+    <>
+      <InjectStyle />
+      <div className="sg-root sg-mesh">
 
-        <div className="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 rounded-full text-indigo-700 text-sm font-medium mb-6">
-                <span>Trusted by 10,000+ Customers</span>
-              </div>
+        {/* ── NAV ── */}
+        <nav className="sg-nav">
+          <Link to="/" className="sg-logo">Servexa<span>Go</span></Link>
+          <ul className="sg-nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><Link to="/register" className="sg-nav-cta">Book Now</Link></li>
+          </ul>
+        </nav>
 
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
-                Find Trusted{" "}
-                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  Services
-                </span>{" "}
-                Near You
-              </h1>
-
-              <p className="mt-6 text-xl text-gray-600 max-w-xl mx-auto lg:mx-0">
-                Book verified professionals for home services like plumbing, cleaning, electricians, and more. Fast, reliable, and secure solutions at your fingertips.
-              </p>
-
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link
-                  to="/register"
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-2xl hover:shadow-xl hover:shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  Get Started Free
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-700 font-semibold rounded-2xl border-2 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/50 transition-all duration-300"
-                >
-                  <Play className="w-5 h-5 text-indigo-600" />
-                  Explore Services
-                </Link>
-              </div>
-
-              {/* Stats */}
-              <div className="mt-12 grid grid-cols-3 gap-8 max-w-md mx-auto lg:mx-0">
-                <div className="text-center lg:text-left">
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">500+</p>
-                  <p className="text-gray-500 text-sm mt-1">Verified Providers</p>
-                </div>
-                <div className="text-center lg:text-left">
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">10k+</p>
-                  <p className="text-gray-500 text-sm mt-1">Happy Customers</p>
-                </div>
-                <div className="text-center lg:text-left">
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">4.9</p>
-                  <p className="text-gray-500 text-sm mt-1">Average Rating</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Content - Visual */}
-            <div className="relative hidden lg:block">
-              <div className="relative">
-                {/* Main Card */}
-                <div className="bg-white rounded-3xl shadow-2xl shadow-indigo-500/10 p-6 border border-gray-100">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-                      <HeartHandshake className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900">Home Cleaning</h3>
-                      <p className="text-sm text-gray-500">Professional Service</p>
-                    </div>
-                    <div className="ml-auto flex items-center gap-1 text-yellow-500">
-                      <Star className="w-5 h-5 fill-current" />
-                      <span className="font-semibold">4.9</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <BadgeCheck className="w-5 h-5 text-green-500" />
-                      <span>Background Verified Provider</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <Clock className="w-5 h-5 text-indigo-500" />
-                      <span>Same Day Service Available</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <ShieldCheck className="w-5 h-5 text-purple-500" />
-                      <span>Service Warranty Included</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500">Starting from</p>
-                      <p className="text-2xl font-bold text-gray-900">₹499</p>
-                    </div>
-                    <button className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition">
-                      Book Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" data-animate className="py-12 bg-gray-50/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4">
-              Why Choose Us
-            </span>
-            <h2 className="text-4xl md:text-4xl font-bold text-gray-900">
-              The Better Way to Get Things Done
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Experience hassle-free service booking with our trusted platform
-            </p>
+        {/* ── HERO ── */}
+        <section className="sg-hero" ref={heroRef}>
+          <div className="sg-badge">
+            <Zap size={10} /> Now available in 40+ cities across India
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, idx) => (
-              <div
-                key={feature.title}
-                className={`group relative bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2 ${
-                  isVisible["features"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
-              >
-                <div className={`w-16 h-16 ${feature.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className={`w-8 h-8 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`} style={{ color: 'inherit' }} />
-                  <div className={`absolute w-16 h-16 bg-gradient-to-r ${feature.color} opacity-20 rounded-2xl`} />
-                  <feature.icon className="w-8 h-8 text-gray-700 relative z-10" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          <h1 className="sg-h1">
+            Your City.<br /><em>Your Services.</em><br />One Tap.
+          </h1>
 
-      {/* Categories Section */}
-      <section id="categories" data-animate className="py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-            <div>
-              <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
-                Services We Offer
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 max-w-xl">
-                From home cleaning to repairs, find the right service for your needs
-              </p>
-            </div>
-            <Link
-              to="/login"
-              className="mt-6 md:mt-0 inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all"
-            >
-              View All Services
-              <ChevronRight className="w-5 h-5" />
+          <p className="sg-hero-sub">
+            ServexaGo connects you with verified professionals for home repairs,
+            cleaning, beauty, and more — fast, reliable, right at your doorstep.
+          </p>
+
+          <div className="sg-hero-btns">
+            <Link to="/register" className="sg-btn-primary">
+              Get Started Free <ArrowRight size={16} />
+            </Link>
+            <Link to="/login" className="sg-btn-ghost">
+              <Play size={15} style={{ color: "#ff6b35" }} /> Explore Services
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((cat, idx) => (
+          {/* search */}
+          <div className="sg-search">
+            <Search size={16} style={{ color: "var(--sg-muted)", flexShrink: 0 }} />
+            <input
+              value={searchVal}
+              onChange={(e) => setSearchVal(e.target.value)}
+              placeholder="Search plumber, electrician, cleaner…"
+            />
+            <button>Find Now</button>
+          </div>
+
+          {/* stats */}
+          <div className="sg-stats">
+            {[
+              { num: "500", sup: "+", label: "Verified Providers" },
+              { num: "10K", sup: "+", label: "Happy Customers" },
+              { num: "40",  sup: "+", label: "Cities" },
+              { num: "4.9", sup: "★", label: "Avg Rating" },
+            ].map((s) => (
+              <div key={s.label} style={{ textAlign: "center" }}>
+                <div className="sg-stat-num">{s.num}<span>{s.sup}</span></div>
+                <div className="sg-stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── FEATURES ── */}
+        <section
+          id="features"
+          data-animate
+          className="sg-section"
+          style={{ background: "var(--sg-surface)", borderTop: "1px solid var(--sg-border)", borderBottom: "1px solid var(--sg-border)" }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "2.8rem" }}>
+            <span className="sg-section-tag">Why Choose Us</span>
+            <h2 className="sg-section-title">The Better Way to Get Things Done</h2>
+            <p className="sg-section-sub" style={{ margin: ".5rem auto 0", textAlign: "center" }}>
+              Hassle-free service booking with our trusted platform
+            </p>
+          </div>
+          <div className="sg-feat-grid">
+            {features.map((f, i) => (
+              <div
+                key={f.title}
+                className="sg-feat-card"
+                style={{
+                  opacity: isVisible["features"] ? 1 : 0,
+                  transform: isVisible["features"] ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity .6s ${i * 100}ms, transform .6s ${i * 100}ms`,
+                }}
+              >
+                <div className="sg-feat-icon" style={{ background: f.bg }}>
+                  <f.icon size={22} style={{ color: f.color }} />
+                </div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CATEGORIES ── */}
+        <section id="services" data-animate className="sg-section">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", marginBottom: "2.8rem" }}>
+            <div>
+              <span className="sg-section-tag">What We Offer</span>
+              <h2 className="sg-section-title" style={{ marginBottom: 0 }}>Services at Your Fingertips</h2>
+              <p className="sg-section-sub" style={{ marginBottom: 0, marginTop: ".4rem" }}>
+                From a leaking tap to a full home makeover
+              </p>
+            </div>
+            <Link to="/login" style={{ display: "flex", alignItems: "center", gap: ".35rem", color: "var(--sg-accent)", textDecoration: "none", fontSize: ".88rem", fontWeight: 600, marginTop: "1rem" }}>
+              View All <ChevronRight size={16} />
+            </Link>
+          </div>
+          <div className="sg-cat-grid">
+            {categories.map((cat, i) => (
               <Link
                 key={cat.name}
                 to="/login"
-                className={`group relative bg-white rounded-3xl p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden ${
-                  isVisible["categories"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${idx * 50}ms` }}
+                className="sg-cat-card"
+                style={{
+                  opacity: isVisible["services"] ? 1 : 0,
+                  transform: isVisible["services"] ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity .5s ${i * 50}ms, transform .5s ${i * 50}ms`,
+                }}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                <div className={`w-16 h-16 bg-gradient-to-br ${cat.color} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                <div
+                  className="sg-cat-icon"
+                  style={{ background: `linear-gradient(135deg,${cat.c1},${cat.c2})` }}
+                >
                   {cat.icon}
                 </div>
-                <h3 className="font-bold text-gray-900 text-lg">{cat.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{cat.count}</p>
+                <h3>{cat.name}</h3>
+                <p>{cat.count}</p>
+                <span className="sg-cat-arrow">→</span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" data-animate className="py-12 bg-gradient-to-b from-indigo-50/50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
-              How It Works
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Book your service in 4 simple steps
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {steps.map((item, idx) => (
-              <div key={idx} className="relative text-center">
-                {idx < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-12 left-[60%] w-full h-0.5 bg-gradient-to-r from-indigo-200 to-purple-200" />
-                )}
-                <div className={`relative inline-block transition-all duration-700 ${
-                  isVisible["how-it-works"] ? "opacity-100 scale-100" : "opacity-0 scale-50"
-                }`} style={{ transitionDelay: `${idx * 150}ms` }}>
-                  <div className="w-24 h-24 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-indigo-500/30">
-                    <item.icon className="w-10 h-10" />
+        {/* ── HOW IT WORKS ── */}
+        <section
+          id="how-it-works"
+          data-animate
+          className="sg-section"
+          style={{ background: "var(--sg-surface)", borderTop: "1px solid var(--sg-border)", borderBottom: "1px solid var(--sg-border)" }}
+        >
+          <div className="sg-steps-wrap">
+            <div>
+              <span className="sg-section-tag">Process</span>
+              <h2 className="sg-section-title">Book in<br />60 Seconds</h2>
+              <p className="sg-section-sub">No calls, no waiting. Choose your service, confirm your slot, done.</p>
+              <div className="sg-steps">
+                {steps.map((s, i) => (
+                  <div key={i} className="sg-step">
+                    <div className="sg-step-num">0{i + 1}</div>
+                    <div>
+                      <h4>{s.title}</h4>
+                      <p>{s.desc}</p>
+                    </div>
                   </div>
-                  <span className="absolute -top-3 -right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center text-indigo-600 font-bold border-4 border-indigo-100 shadow-lg">
-                    {idx + 1}
-                  </span>
-                </div>
-                <h3 className="font-bold text-gray-900 mt-6 text-xl">{item.title}</h3>
-                <p className="text-gray-600 mt-2">{item.desc}</p>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* Popular Services */}
-      <section id="popular" data-animate className="py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-3xl font-bold text-gray-900">
-              Trending Services
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            {/* phone mockup */}
+            <div>
+              <div className="sg-phone">
+                <div className="sg-phone-notch" />
+                <div className="sg-phone-row">
+                  <span style={{ fontSize: "1.1rem" }}>🧹</span>
+                  <div style={{ flex: 1 }}>
+                    <div className="sg-phone-title">Home Cleaning</div>
+                    <div className="sg-phone-sub">2BHK Deep Clean</div>
+                  </div>
+                  <span className="sg-phone-badge">TODAY</span>
+                </div>
+                <div className="sg-phone-row">
+                  <span style={{ fontSize: "1.1rem" }}>⚡</span>
+                  <div style={{ flex: 1 }}>
+                    <div className="sg-phone-title">Electrician</div>
+                    <div className="sg-phone-sub">Fan Installation</div>
+                  </div>
+                  <span className="sg-phone-badge cyan">11:00 AM</span>
+                </div>
+                <div className="sg-phone-map">📍</div>
+                <div className="sg-phone-track">Track Your Expert →</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── TRENDING SERVICES ── */}
+        <section id="popular" data-animate className="sg-section">
+          <div style={{ textAlign: "center", marginBottom: "2.8rem" }}>
+            <span className="sg-section-tag">Popular</span>
+            <h2 className="sg-section-title">Trending Services</h2>
+            <p className="sg-section-sub" style={{ margin: ".5rem auto 0", textAlign: "center" }}>
               Most booked services by our customers this week
             </p>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(services.length > 0 ? services : [
-              { icon: "🧹", title: "Home Cleaning", price: "From ₹499", color: "from-indigo-400 to-purple-500" },
-              { icon: "🔧", title: "Plumbing", price: "From ₹299", color: "from-blue-400 to-cyan-500" },
-              { icon: "⚡", title: "Electrical", price: "From ₹349", color: "from-yellow-400 to-orange-500" },
-              { icon: "❄️", title: "AC Repair", price: "From ₹599", color: "from-cyan-400 to-blue-500" }
-            ]).map((service: any, idx: number) => (
+          <div className="sg-srv-grid">
+            {displayServices.map((svc: any, i: number) => (
               <Link
-                key={service._id || idx}
+                key={svc._id || i}
                 to="/login"
-                className={`group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2 ${
-                  isVisible["popular"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
+                className="sg-srv-card"
+                style={{
+                  opacity: isVisible["popular"] ? 1 : 0,
+                  transform: isVisible["popular"] ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity .6s ${i * 100}ms, transform .6s ${i * 100}ms`,
+                }}
               >
-                <div className="relative h-48 overflow-hidden">
-                  {service.image ? (
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
+                <div
+                  className="sg-srv-img"
+                  style={{ background: svc.image ? "transparent" : `linear-gradient(135deg,${svc.color ?? "#1a1a26"},#0a0a0f)` }}
+                >
+                  {svc.image ? (
+                    <img src={svc.image} alt={svc.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${service.color} flex items-center justify-center`}>
-                      <span className="text-7xl">{service.icon}</span>
-                    </div>
+                    <span style={{ fontSize: "4rem" }}>{svc.icon}</span>
                   )}
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-semibold">{service.averageRating?.toFixed(1) || "4.8"}</span>
+                  <div className="sg-srv-rating">
+                    <Star size={12} style={{ color: "#ffbe0b", fill: "#ffbe0b" }} />
+                    {svc.averageRating?.toFixed(1) ?? "4.8"}
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="font-bold text-gray-900 text-lg">{service.title}</h3>
-                  <p className="text-indigo-600 font-bold mt-2 text-xl">{service.price || `₹${service.price}`}</p>
-                  <div className="flex items-center gap-2 mt-4 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    <span>Same day service</span>
+                <div className="sg-srv-body">
+                  <h3>{svc.title}</h3>
+                  <p className="sg-srv-price">From {svc.price ? `₹${svc.price}` : svc.price}</p>
+                  <div className="sg-srv-meta">
+                    <Clock size={13} /> Same day service
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" data-animate className="py-12 bg-gray-50/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-4xl font-bold text-gray-900">
-              What Our Customers Say
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Real experiences from real customers
+        {/* ── TESTIMONIALS ── */}
+        <section
+          id="testimonials"
+          data-animate
+          className="sg-section"
+          style={{ background: "var(--sg-surface)", borderTop: "1px solid var(--sg-border)", borderBottom: "1px solid var(--sg-border)" }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "2.8rem" }}>
+            <span className="sg-section-tag">Reviews</span>
+            <h2 className="sg-section-title">Loved Across India</h2>
+            <p className="sg-section-sub" style={{ margin: ".5rem auto 0", textAlign: "center" }}>
+              Real people, real experiences
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, idx) => (
+          <div className="sg-tgrid">
+            {testimonials.map((t, i) => (
               <div
-                key={testimonial.name}
-                className={`bg-white rounded-3xl p-8 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-500 ${
-                  isVisible["testimonials"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
+                key={t.name}
+                className="sg-tcard"
+                style={{
+                  opacity: isVisible["testimonials"] ? 1 : 0,
+                  transform: isVisible["testimonials"] ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity .6s ${i * 100}ms, transform .6s ${i * 100}ms`,
+                }}
               >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-gray-700 leading-relaxed mb-6">"{testimonial.content}"</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    {testimonial.avatar}
-                  </div>
+                <div className="sg-stars">{"★".repeat(t.rating)}</div>
+                <p>"{t.content}"</p>
+                <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+                  <div className="sg-avatar" style={{ background: t.avatarBg, color: t.avatarColor }}>{t.avatar}</div>
                   <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                    <div className="sg-aname">{t.name}</div>
+                    <div className="sg-aloc">{t.role}</div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section className="py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="relative rounded-[2.5rem] bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-20 px-8 text-center overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 left-0 w-96 h-96 bg-white/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-              <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-            </div>
-
-            <div className="relative">
-              <h2 className="text-4xl md:text-5xl font-bold">
-                Ready to Get Started?
-              </h2>
-              <p className="mt-4 text-xl text-white/90 max-w-2xl mx-auto">
-                Join thousands of satisfied customers and book your first service today. It's free to sign up!
-              </p>
-
-              <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/register"
-                  className="group inline-flex items-center justify-center gap-2 bg-white text-indigo-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl"
-                >
-                  Create Free Account
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-all duration-300"
-                >
-                  Browse Services
-                </Link>
+        {/* ── CTA BANNER ── */}
+        <div className="sg-cta">
+          <h2>Ready to Get Started?</h2>
+          <p>Download the ServexaGo app and book your first service in under a minute.</p>
+          <div className="sg-app-btns">
+            <a href="#" className="sg-app-btn">
+              <span style={{ fontSize: "1.35rem" }}>🍎</span>
+              <div>
+                <div className="sg-app-label">Download on the</div>
+                <div className="sg-app-name">App Store</div>
               </div>
-
-              <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-white/80">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>No hidden fees</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>Verified professionals</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>Secure payments</span>
-                </div>
+            </a>
+            <a href="#" className="sg-app-btn">
+              <span style={{ fontSize: "1.35rem" }}>▶</span>
+              <div>
+                <div className="sg-app-label">Get it on</div>
+                <div className="sg-app-name">Google Play</div>
               </div>
-            </div>
+            </a>
+            <Link to="/register" className="sg-btn-primary">
+              Book Online <ArrowRight size={15} />
+            </Link>
           </div>
         </div>
-      </section>
 
-      {/* Trust Badges */}
-      <section className="py-8 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: Award, label: "Top Rated", color: "text-indigo-600" },
-              { icon: ShieldCheck, label: "Verified", color: "text-green-600" },
-              { icon: Phone, label: "24/7 Support", color: "text-blue-600" },
-              { icon: CreditCard, label: "Secure Payment", color: "text-purple-600" },
-            ].map((badge) => (
-              <div key={badge.label} className="flex items-center justify-center gap-3">
-                <badge.icon className={`w-8 h-8 ${badge.color}`} />
-                <span className="font-semibold text-gray-700">{badge.label}</span>
-              </div>
-            ))}
-          </div>
+        {/* ── TRUST STRIP ── */}
+        <div className="sg-trust">
+          {[
+            { icon: Award,      label: "Top Rated",      color: "#ff6b35" },
+            { icon: ShieldCheck,label: "Verified Pros",   color: "#4ade80" },
+            { icon: Phone,      label: "24/7 Support",    color: "#00d4ff" },
+            { icon: CreditCard, label: "Secure Payment",  color: "#b478ff" },
+          ].map((b) => (
+            <div key={b.label} className="sg-trust-item">
+              <b.icon size={20} style={{ color: b.color }} />
+              {b.label}
+            </div>
+          ))}
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                ServexaGo
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                Your trusted partner for all home services. Book verified professionals with ease.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><Link to="/login" className="hover:text-white transition">Services</Link></li>
-                <li><Link to="/register" className="hover:text-white transition">Sign Up</Link></li>
-                <li><Link to="/login" className="hover:text-white transition">Sign In</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><Link to="/login" className="hover:text-white transition">Home Cleaning</Link></li>
-                <li><Link to="/login" className="hover:text-white transition">Plumbing</Link></li>
-                <li><Link to="/login" className="hover:text-white transition">Electrical</Link></li>
-                <li><Link to="/login" className="hover:text-white transition">AC Repair</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span>+91 63678 15433</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>support@servixago.com</span>
-                </li>
-              </ul>
-            </div>
+        {/* ── FOOTER ── */}
+        <footer className="sg-footer">
+          <Link to="/" className="sg-footer-logo">Servexa<span>Go</span></Link>
+          <p>© 2026 ServexaGo. All rights reserved.</p>
+          <div className="sg-footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+            <a href="#">Careers</a>
           </div>
-          <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500">
-            <p>&copy; 2026 ServexaGo. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+
+      </div>
+    </>
   );
 }
 
