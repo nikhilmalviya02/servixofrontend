@@ -1,22 +1,271 @@
 import { Link, NavLink } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Home, Grid3X3, LayoutDashboard, CalendarDays, UserCircle, LogOut, Menu, X,} from "lucide-react";
+import {
+  Home,
+  Grid3X3,
+  LayoutDashboard,
+  CalendarDays,
+  LogOut,
+  Menu,
+  X,
+  Zap,
+} from "lucide-react";
 
+const NAVBAR_STYLE = `
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --sg-bg: #0a0a0f;
+    --sg-surface: #12121a;
+    --sg-surface2: #1a1a26;
+    --sg-accent: #ff6b35;
+    --sg-text: #f0f0f8;
+    --sg-muted: #888899;
+    --sg-border: rgba(255,255,255,0.07);
+    --sg-glow: rgba(255,107,53,0.25);
+  }
+
+  /* ── nav wrapper ── */
+  .nb-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(10,10,15,.88);
+    backdrop-filter: blur(22px);
+    border-bottom: 1px solid var(--sg-border);
+    box-shadow: 0 4px 32px rgba(0,0,0,.4);
+  }
+
+  .nb-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 5%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ── logo ── */
+  .nb-logo {
+    display: flex; align-items: center; gap: .5rem;
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.35rem;
+    letter-spacing: -.5px; color: var(--sg-text);
+  }
+  .nb-logo span { color: var(--sg-accent); }
+  .nb-logo-icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255,107,53,.15);
+    border: 1px solid rgba(255,107,53,.3);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .nb-logo:hover .nb-logo-icon { background: rgba(255,107,53,.25); }
+
+  /* ── desktop links ── */
+  .nb-links {
+    display: none;
+    align-items: center;
+    gap: .25rem;
+  }
+  @media(min-width:768px){ .nb-links { display:flex; } }
+
+  .nb-link {
+    display: flex; align-items: center; gap: .45rem;
+    padding: .45rem .9rem;
+    border-radius: 100px;
+    font-size: .85rem; font-weight: 500;
+    text-decoration: none;
+    color: var(--sg-muted);
+    transition: color .2s, background .2s;
+    white-space: nowrap;
+  }
+  .nb-link:hover { color: var(--sg-text); background: rgba(255,255,255,.05); }
+  .nb-link.active {
+    color: var(--sg-accent);
+    background: rgba(255,107,53,.1);
+    font-weight: 600;
+  }
+
+  /* divider between links and auth */
+  .nb-sep {
+    width: 1px; height: 22px;
+    background: var(--sg-border);
+    margin: 0 .5rem;
+  }
+
+  /* ── auth buttons ── */
+  .nb-signin {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .45rem .95rem;
+    border-radius: 100px;
+    font-size: .85rem; font-weight: 500;
+    text-decoration: none;
+    color: var(--sg-muted);
+    transition: color .2s, background .2s;
+  }
+  .nb-signin:hover { color: var(--sg-text); background: rgba(255,255,255,.05); }
+
+  .nb-cta {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .48rem 1.2rem;
+    border-radius: 100px;
+    font-size: .85rem; font-weight: 600;
+    text-decoration: none;
+    background: var(--sg-accent);
+    color: #fff;
+    box-shadow: 0 0 18px var(--sg-glow);
+    transition: background .2s, transform .15s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .nb-cta:hover {
+    background: #ff855a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 24px rgba(255,107,53,.45);
+  }
+
+  /* ── user avatar + logout ── */
+  .nb-user {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .3rem .3rem .3rem .8rem;
+    border-radius: 100px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--sg-border);
+  }
+  .nb-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,107,53,.2);
+    border: 1.5px solid rgba(255,107,53,.4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: .82rem;
+    color: var(--sg-accent);
+  }
+  .nb-username {
+    font-size: .82rem; font-weight: 500;
+    color: var(--sg-text); max-width: 80px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .nb-logout {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--sg-muted);
+    transition: color .2s, background .2s;
+  }
+  .nb-logout:hover { color: #ff6b6b; background: rgba(255,107,107,.1); }
+
+  /* ── mobile toggle ── */
+  .nb-toggle {
+    display: flex;
+    align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 10px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--sg-border);
+    color: var(--sg-muted); cursor: pointer;
+    transition: color .2s, background .2s;
+  }
+  .nb-toggle:hover { color: var(--sg-text); background: rgba(255,255,255,.08); }
+  @media(min-width:768px){ .nb-toggle { display:none; } }
+
+  /* ── mobile drawer ── */
+  .nb-drawer {
+    display: block;
+    background: rgba(10,10,15,.97);
+    backdrop-filter: blur(24px);
+    border-top: 1px solid var(--sg-border);
+    border-bottom: 1px solid var(--sg-border);
+    padding: 1rem 5% 1.4rem;
+  }
+  @media(min-width:768px){ .nb-drawer { display:none !important; } }
+
+  .nb-drawer-link {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .8rem 1rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--sg-muted);
+    font-size: .9rem; font-weight: 500;
+    transition: color .2s, background .2s;
+    margin-bottom: .25rem;
+  }
+  .nb-drawer-link:hover  { color: var(--sg-text); background: rgba(255,255,255,.05); }
+  .nb-drawer-link.active { color: var(--sg-accent); background: rgba(255,107,53,.08); font-weight: 600; }
+
+  .nb-drawer-sep {
+    height: 1px; background: var(--sg-border);
+    margin: .7rem 0;
+  }
+
+  .nb-drawer-cta {
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+    width: 100%; padding: .82rem;
+    border-radius: 12px;
+    background: var(--sg-accent); color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: .92rem;
+    border: none; cursor: pointer; text-decoration: none;
+    box-shadow: 0 0 20px var(--sg-glow);
+    transition: background .2s;
+    margin-top: .4rem;
+  }
+  .nb-drawer-cta:hover { background: #ff855a; }
+
+  .nb-drawer-logout {
+    display: flex; align-items: center; gap: .75rem;
+    width: 100%; padding: .8rem 1rem;
+    border-radius: 12px;
+    background: none; border: none; cursor: pointer;
+    color: #ff6b6b; font-family:'DM Sans',sans-serif;
+    font-size: .9rem; font-weight: 500;
+    transition: background .2s;
+    margin-top: .25rem;
+  }
+  .nb-drawer-logout:hover { background: rgba(255,107,107,.08); }
+
+  .nb-drawer-user {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .8rem 1rem;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--sg-border);
+    border-radius: 12px; margin-bottom: .7rem;
+  }
+  .nb-drawer-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,107,53,.15);
+    border: 1.5px solid rgba(255,107,53,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:.9rem;
+    color: var(--sg-accent); flex-shrink:0;
+  }
+  .nb-drawer-uname { font-size:.9rem; font-weight:600; color:var(--sg-text); }
+  .nb-drawer-urole  { font-size:.72rem; color:var(--sg-muted); text-transform:capitalize; }
+`;
+
+function InjectNavbarStyle() {
+  useEffect(() => {
+    if (!document.getElementById("nb-style")) {
+      const el = document.createElement("style");
+      el.id = "nb-style";
+      el.textContent = NAVBAR_STYLE;
+      document.head.appendChild(el);
+    }
+  }, []);
+  return null;
+}
+
+/* ═══════════════════════════════
+   COMPONENT
+═══════════════════════════════ */
 function Navbar() {
   const { user, logout }: any = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const role = localStorage.getItem("role");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -24,227 +273,165 @@ function Navbar() {
     setMenuOpen(false);
   };
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
+  const closeMenu = () => setMenuOpen(false);
   const showHome = !user || role === "user";
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 ${
-      isActive
-        ? "bg-indigo-50 text-indigo-600 font-semibold"
-        : "text-gray-600 hover:text-indigo-600 hover:bg-gray-50"
-    }`;
+  /* active class helper for NavLink */
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `nb-link${isActive ? " active" : ""}`;
+
+  const drawerLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `nb-drawer-link${isActive ? " active" : ""}`;
+
+  const avatarLetter = user?.name
+    ? user.name.charAt(0).toUpperCase()
+    : role?.charAt(0).toUpperCase() ?? "U";
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-lg border-b border-gray-100"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container-modern">
-        <div className="flex justify-between items-center h-16">
-          {/* Brand Name */}
-          <Link
-            to={user ? "/home" : "/"}
-            className="text-2xl font-bold text-indigo-600"
-            onClick={closeMenu}
-          >
-            ServexaGo
+    <>
+      <InjectNavbarStyle />
+      <nav className="nb-nav">
+        <div className="nb-inner">
+
+          {/* Logo */}
+          <Link to={user ? "/home" : "/"} className="nb-logo" onClick={closeMenu}>
+            <div className="nb-logo-icon">
+              <Zap size={16} style={{ color: "#ff6b35" }} />
+            </div>
+            Servexa<span>Go</span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop nav */}
+          <div className="nb-links">
             {showHome && (
-              <NavLink to={user ? "/home" : "/"} className={navLinkClass}>
-                <Home className="w-4 h-4" />
-                Home
+              <NavLink to={user ? "/home" : "/"} className={linkClass}>
+                <Home size={14} /> Home
               </NavLink>
             )}
 
-            <NavLink to={user ? "/services" : "/login"} className={navLinkClass}>
-              <Grid3X3 className="w-4 h-4" />
-              Services
+            <NavLink to={user ? "/services" : "/login"} className={linkClass}>
+              <Grid3X3 size={14} /> Services
             </NavLink>
 
+            {user && role === "provider" && (
+              <>
+                <NavLink to="/provider" className={linkClass}>
+                  <LayoutDashboard size={14} /> Dashboard
+                </NavLink>
+                <NavLink to="/provider/bookings" className={linkClass}>
+                  <CalendarDays size={14} /> Bookings
+                </NavLink>
+              </>
+            )}
+
+            {user && role === "user" && (
+              <NavLink to="/user" className={linkClass}>
+                <CalendarDays size={14} /> My Bookings
+              </NavLink>
+            )}
+
+            {user && role === "admin" && (
+              <NavLink to="/admin" className={linkClass}>
+                <LayoutDashboard size={14} /> Admin
+              </NavLink>
+            )}
+
+            <div className="nb-sep" />
+
             {!user ? (
-              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200">
-                <Link
-                  to="/login"
-                  className="px-5 py-2 text-gray-600 font-medium hover:text-indigo-600 transition"
-                >
-                  Sign In
-                </Link>
-
-                <Link
-                  to="/register"
-                  className="btn-primary text-sm"
-                >
-                  Get Started
-                </Link>
-              </div>
+              <>
+                <Link to="/login" className="nb-signin">Sign In</Link>
+                <Link to="/register" className="nb-cta">Get Started</Link>
+              </>
             ) : (
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
-                {role === "provider" && (
-                  <>
-                    <NavLink to="/provider" className={navLinkClass}>
-                      <LayoutDashboard className="w-4 h-4" />
-                      Dashboard
-                    </NavLink>
-                    <NavLink to="/provider/bookings" className={navLinkClass}>
-                      <CalendarDays className="w-4 h-4" />
-                      Bookings
-                    </NavLink>
-                  </>
-                )}
-
-                {role === "user" && (
-                  <NavLink to="/user" className={navLinkClass}>
-                    <CalendarDays className="w-4 h-4" />
-                    My Bookings
-                  </NavLink>
-                )}
-
-                {role === "admin" && (
-                  <NavLink to="/admin" className={navLinkClass}>
-                    <LayoutDashboard className="w-4 h-4" />
-                    Admin
-                  </NavLink>
-                )}
-
-                {/* User Avatar */}
-                <div className="flex items-center gap-3 ml-2 pl-2 border-l border-gray-200">
-                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold shadow-lg shadow-indigo-500/30">
-                    {user?.name
-                      ? user.name.charAt(0).toUpperCase()
-                      : role?.charAt(0).toUpperCase()}
-                  </div>
-
-                  <button
-                    onClick={handleLogout}
-                    className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all duration-200"
-                    title="Logout"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </button>
-                </div>
+              <div className="nb-user">
+                <div className="nb-avatar">{avatarLetter}</div>
+                <span className="nb-username">{user?.name ?? role}</span>
+                <button className="nb-logout" onClick={handleLogout} title="Logout">
+                  <LogOut size={15} />
+                </button>
               </div>
             )}
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-primary-600 hover:bg-gray-100 rounded-xl transition"
+            className="nb-toggle"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
           >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-xl">
-          <div className="container-modern py-4 space-y-2">
-            {showHome && (
-              <Link
-                to={user ? "/home" : "/"}
-                onClick={closeMenu}
-                className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-              >
-                <Home className="w-5 h-5" />
-                Home
-              </Link>
+        {/* Mobile drawer */}
+        {menuOpen && (
+          <div className="nb-drawer">
+
+            {/* user info */}
+            {user && (
+              <div className="nb-drawer-user">
+                <div className="nb-drawer-avatar">{avatarLetter}</div>
+                <div>
+                  <div className="nb-drawer-uname">{user?.name ?? "User"}</div>
+                  <div className="nb-drawer-urole">{role}</div>
+                </div>
+              </div>
             )}
-            
-            <Link
-              to={user ? "/services" : "/login"}
-              onClick={closeMenu}
-              className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-            >
-              <Grid3X3 className="w-5 h-5" />
-              Services
-            </Link>
+
+            {showHome && (
+              <NavLink to={user ? "/home" : "/"} className={drawerLinkClass} onClick={closeMenu}>
+                <Home size={17} /> Home
+              </NavLink>
+            )}
+
+            <NavLink to={user ? "/services" : "/login"} className={drawerLinkClass} onClick={closeMenu}>
+              <Grid3X3 size={17} /> Services
+            </NavLink>
+
+            {user && role === "provider" && (
+              <>
+                <NavLink to="/provider" className={drawerLinkClass} onClick={closeMenu}>
+                  <LayoutDashboard size={17} /> Dashboard
+                </NavLink>
+                <NavLink to="/provider/bookings" className={drawerLinkClass} onClick={closeMenu}>
+                  <CalendarDays size={17} /> Bookings
+                </NavLink>
+              </>
+            )}
+
+            {user && role === "user" && (
+              <NavLink to="/user" className={drawerLinkClass} onClick={closeMenu}>
+                <CalendarDays size={17} /> My Bookings
+              </NavLink>
+            )}
+
+            {user && role === "admin" && (
+              <NavLink to="/admin" className={drawerLinkClass} onClick={closeMenu}>
+                <LayoutDashboard size={17} /> Admin Panel
+              </NavLink>
+            )}
+
+            <div className="nb-drawer-sep" />
 
             {!user ? (
-              <div className="pt-2 border-t border-gray-100 space-y-2">
-                <Link
-                  to="/login"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition"
-                >
-                  <UserCircle className="w-5 h-5" />
+              <>
+                <NavLink to="/login" className={drawerLinkClass} onClick={closeMenu}>
                   Sign In
+                </NavLink>
+                <Link to="/register" className="nb-drawer-cta" onClick={closeMenu}>
+                  Get Started →
                 </Link>
-                <Link
-                  to="/register"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold"
-                >
-                  Get Started
-                </Link>
-              </div>
+              </>
             ) : (
-              <div className="pt-2 border-t border-gray-100 space-y-2">
-                {role === "provider" && (
-                  <>
-                    <Link
-                      to="/provider"
-                      onClick={closeMenu}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-                    >
-                      <LayoutDashboard className="w-5 h-5" />
-                      Dashboard
-                    </Link>
-                    <Link
-                      to="/provider/bookings"
-                      onClick={closeMenu}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-                    >
-                      <CalendarDays className="w-5 h-5" />
-                      Bookings
-                    </Link>
-                  </>
-                )}
-
-                {role === "user" && (
-                  <Link
-                    to="/user"
-                    onClick={closeMenu}
-                    className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-                  >
-                    <CalendarDays className="w-5 h-5" />
-                    My Bookings
-                  </Link>
-                )}
-
-                {role === "admin" && (
-                  <Link
-                    to="/admin"
-                    onClick={closeMenu}
-                    className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition"
-                  >
-                    <LayoutDashboard className="w-5 h-5" />
-                    Admin Panel
-                  </Link>
-                )}
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition mt-2"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Logout
-                </button>
-              </div>
+              <button className="nb-drawer-logout" onClick={handleLogout}>
+                <LogOut size={17} /> Logout
+              </button>
             )}
           </div>
-        </div>
-      )}
-    </nav>
+        )}
+      </nav>
+    </>
   );
 }
 
