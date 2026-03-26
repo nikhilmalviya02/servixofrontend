@@ -14,11 +14,8 @@ import {
   Phone,
   Clock,
   Award,
-  MapPin,
-  HeartHandshake,
   ChevronRight,
   Play,
-  BadgeCheck,
   Zap,
 } from "lucide-react";
 
