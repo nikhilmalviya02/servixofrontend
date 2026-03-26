@@ -573,7 +573,9 @@ function LandingPage() {
     <>
       <InjectStyle />
       <div className="sg-root sg-mesh">
+
         
+
         {/* ── HERO ── */}
         <section className="sg-hero" ref={heroRef}>
           <div className="sg-badge">
