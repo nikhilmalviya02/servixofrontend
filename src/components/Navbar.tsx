@@ -9,7 +9,6 @@ import {
   LogOut,
   Menu,
   X,
-  Zap,
 } from "lucide-react";
 
 const NAVBAR_STYLE = `
