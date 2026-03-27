@@ -481,7 +481,6 @@ function Register() {
           <div className="rg-left-mesh" />
           <div className="rg-left-grid" />
           <div className="rg-left-content">
-            <Link to="/" className="rg-brand">Servexa<span>Go</span></Link>
 
             <h1 className="rg-left-title">
               Start Your<br /><em>Journey</em><br />With Us

@@ -402,16 +402,6 @@ function Login() {
         <div className="lg-left">
           <div className="lg-wrap">
 
-            {/* brand */}
-            <Link to="/" style={{ textDecoration:"none" }}>
-              <div className="lg-brand">
-                <div className="lg-brand-icon">
-                  <Zap size={20} style={{ color:"#ff6b35" }} />
-                </div>
-                <span className="lg-brand-name">Servexa<span>Go</span></span>
-              </div>
-            </Link>
-
             {/* heading */}
             <h1 className="lg-heading">Welcome<br /><em>Back!</em></h1>
             <p className="lg-sub">Sign in to your account to continue booking trusted services.</p>
