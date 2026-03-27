@@ -19,7 +19,11 @@ const AdminBookings = lazy(() => import("./pages/AdminBookings"));
 const AdminReviews = lazy(() => import("./pages/AdminReviews"));
 const AdminCategories = lazy(() => import("./pages/AdminCategories"));
 const AdminUserDetails = lazy(() => import("./pages/AdminUserDetails"));
-const ProviderProfile = lazy(() => import("./pages/ProviderProfile")); 
+const ProviderProfile = lazy(() => import("./pages/ProviderProfile"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const SupportPage = lazy(() => import("./pages/SupportPage"));
+const CareersPage = lazy(() => import("./pages/CareersPage")); 
 
 function Loader() {
   return (
@@ -75,6 +79,10 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/careers" element={<CareersPage />} />
 
           {/* Provider Profile (Public View) */}
           <Route path="/provider/profile/:id" element={<ProviderProfile />} />

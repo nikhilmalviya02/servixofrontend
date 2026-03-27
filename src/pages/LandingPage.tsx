@@ -845,20 +845,6 @@ function LandingPage() {
           <h2>Ready to Get Started?</h2>
           <p>Download the ServexaGo app and book your first service in under a minute.</p>
           <div className="sg-app-btns">
-            <a href="#" className="sg-app-btn">
-              <span style={{ fontSize: "1.35rem" }}>🍎</span>
-              <div>
-                <div className="sg-app-label">Download on the</div>
-                <div className="sg-app-name">App Store</div>
-              </div>
-            </a>
-            <a href="#" className="sg-app-btn">
-              <span style={{ fontSize: "1.35rem" }}>▶</span>
-              <div>
-                <div className="sg-app-label">Get it on</div>
-                <div className="sg-app-name">Google Play</div>
-              </div>
-            </a>
             <Link to="/register" className="sg-btn-primary">
               Book Online <ArrowRight size={15} />
             </Link>
@@ -883,12 +869,12 @@ function LandingPage() {
         {/* ── FOOTER ── */}
         <footer className="sg-footer">
           <Link to="/" className="sg-footer-logo">Servexa<span>Go</span></Link>
-          <p>© 2026 ServexaGo. All rights reserved.</p>
+          <p> 2026 ServexaGo. All rights reserved.</p>
           <div className="sg-footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Support</a>
-            <a href="#">Careers</a>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
+            <Link to="/support">Support</Link>
+            <Link to="/careers">Careers</Link>
           </div>
         </footer>
 
