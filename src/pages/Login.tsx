@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Zap, ShieldCheck, Star, Users } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Star, Users } from "lucide-react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
