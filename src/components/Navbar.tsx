@@ -39,7 +39,7 @@ const NAVBAR_STYLE = `
   .nb-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 5%;
+    padding: 0 clamp(16px, 3vw, 40px);
     height: 64px;
     display: flex;
     align-items: center;
