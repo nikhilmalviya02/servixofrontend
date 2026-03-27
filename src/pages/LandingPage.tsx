@@ -845,6 +845,32 @@ function LandingPage() {
           <h2>Ready to Get Started?</h2>
           <p>Download the ServexaGo app and book your first service in under a minute.</p>
           <div className="sg-app-btns">
+            <a 
+              href="https://play.google.com/store" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '.65rem',
+                backgroundColor: '#1a1a26', 
+                border: '1px solid var(--sg-border)',
+                borderRadius: '14px', 
+                padding: '.8rem 1.5rem',
+                textDecoration: 'none', 
+                color: 'var(--sg-text)',
+                transition: 'border-color .2s, background .2s'
+              }}
+            >
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/270px-Google_Play_Store_badge_EN.svg.png" 
+                alt="Get it on Google Play"
+                style={{ 
+                  width: '135px',
+                  height: '40px'
+                }}
+              />
+            </a>
             <Link to="/register" className="sg-btn-primary">
               Book Online <ArrowRight size={15} />
             </Link>
