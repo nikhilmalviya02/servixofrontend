@@ -43,7 +43,7 @@ const NAVBAR_STYLE = `
     height: 64px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   /* ── logo ── */
@@ -80,6 +80,7 @@ const NAVBAR_STYLE = `
     display: none;
     align-items: center;
     gap: .25rem;
+    margin-left: auto;
   }
   @media(min-width:768px){ .nb-links { display:flex; } }
 
