@@ -16,7 +16,6 @@ import {
   Search,
   ChevronRight,
   HomeIcon,
-  Zap,
 } from "lucide-react";
 
 /* ─── Dark theme styles ─── */

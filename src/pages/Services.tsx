@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
-  Search, Filter, Star, Clock, MapPin, Calendar,
+  Search, Star, Clock, MapPin, Calendar,
   X, ChevronDown, Shield, SlidersHorizontal, Zap,
 } from "lucide-react";
 
