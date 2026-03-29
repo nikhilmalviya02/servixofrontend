@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { ShieldCheck, Mail, Star, Briefcase, BadgeCheck } from "lucide-react";
+import { Mail, Star, Briefcase, BadgeCheck } from "lucide-react";
 
 /* ─── Styles ─── */
 const PP_STYLE = `
