@@ -18,28 +18,28 @@ import {
   HomeIcon,
 } from "lucide-react";
 
-/* ─── Dark theme styles ─── */
+/* ─── Light theme styles ─── */
 const HOME_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-surface2: #1a1a26;
-    --sg-accent: #ff6b35;
-    --sg-accent2: #ffbe0b;
-    --sg-cyan: #00d4ff;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
-    --sg-glow: rgba(255,107,53,0.22);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-accent2: #0ea5e9;
+    --sg-cyan: #06b6d4;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .hm-root {
     min-height: 100vh;
     background: var(--sg-bg);
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
   }
 
@@ -53,8 +53,8 @@ const HOME_STYLE = `
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 70% 60% at 80% 30%, rgba(255,107,53,.14) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 10% 80%, rgba(0,212,255,.08) 0%, transparent 60%);
+      radial-gradient(ellipse 70% 60% at 80% 30%, rgba(59,130,246,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 10% 80%, rgba(6,182,212,.05) 0%, transparent 60%);
     pointer-events: none;
   }
   /* dot grid */
@@ -80,8 +80,8 @@ const HOME_STYLE = `
   /* greeting */
   .hm-greet {
     display: inline-flex; align-items: center; gap: .5rem;
-    background: rgba(255,107,53,.1);
-    border: 1px solid rgba(255,107,53,.25);
+    background: rgba(59,130,246,.1);
+    border: 1px solid rgba(59,130,246,.25);
     border-radius: 100px; padding: .32rem .9rem;
     font-size: .75rem; font-weight: 600;
     color: var(--sg-accent); margin-bottom: .8rem;
@@ -91,7 +91,7 @@ const HOME_STYLE = `
   @keyframes hm-pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
   .hm-hero-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(1.9rem, 4vw, 3rem);
     font-weight: 800; letter-spacing: -1.5px;
     line-height: 1.1; color: var(--sg-text);
@@ -115,7 +115,7 @@ const HOME_STYLE = `
     text-align: center; min-width: 90px;
   }
   .hm-stat-chip-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem; font-weight: 800; color: var(--sg-text);
   }
   .hm-stat-chip-num span { color: var(--sg-accent); }
@@ -134,7 +134,7 @@ const HOME_STYLE = `
     color: var(--sg-accent); margin-bottom: .4rem;
   }
   .hm-section-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.35rem; font-weight: 800;
     letter-spacing: -.5px; color: var(--sg-text);
   }
@@ -163,7 +163,7 @@ const HOME_STYLE = `
     transition: transform .25s, border-color .25s, box-shadow .25s;
     display: block;
   }
-  .hm-qa-card:hover { transform: translateY(-4px); border-color: rgba(255,107,53,.25); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+  .hm-qa-card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,.25); box-shadow: 0 10px 30px rgba(59,130,246,.15); }
   .hm-qa-icon {
     width: 44px; height: 44px; border-radius: 13px;
     display: flex; align-items: center; justify-content: center;
@@ -171,7 +171,7 @@ const HOME_STYLE = `
     transition: transform .2s;
   }
   .hm-qa-card:hover .hm-qa-icon { transform: scale(1.1); }
-  .hm-qa-label { font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem; color:var(--sg-text); }
+  .hm-qa-label { font-family:'Inter',sans-serif; font-weight:700; font-size:.88rem; color:var(--sg-text); }
 
   /* ── RECENT BOOKINGS ── */
   .hm-bk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1rem; }
@@ -181,14 +181,14 @@ const HOME_STYLE = `
     border-radius: 18px; padding: 1.3rem;
     transition: border-color .2s, box-shadow .2s;
   }
-  .hm-bk-card:hover { border-color: rgba(255,107,53,.18); box-shadow: 0 6px 24px rgba(0,0,0,.3); }
+  .hm-bk-card:hover { border-color: rgba(59,130,246,.18); box-shadow: 0 6px 24px rgba(59,130,246,.15); }
   .hm-bk-top { display:flex; align-items:flex-start; justify-content:space-between; gap:.7rem; margin-bottom:.9rem; }
   .hm-bk-icon {
     width: 40px; height: 40px; border-radius: 12px;
-    background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.2);
+    background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.2);
     display: flex; align-items: center; justify-content: center; flex-shrink:0;
   }
-  .hm-bk-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.92rem; color:var(--sg-text); }
+  .hm-bk-name { font-family:'Inter',sans-serif; font-weight:700; font-size:.92rem; color:var(--sg-text); }
   .hm-bk-date { font-size:.75rem; color:var(--sg-muted); margin-top:.15rem; }
   .hm-bk-addr { display:flex; align-items:center; gap:.4rem; font-size:.75rem; color:var(--sg-muted); margin-top:.6rem; }
 
@@ -219,7 +219,7 @@ const HOME_STYLE = `
     transition: transform .25s, border-color .25s;
     display: block;
   }
-  .hm-cat-card:hover { transform: translateY(-3px); border-color: rgba(255,107,53,.22); }
+  .hm-cat-card:hover { transform: translateY(-3px); border-color: rgba(59,130,246,.22); }
   .hm-cat-icon {
     width: 44px; height: 44px; border-radius: 12px; margin: 0 auto .6rem;
     display: flex; align-items: center; justify-content: center;
@@ -244,7 +244,7 @@ const HOME_STYLE = `
     transition: transform .3s, border-color .3s, box-shadow .3s;
     display: block;
   }
-  .hm-srv-card:hover { transform: translateY(-5px); border-color: rgba(255,107,53,.25); box-shadow: 0 12px 36px rgba(0,0,0,.4); }
+  .hm-srv-card:hover { transform: translateY(-5px); border-color: rgba(59,130,246,.25); box-shadow: 0 12px 36px rgba(59,130,246,.15); }
   .hm-srv-img {
     height: 150px; position: relative;
     display: flex; align-items: center; justify-content: center; font-size: 4rem;

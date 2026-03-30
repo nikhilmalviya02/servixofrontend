@@ -134,15 +134,15 @@ function AdminDashboard() {
   }, []);
 
   const barData = [
-    { name: "Users", value: stats.users || 0, color: "#6366F1" },
-    { name: "Services", value: stats.services || 0, color: "#10B981" },
-    { name: "Bookings", value: stats.bookings || 0, color: "#A855F7" },
-    { name: "Completed", value: stats.completedBookings || 0, color: "#F59E0B" },
+    { name: "Users", value: stats.users || 0, color: "#3b82f6" },
+    { name: "Services", value: stats.services || 0, color: "#0ea5e9" },
+    { name: "Bookings", value: stats.bookings || 0, color: "#06b6d4" },
+    { name: "Completed", value: stats.completedBookings || 0, color: "#10b981" },
   ];
 
   const pieData = [
-    { name: "Completed", value: stats.completedBookings || 0, color: "#10B981" },
-    { name: "Pending", value: (stats.bookings || 0) - (stats.completedBookings || 0), color: "#F59E0B" },
+    { name: "Completed", value: stats.completedBookings || 0, color: "#10b981" },
+    { name: "Pending", value: (stats.bookings || 0) - (stats.completedBookings || 0), color: "#f59e0b" },
   ];
 
   const statCards = [
@@ -165,8 +165,8 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -175,12 +175,12 @@ function AdminDashboard() {
     <div className="min-h-screen flex bg-gray-50">
       {/* Desktop Sidebar */}
       <div className="w-64 bg-white border-r border-gray-200 p-6 fixed h-full hidden md:block flex flex-col">
-        <h2 className="text-xl font-bold mb-6 text-indigo-600">
+        <h2 className="text-xl font-bold mb-6 text-blue-600">
           Admin Panel
         </h2>
 
         <nav className="space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-50 text-indigo-700 font-medium">
+          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium">
             <DashboardIcon />
             Dashboard
           </Link>
@@ -243,7 +243,7 @@ function AdminDashboard() {
       }`}>
         <div className="p-6 h-full flex flex-col">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-indigo-600">
+            <h2 className="text-xl font-bold text-blue-600">
               Admin Panel
             </h2>
             <button 
@@ -309,7 +309,7 @@ function AdminDashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 overflow-y-auto min-h-screen">
+      <div className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 overflow-y-auto min-h-screen bg-gray-50">
         {/* Mobile Header with Menu Button */}
         <div className="flex items-center justify-between mb-6 md:hidden">
           <button
@@ -335,7 +335,7 @@ function AdminDashboard() {
           <div className="mt-4 sm:mt-0 flex gap-3">
             <Link
               to="/admin/users"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 text-sm font-medium"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2 text-sm font-medium"
             >
               <UsersIcon />
               Manage Users
@@ -377,7 +377,7 @@ function AdminDashboard() {
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={barData}>
                 <XAxis dataKey="name" tick={{ fill: "#6B7280", fontSize: 12 }} />
-                <YAxis tick={{ fill: "#6B7280", fontSize: 12 }} />
+                <YAxis tick={{ fill: "#64748b", fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#1F2937",

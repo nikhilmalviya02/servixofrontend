@@ -7,20 +7,20 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Star, Users } from "l
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
-/* ─── Dark theme styles ─── */
+/* ─── Light theme styles ─── */
 const LOGIN_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-surface2: #1a1a26;
-    --sg-accent: #ff6b35;
-    --sg-cyan: #00d4ff;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
-    --sg-glow: rgba(255,107,53,0.25);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-cyan: #06b6d4;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .lg-root {
@@ -28,7 +28,7 @@ const LOGIN_STYLE = `
     display: flex;
     background: var(--sg-bg);
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow: hidden;
   }
 
@@ -121,15 +121,15 @@ const LOGIN_STYLE = `
     border-radius: 12px;
     padding: .76rem .9rem .76rem 2.6rem;
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: .92rem;
     outline: none;
     transition: border-color .2s, box-shadow .2s;
   }
   .lg-input::placeholder { color: var(--sg-muted); }
   .lg-input:focus {
-    border-color: rgba(255,107,53,.5);
-    box-shadow: 0 0 0 3px rgba(255,107,53,.1);
+    border-color: rgba(59,130,246,.5);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.1);
   }
   .lg-input.pr { padding-right: 2.8rem; }
 
@@ -167,7 +167,7 @@ const LOGIN_STYLE = `
   }
   .lg-submit:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 4px 32px rgba(255,107,53,.45);
+    box-shadow: 0 4px 32px rgba(59,130,246,.35);
   }
   .lg-submit:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
 
@@ -189,7 +189,7 @@ const LOGIN_STYLE = `
     font-weight: 500; font-size: .92rem; cursor: pointer;
     transition: border-color .2s, background .2s;
   }
-  .lg-google:hover { border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.05); }
+  .lg-google:hover { border-color: rgba(59,130,246,.25); background: rgba(59,130,246,.05); }
 
   /* register link */
   .lg-register {

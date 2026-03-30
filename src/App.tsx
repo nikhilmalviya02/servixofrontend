@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import PublicRoute from "./utils/PublicRoute";
 import { Suspense, lazy } from "react";
 
 const Login = lazy(() => import("./pages/Login"));
@@ -62,8 +63,15 @@ function AppContent() {
 
         <Routes>
 
-          {/* Public Landing Page */}
-          <Route path="/" element={<LandingPage />} />
+          {/* Public Landing Page - redirects authenticated users */}
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <LandingPage />
+              </PublicRoute>
+            }
+          />
 
           {/* Protected User Home/Dashboard */}
           <Route
@@ -75,9 +83,23 @@ function AppContent() {
             }
           />
 
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Public Routes - redirect authenticated users */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
           <Route path="/services" element={<Services />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />

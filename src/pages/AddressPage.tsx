@@ -2,24 +2,28 @@ import { useEffect } from "react";
 import AddressManager from "../components/AddressManager";
 import { MapPin } from "lucide-react";
 
-/* ─── Dark theme styles ─── */
+/* ─── Light theme styles ─── */
 const AP_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-accent: #ff6b35;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-accent2: #0ea5e9;
+    --sg-cyan: #06b6d4;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .ap-root {
     min-height: 100vh;
     background: var(--sg-bg);
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     padding: 6rem 5% 4rem;
     position: relative;
   }
@@ -29,8 +33,8 @@ const AP_STYLE = `
     content: '';
     position: fixed; inset: 0;
     background:
-      radial-gradient(ellipse 55% 45% at 80% 10%, rgba(255,107,53,.1) 0%, transparent 60%),
-      radial-gradient(ellipse 45% 40% at 10% 80%, rgba(0,212,255,.06) 0%, transparent 60%);
+      radial-gradient(ellipse 55% 45% at 80% 10%, rgba(59,130,246,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 45% 40% at 10% 80%, rgba(6,182,212,.05) 0%, transparent 60%);
     pointer-events: none; z-index: 0;
   }
 
@@ -46,13 +50,13 @@ const AP_STYLE = `
   }
   .ap-header-icon {
     width: 48px; height: 48px; border-radius: 14px;
-    background: rgba(255,107,53,.12);
-    border: 1px solid rgba(255,107,53,.25);
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.25);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .ap-page-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem);
     letter-spacing: -1px; color: var(--sg-text);
   }

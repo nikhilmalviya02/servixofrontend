@@ -12,28 +12,28 @@ import {
 } from "lucide-react";
 
 const NAVBAR_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-surface2: #1a1a26;
-    --sg-accent: #ff6b35;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
-    --sg-glow: rgba(255,107,53,0.25);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .nb-nav {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    font-family: 'DM Sans', sans-serif;
-    background: rgba(10,10,15,.88);
+    font-family: 'Inter', sans-serif;
+    background: rgba(255,255,255,.95);
     backdrop-filter: blur(22px);
     border-bottom: 1px solid var(--sg-border);
-    box-shadow: 0 4px 32px rgba(0,0,0,.4);
+    box-shadow: 0 4px 32px rgba(0,0,0,.08);
   }
 
   .nb-inner {
@@ -53,10 +53,10 @@ const NAVBAR_STYLE = `
   }
   /* wrapper span — display:inline removes whitespace between text nodes */
   .nb-logo-text {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 800; font-size: 1.55rem;
     letter-spacing: -1px;
-    color: #ffffff;
+    color: var(--sg-text);
     white-space: nowrap;
     display: inline;
     line-height: 1;
@@ -67,13 +67,13 @@ const NAVBAR_STYLE = `
 
   .nb-logo-icon {
     width: 34px; height: 34px; border-radius: 10px;
-    background: rgba(255,107,53,.15);
-    border: 1px solid rgba(255,107,53,.3);
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     transition: background .2s;
   }
-  .nb-logo:hover .nb-logo-icon { background: rgba(255,107,53,.25); }
+  .nb-logo:hover .nb-logo-icon { background: rgba(59,130,246,.25); }
 
   /* ── desktop links ── */
   .nb-links {
@@ -94,8 +94,8 @@ const NAVBAR_STYLE = `
     transition: color .2s, background .2s;
     white-space: nowrap;
   }
-  .nb-link:hover { color: var(--sg-text); background: rgba(255,255,255,.05); }
-  .nb-link.active { color: var(--sg-accent); background: rgba(255,107,53,.1); font-weight: 600; }
+  .nb-link:hover { color: var(--sg-text); background: rgba(0,0,0,.02); }
+  .nb-link.active { color: var(--sg-accent); background: rgba(59,130,246,.08); font-weight: 600; }
 
   .nb-sep { width: 1px; height: 22px; background: var(--sg-border); margin: 0 .5rem; }
 
@@ -106,7 +106,7 @@ const NAVBAR_STYLE = `
     text-decoration: none; color: var(--sg-muted);
     transition: color .2s, background .2s;
   }
-  .nb-signin:hover { color: var(--sg-text); background: rgba(255,255,255,.05); }
+  .nb-signin:hover { color: var(--sg-text); background: rgba(0,0,0,.02); }
 
   .nb-cta {
     display: flex; align-items: center; gap: .4rem;
@@ -117,7 +117,7 @@ const NAVBAR_STYLE = `
     transition: background .2s, transform .15s, box-shadow .2s;
     white-space: nowrap;
   }
-  .nb-cta:hover { background: #ff855a; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,107,53,.45); }
+  .nb-cta:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(59,130,246,.35); }
 
   .nb-user {
     display: flex; align-items: center; gap: .6rem;
@@ -126,9 +126,9 @@ const NAVBAR_STYLE = `
   }
   .nb-avatar {
     width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(255,107,53,.2); border: 1.5px solid rgba(255,107,53,.4);
+    background: rgba(59,130,246,.15); border: 1.5px solid rgba(59,130,246,.4);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: .82rem; color: var(--sg-accent);
+    font-family: 'Inter', sans-serif; font-weight: 800; font-size: .82rem; color: var(--sg-accent);
   }
   .nb-username { font-size: .82rem; font-weight: 500; color: var(--sg-text); max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .nb-logout {
@@ -137,7 +137,7 @@ const NAVBAR_STYLE = `
     display: flex; align-items: center; justify-content: center;
     color: var(--sg-muted); transition: color .2s, background .2s;
   }
-  .nb-logout:hover { color: #ff6b6b; background: rgba(255,107,107,.1); }
+  .nb-logout:hover { color: #3b82f6; background: rgba(59,130,246,.08); }
 
   .nb-toggle {
     display: flex; align-items: center; justify-content: center;
@@ -145,13 +145,13 @@ const NAVBAR_STYLE = `
     background: rgba(255,255,255,.04); border: 1px solid var(--sg-border);
     color: var(--sg-muted); cursor: pointer; transition: color .2s, background .2s;
   }
-  .nb-toggle:hover { color: var(--sg-text); background: rgba(255,255,255,.08); }
+  .nb-toggle:hover { color: var(--sg-text); background: rgba(0,0,0,.04); }
   @media(min-width:768px){ .nb-toggle { display:none; } }
 
   /* ── mobile drawer ── */
   .nb-drawer {
     display: block;
-    background: rgba(10,10,15,.97); backdrop-filter: blur(24px);
+    background: rgba(255,255,255,.95); backdrop-filter: blur(24px);
     border-top: 1px solid var(--sg-border); border-bottom: 1px solid var(--sg-border);
     padding: 1rem 5% 1.4rem;
   }
@@ -164,8 +164,8 @@ const NAVBAR_STYLE = `
     font-size: .9rem; font-weight: 500;
     transition: color .2s, background .2s; margin-bottom: .25rem;
   }
-  .nb-drawer-link:hover  { color: var(--sg-text); background: rgba(255,255,255,.05); }
-  .nb-drawer-link.active { color: var(--sg-accent); background: rgba(255,107,53,.08); font-weight: 600; }
+  .nb-drawer-link:hover  { color: var(--sg-text); background: rgba(0,0,0,.02); }
+  .nb-drawer-link.active { color: var(--sg-accent); background: rgba(59,130,246,.08); font-weight: 600; }
 
   .nb-drawer-sep { height: 1px; background: var(--sg-border); margin: .7rem 0; }
 
@@ -173,32 +173,32 @@ const NAVBAR_STYLE = `
     display: flex; align-items: center; justify-content: center; gap: .5rem;
     width: 100%; padding: .82rem; border-radius: 12px;
     background: var(--sg-accent); color: #fff;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .92rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: .92rem;
     border: none; cursor: pointer; text-decoration: none;
     box-shadow: 0 0 20px var(--sg-glow); transition: background .2s; margin-top: .4rem;
   }
-  .nb-drawer-cta:hover { background: #ff855a; }
+  .nb-drawer-cta:hover { background: #2563eb; }
 
   .nb-drawer-logout {
     display: flex; align-items: center; gap: .75rem;
     width: 100%; padding: .8rem 1rem; border-radius: 12px;
     background: none; border: none; cursor: pointer;
-    color: #ff6b6b; font-family:'DM Sans',sans-serif;
+    color: #3b82f6; font-family:'Inter',sans-serif;
     font-size: .9rem; font-weight: 500; transition: background .2s; margin-top: .25rem;
   }
-  .nb-drawer-logout:hover { background: rgba(255,107,107,.08); }
+  .nb-drawer-logout:hover { background: rgba(59,130,246,.08); }
 
   .nb-drawer-user {
     display: flex; align-items: center; gap: .75rem;
     padding: .8rem 1rem;
-    background: rgba(255,255,255,.03); border: 1px solid var(--sg-border);
+    background: rgba(0,0,0,.01); border: 1px solid var(--sg-border);
     border-radius: 12px; margin-bottom: .7rem;
   }
   .nb-drawer-avatar {
     width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(255,107,53,.15); border: 1.5px solid rgba(255,107,53,.3);
+    background: rgba(59,130,246,.15); border: 1.5px solid rgba(59,130,246,.3);
     display: flex; align-items: center; justify-content: center;
-    font-family:'Syne',sans-serif; font-weight:800; font-size:.9rem;
+    font-family:'Inter',sans-serif; font-weight:800; font-size:.9rem;
     color: var(--sg-accent); flex-shrink:0;
   }
   .nb-drawer-uname { font-size:.9rem; font-weight:600; color:var(--sg-text); }
@@ -258,7 +258,7 @@ function Navbar() {
                 <Home size={14} /> Home
               </NavLink>
             )}
-            <NavLink to={user ? "/services" : "/login"} className={linkClass}>
+            <NavLink to="/services" className={linkClass}>
               <Grid3X3 size={14} /> Services
             </NavLink>
             {user && role === "provider" && (
@@ -323,7 +323,7 @@ function Navbar() {
                 <Home size={17} /> Home
               </NavLink>
             )}
-            <NavLink to={user ? "/services" : "/login"} className={drawerLinkClass} onClick={closeMenu}>
+            <NavLink to="/services" className={drawerLinkClass} onClick={closeMenu}>
               <Grid3X3 size={17} /> Services
             </NavLink>
             {user && role === "provider" && (

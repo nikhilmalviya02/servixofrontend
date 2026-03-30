@@ -19,21 +19,21 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { useEffect } from "react";
 
-/* ─── Inject dark styles ─── */
+/* ─── Inject light theme styles ─── */
 const REGISTER_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-surface2: #1a1a26;
-    --sg-accent: #ff6b35;
-    --sg-accent2: #ffbe0b;
-    --sg-cyan: #00d4ff;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
-    --sg-glow: rgba(255,107,53,0.25);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-accent2: #0ea5e9;
+    --sg-cyan: #06b6d4;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .rg-root {
@@ -41,7 +41,7 @@ const REGISTER_STYLE = `
     display: flex;
     background: var(--sg-bg);
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
   }
 
@@ -58,8 +58,8 @@ const REGISTER_STYLE = `
   .rg-left-mesh {
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 70% 60% at 30% 30%, rgba(255,107,53,.18) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(0,212,255,.1) 0%, transparent 60%);
+      radial-gradient(ellipse 70% 60% at 30% 30%, rgba(59,130,246,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(6,182,212,.05) 0%, transparent 60%);
     pointer-events: none;
   }
 
@@ -79,7 +79,7 @@ const REGISTER_STYLE = `
   }
 
   .rg-brand {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 800; font-size: 1.7rem;
     letter-spacing: -.5px;
     color: var(--sg-text);
@@ -90,7 +90,7 @@ const REGISTER_STYLE = `
   .rg-brand span { color: var(--sg-accent); }
 
   .rg-left-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(1.7rem, 2.8vw, 2.4rem);
     font-weight: 800; line-height: 1.15;
     letter-spacing: -1px;
@@ -118,7 +118,7 @@ const REGISTER_STYLE = `
     margin-bottom: .7rem;
     transition: background .2s, border-color .2s;
   }
-  .rg-benefit:hover { background: rgba(255,107,53,.07); border-color: rgba(255,107,53,.2); }
+  .rg-benefit:hover { background: rgba(59,130,246,.05); border-color: rgba(59,130,246,.2); }
   .rg-benefit-icon {
     width: 38px; height: 38px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
@@ -132,7 +132,7 @@ const REGISTER_STYLE = `
     gap: 1rem; margin-top: 2.5rem;
   }
   .rg-stat-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.6rem; font-weight: 800; color: var(--sg-text);
   }
   .rg-stat-num span { color: var(--sg-accent); }
@@ -159,7 +159,7 @@ const REGISTER_STYLE = `
     margin: 0 auto .8rem;
   }
   .rg-mobile-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 800; font-size: 1.4rem; color: var(--sg-text);
   }
   .rg-mobile-sub { color: var(--sg-muted); font-size: .88rem; margin-top: .25rem; }
@@ -174,7 +174,7 @@ const REGISTER_STYLE = `
 
   .rg-card-header { text-align: center; margin-bottom: 1.8rem; }
   .rg-card-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 800; font-size: 1.6rem;
     color: var(--sg-text); letter-spacing: -.5px;
   }
@@ -202,7 +202,7 @@ const REGISTER_STYLE = `
     border-radius: 12px;
     padding: .75rem .9rem .75rem 2.6rem;
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: .92rem;
     outline: none;
     transition: border-color .2s, box-shadow .2s;
@@ -223,11 +223,11 @@ const REGISTER_STYLE = `
     cursor: pointer; text-align: left;
     transition: border-color .25s, background .25s, transform .2s;
   }
-  .rg-role-btn:hover { border-color: rgba(255,107,53,.25); transform: translateY(-1px); }
+  .rg-role-btn:hover { border-color: rgba(59,130,246,.25); transform: translateY(-1px); }
   .rg-role-btn.active {
     border-color: var(--sg-accent);
-    background: rgba(255,107,53,.07);
-    box-shadow: 0 0 0 1px rgba(255,107,53,.2);
+    background: rgba(59,130,246,.05);
+    box-shadow: 0 0 0 1px rgba(59,130,246,.2);
   }
   .rg-role-check {
     position: absolute; top: 8px; right: 8px;
@@ -236,7 +236,7 @@ const REGISTER_STYLE = `
     display: flex; align-items: center; justify-content: center;
   }
   .rg-role-icon { font-size: 1.5rem; margin-bottom: .4rem; display: block; }
-  .rg-role-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; color: var(--sg-text); }
+  .rg-role-name { font-family:'Inter',sans-serif; font-weight:700; font-size:.85rem; color: var(--sg-text); }
   .rg-role-desc { font-size:.72rem; color:var(--sg-muted); margin-top:.15rem; }
 
   /* services dropdown */
@@ -247,20 +247,20 @@ const REGISTER_STYLE = `
     border-radius: 12px;
     padding: .75rem 2.5rem .75rem .9rem;
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: .9rem;
     outline: none; appearance: none; cursor: pointer;
     transition: border-color .2s;
   }
-  .rg-select:focus { border-color: rgba(255,107,53,.5); }
+  .rg-select:focus { border-color: rgba(59,130,246,.5); }
   .rg-select option { background: #1a1a26; color: var(--sg-text); }
 
   /* service tags */
   .rg-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }
   .rg-tag {
     display: inline-flex; align-items: center; gap: .35rem;
-    background: rgba(255,107,53,.12);
-    border: 1px solid rgba(255,107,53,.25);
+    background: rgba(59,130,246,.08);
+    border: 1px solid rgba(59,130,246,.2);
     color: var(--sg-accent);
     border-radius: 100px; padding: .25rem .7rem;
     font-size: .78rem; font-weight: 500;
@@ -307,7 +307,7 @@ const REGISTER_STYLE = `
     transition: transform .2s, box-shadow .2s, background .2s;
     box-shadow: 0 0 24px var(--sg-glow);
   }
-  .rg-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 32px rgba(255,107,53,.45); }
+  .rg-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 32px rgba(59,130,246,.35); }
   .rg-submit:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
 
   .rg-pw-error {
@@ -335,7 +335,7 @@ const REGISTER_STYLE = `
     font-weight: 500; font-size: .92rem; cursor: pointer;
     transition: border-color .2s, background .2s;
   }
-  .rg-google:hover:not(:disabled) { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.05); }
+  .rg-google:hover:not(:disabled) { border-color: rgba(59,130,246,.25); background: rgba(59,130,246,.05); }
   .rg-google:disabled { opacity: .4; cursor: not-allowed; }
 
   /* login link */
@@ -525,10 +525,8 @@ function Register() {
             <div className="rg-mobile-brand" style={{ display: "block" }}
               // hide on lg via inline — left panel handles branding on large screens
             >
-              <div className="rg-mobile-logo">
-                <Zap size={22} style={{ color: "#ff6b35" }} />
-              </div>
-              <div className="rg-mobile-title">Servexa<span style={{ color: "#ff6b35" }}>Go</span></div>
+              
+              <div className="rg-mobile-title">Servexa<span style={{ color: "#3b82f6" }}>Go</span></div>
               <div className="rg-mobile-sub">Create your free account</div>
             </div>
 
