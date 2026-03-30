@@ -11,7 +11,6 @@ import {
   Clock,
   Award,
   ChevronRight,
-  Zap,
 } from "lucide-react";
 import PasswordStrengthChecker from "../components/PasswordStrengthChecker";
 import { useAuth } from "../context/AuthContext";
