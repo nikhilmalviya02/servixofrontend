@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import RoleBasedRoute from "./utils/RoleBasedRoute";
 import PublicRoute from "./utils/PublicRoute";
 import { Suspense, lazy } from "react";
 
@@ -113,18 +114,18 @@ function AppContent() {
           <Route
             path="/provider"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["provider"]}>
                 <ProviderDashboard />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/provider/bookings"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["provider"]}>
                 <ProviderBookings />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
@@ -132,9 +133,9 @@ function AppContent() {
           <Route
             path="/user"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["user"]}>
                 <UserDashboard />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
@@ -142,9 +143,9 @@ function AppContent() {
           <Route
             path="/addresses"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["user"]}>
                 <AddressPage />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
@@ -152,63 +153,63 @@ function AppContent() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminDashboard />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/users"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminUsers />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/services"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminServices />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/bookings"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminBookings />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/reviews"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminReviews />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/categories"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminCategories />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
           <Route
             path="/admin/user/:id"
             element={
-              <ProtectedRoute>
+              <RoleBasedRoute allowedRoles={["admin"]}>
                 <AdminUserDetails />
-              </ProtectedRoute>
+              </RoleBasedRoute>
             }
           />
 
