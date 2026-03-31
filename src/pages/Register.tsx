@@ -98,8 +98,7 @@ const REGISTER_STYLE = `
   }
   .rg-left-title em {
     font-style: normal;
-    -webkit-text-stroke: 1.5px var(--sg-accent);
-    color: transparent;
+    color: var(--sg-text);
   }
   .rg-left-sub {
     color: var(--sg-muted); font-size: .95rem;
@@ -242,17 +241,34 @@ const REGISTER_STYLE = `
   .rg-select {
     width: 100%;
     background: var(--sg-surface2);
-    border: 1px solid var(--sg-border);
-    border-radius: 12px;
-    padding: .75rem 2.5rem .75rem .9rem;
+    border: 2px solid var(--sg-border);
+    border-radius: 16px;
+    padding: .85rem 3rem .85rem 1rem;
     color: var(--sg-text);
     font-family: 'Inter', sans-serif;
     font-size: .9rem;
-    outline: none; appearance: none; cursor: pointer;
-    transition: border-color .2s;
+    font-weight: 500;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition: all .3s ease;
+    position: relative;
   }
-  .rg-select:focus { border-color: rgba(59,130,246,.5); }
-  .rg-select option { background: #1a1a26; color: var(--sg-text); }
+  .rg-select:hover {
+    border-color: rgba(59,130,246,.3);
+    background: rgba(59,130,246,.02);
+  }
+  .rg-select:focus {
+    border-color: var(--sg-accent);
+    box-shadow: 0 0 0 4px rgba(59,130,246,.1);
+    background: var(--sg-bg);
+  }
+  .rg-select option {
+    background: var(--sg-bg);
+    color: var(--sg-text);
+    padding: .75rem;
+    font-weight: 500;
+  }
 
   /* service tags */
   .rg-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }

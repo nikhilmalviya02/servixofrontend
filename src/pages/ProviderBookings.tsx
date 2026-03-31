@@ -9,26 +9,26 @@ import {
 
 /* ─── Styles ─── */
 const PB_STYLE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
   :root {
-    --sg-bg: #0a0a0f;
-    --sg-surface: #12121a;
-    --sg-surface2: #1a1a26;
-    --sg-accent: #ff6b35;
-    --sg-accent2: #ffbe0b;
-    --sg-cyan: #00d4ff;
-    --sg-text: #f0f0f8;
-    --sg-muted: #888899;
-    --sg-border: rgba(255,255,255,0.07);
-    --sg-glow: rgba(255,107,53,0.22);
+    --sg-bg: #ffffff;
+    --sg-surface: #f8fafc;
+    --sg-surface2: #f1f5f9;
+    --sg-accent: #3b82f6;
+    --sg-accent2: #0ea5e9;
+    --sg-cyan: #06b6d4;
+    --sg-text: #1e293b;
+    --sg-muted: #64748b;
+    --sg-border: rgba(0,0,0,0.08);
+    --sg-glow: rgba(59,130,246,0.15);
   }
 
   .pb-root {
     min-height: 100vh;
     background: var(--sg-bg);
     color: var(--sg-text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     padding: 5.5rem 5% 4rem;
     position: relative;
   }
@@ -36,8 +36,8 @@ const PB_STYLE = `
     content: '';
     position: fixed; inset: 0;
     background:
-      radial-gradient(ellipse 60% 50% at 85% 10%, rgba(255,107,53,.11) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 45% at 5%  85%, rgba(0,212,255,.07)  0%, transparent 60%);
+      radial-gradient(ellipse 60% 50% at 85% 10%, rgba(59,130,246,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 45% at 5%  85%, rgba(14,165,233,.06) 0%, transparent 60%);
     pointer-events: none; z-index: 0;
   }
 
@@ -47,11 +47,11 @@ const PB_STYLE = `
   .pb-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
   .pb-header-icon {
     width: 48px; height: 48px; border-radius: 14px;
-    background: rgba(255,107,53,.12); border: 1px solid rgba(255,107,53,.25);
+    background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.25);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .pb-page-title {
-    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-family: 'Inter', sans-serif; font-weight: 800;
     font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -1px; color: var(--sg-text);
   }
   .pb-page-sub { color: var(--sg-muted); font-size: .85rem; margin-top: .15rem; }
@@ -64,9 +64,9 @@ const PB_STYLE = `
     border-radius: 16px; padding: 1.1rem 1rem; text-align: center;
     transition: border-color .25s, box-shadow .25s;
   }
-  .pb-stat:hover { border-color: rgba(255,107,53,.2); box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+  .pb-stat:hover { border-color: rgba(59,130,246,.2); box-shadow: 0 4px 20px rgba(0,0,0,.1); }
   .pb-stat-val {
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem;
+    font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.8rem;
     letter-spacing: -.5px; line-height: 1;
   }
   .pb-stat-label { font-size: .72rem; color: var(--sg-muted); margin-top: .3rem; letter-spacing: .4px; text-transform: uppercase; }
@@ -74,7 +74,7 @@ const PB_STYLE = `
   /* ── SPINNER ── */
   .pb-spinner {
     width: 32px; height: 32px; border-radius: 50%;
-    border: 3px solid rgba(255,107,53,.2); border-top-color: var(--sg-accent);
+    border: 3px solid rgba(59,130,246,.2); border-top-color: var(--sg-accent);
     animation: pb-spin .7s linear infinite; margin: 4rem auto;
   }
   @keyframes pb-spin { to { transform: rotate(360deg); } }
@@ -83,11 +83,11 @@ const PB_STYLE = `
   .pb-empty { text-align: center; padding: 4rem 2rem; }
   .pb-empty-icon {
     width: 64px; height: 64px; border-radius: 50%;
-    background: rgba(255,255,255,.04); border: 1px solid var(--sg-border);
+    background: rgba(59,130,246,.04); border: 1px solid var(--sg-border);
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 1rem;
   }
-  .pb-empty h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--sg-text); }
+  .pb-empty h3 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: var(--sg-text); }
   .pb-empty p  { color: var(--sg-muted); font-size: .83rem; margin-top: .3rem; }
 
   /* ── GRID ── */
@@ -100,23 +100,23 @@ const PB_STYLE = `
     border-radius: 22px; padding: 1.6rem;
     transition: border-color .25s, box-shadow .25s;
   }
-  .pb-card:hover { border-color: rgba(255,107,53,.18); box-shadow: 0 8px 32px rgba(0,0,0,.35); }
-  .pb-card.emergency { border-color: rgba(255,107,107,.3); }
-  .pb-card.emergency:hover { border-color: rgba(255,107,107,.5); }
+  .pb-card:hover { border-color: rgba(59,130,246,.18); box-shadow: 0 8px 32px rgba(0,0,0,.15); }
+  .pb-card.emergency { border-color: rgba(59,130,246,.3); }
+  .pb-card.emergency:hover { border-color: rgba(59,130,246,.5); }
 
   /* card top */
   .pb-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem; margin-bottom: 1rem; }
   .pb-card-title {
-    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-family: 'Inter', sans-serif; font-weight: 800;
     font-size: 1rem; color: var(--sg-text);
   }
 
   /* emergency badge */
   .pb-emg {
     display: inline-flex; align-items: center; gap: .35rem;
-    background: rgba(255,107,107,.12); border: 1px solid rgba(255,107,107,.25);
+    background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.25);
     border-radius: 100px; padding: .25rem .75rem;
-    font-size: .7rem; font-weight: 700; color: #ff6b6b;
+    font-size: .7rem; font-weight: 700; color: #3b82f6;
     margin-top: .35rem;
   }
 
@@ -126,10 +126,10 @@ const PB_STYLE = `
     border-radius: 100px; white-space: nowrap; text-transform: capitalize;
     flex-shrink: 0;
   }
-  .pb-status-pending   { background: rgba(255,190,11,.1);  border: 1px solid rgba(255,190,11,.25);  color: var(--sg-accent2); }
-  .pb-status-accepted  { background: rgba(74,222,128,.1);  border: 1px solid rgba(74,222,128,.25);  color: #4ade80; }
+  .pb-status-pending   { background: rgba(59,130,246,.1);  border: 1px solid rgba(59,130,246,.25);  color: var(--sg-accent2); }
+  .pb-status-accepted  { background: rgba(14,165,233,.1);  border: 1px solid rgba(14,165,233,.25);  color: #0ea5e9; }
   .pb-status-completed { background: rgba(0,212,255,.1);   border: 1px solid rgba(0,212,255,.25);   color: var(--sg-cyan); }
-  .pb-status-rejected  { background: rgba(255,107,107,.1); border: 1px solid rgba(255,107,107,.25); color: #ff6b6b; }
+  .pb-status-rejected  { background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.25); color: #3b82f6; }
   .pb-status-cancelled { background: rgba(255,255,255,.06);border: 1px solid var(--sg-border);      color: var(--sg-muted); }
 
   /* meta chips */
@@ -151,20 +151,20 @@ const PB_STYLE = `
   .pb-btn {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: .4rem;
     padding: .7rem; border-radius: 11px; border: 1px solid;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .85rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: .85rem;
     cursor: pointer; transition: transform .15s, background .2s;
   }
   .pb-btn:hover { transform: translateY(-1px); }
 
   .pb-btn-accept {
-    background: rgba(74,222,128,.1); border-color: rgba(74,222,128,.25); color: #4ade80;
+    background: rgba(14,165,233,.1); border-color: rgba(14,165,233,.25); color: #0ea5e9;
   }
-  .pb-btn-accept:hover { background: rgba(74,222,128,.18); }
+  .pb-btn-accept:hover { background: rgba(14,165,233,.18); }
 
   .pb-btn-reject {
-    background: rgba(255,107,107,.1); border-color: rgba(255,107,107,.25); color: #ff6b6b;
+    background: rgba(59,130,246,.1); border-color: rgba(59,130,246,.25); color: #3b82f6;
   }
-  .pb-btn-reject:hover { background: rgba(255,107,107,.18); }
+  .pb-btn-reject:hover { background: rgba(59,130,246,.18); }
 
   .pb-btn-complete {
     background: rgba(0,212,255,.1); border-color: rgba(0,212,255,.25); color: var(--sg-cyan);
@@ -188,11 +188,11 @@ function InjectPBStyle() {
 /* ── stat card helper ── */
 function StatCard({ title, value, color }: { title: string; value: number; color: string }) {
   const colors: Record<string, { val: string }> = {
-    orange: { val: "#ff6b35" },
-    yellow: { val: "#ffbe0b" },
-    green:  { val: "#4ade80" },
-    cyan:   { val: "#00d4ff" },
-    red:    { val: "#ff6b6b" },
+    orange: { val: "#3b82f6" },
+    yellow: { val: "#f59e0b" },
+    green:  { val: "#10b981" },
+    cyan:   { val: "#06b6d4" },
+    red:    { val: "#ef4444" },
   };
   return (
     <div className="pb-stat">
@@ -262,7 +262,7 @@ function ProviderBookings() {
           {/* ── HEADER ── */}
           <div className="pb-header">
             <div className="pb-header-icon">
-              <ClipboardList size={22} style={{ color: "#ff6b35" }} />
+              <ClipboardList size={22} style={{ color: "#3b82f6" }} />
             </div>
             <div>
               <h1 className="pb-page-title">Provider Bookings</h1>

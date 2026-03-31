@@ -91,14 +91,14 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
             name="title"
             value={form.title}
             placeholder="Service Title"
-            className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition"
+            className="border border-gray-200 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
             onChange={handleChange}
           />
 
           <select
             name="category"
             value={form.category}
-            className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition"
+            className="border border-gray-200 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
             onChange={handleChange}
           >
             <option value="">Select Category</option>
@@ -115,7 +115,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           value={form.description}
           placeholder="Service Description"
           rows={3}
-          className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition resize-none"
+          className="border border-blue-500 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none"
           onChange={handleChange}
         />
 
@@ -125,13 +125,13 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
             type="number"
             value={form.price}
             placeholder="Price (₹)"
-            className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 w-40 focus:ring-2 focus:ring-indigo-500 outline-none bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition"
+            className="border border-gray-200 rounded-lg p-3 w-40 focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
             onChange={handleChange}
           />
 
           <button
             disabled={loading}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition text-white px-6 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed font-inter"
           >
             {loading ? "Adding..." : "Add Service"}
           </button>
@@ -146,7 +146,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-4 border border-gray-200"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">
+        <h2 className="text-2xl font-bold text-center text-gray-800 font-inter">
           Add New Service
         </h2>
 
@@ -154,7 +154,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           name="title"
           value={form.title}
           placeholder="Service Title"
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
           onChange={handleChange}
         />
 
@@ -163,14 +163,14 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           value={form.description}
           placeholder="Service Description"
           rows={3}
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition resize-none"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none"
           onChange={handleChange}
         />
 
         <select
           name="category"
           value={form.category}
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
           onChange={handleChange}
         >
           <option value="">Select Category</option>
@@ -186,13 +186,13 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           type="number"
           value={form.price}
           placeholder="Price (₹)"
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
           onChange={handleChange}
         />
 
         <button
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-inter"
         >
           {loading ? "Adding..." : "Add Service"}
         </button>

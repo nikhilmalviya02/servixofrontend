@@ -102,8 +102,7 @@ const GLOBAL_STYLE = `
   }
   .sg-h1 em {
     font-style: normal;
-    -webkit-text-stroke: 1.5px var(--sg-accent);
-    color: transparent;
+    color: var(--sg-text);
   }
   .sg-hero-sub {
     max-width: 520px;

@@ -84,8 +84,7 @@ const LOGIN_STYLE = `
   }
   .lg-heading em {
     font-style: normal;
-    -webkit-text-stroke: 1.5px var(--sg-accent);
-    color: transparent;
+    color: var(--sg-text);
   }
   .lg-sub { color: var(--sg-muted); font-size: .92rem; font-weight: 300; margin-bottom: 2rem; }
 
@@ -243,8 +242,7 @@ const LOGIN_STYLE = `
   }
   .lg-right-title em {
     font-style: normal;
-    -webkit-text-stroke: 1.5px var(--sg-accent);
-    color: transparent;
+    color: var(--sg-text);
   }
   .lg-right-sub {
     color: var(--sg-muted); font-size: .95rem;
