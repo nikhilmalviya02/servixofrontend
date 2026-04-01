@@ -17,6 +17,13 @@ import {
   ChevronRight,
   HomeIcon,
 } from "lucide-react";
+import homeCleaningImage from "../assets/home-cleaning.png";
+import plumbingImage from "../assets/plumbing.png";
+import electricalImage from "../assets/electrical.png";
+import acRepairImage from "../assets/ac-repair.png";
+import paintingImage from "../assets/painting.png";
+import gardeningImage from "../assets/gardening.png";
+import heroImage from "../assets/hero.png";
 
 /* ─── Light theme styles ─── */
 const HOME_STYLE = `
@@ -411,12 +418,12 @@ function Home() {
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",      price: "499",  color: "#ff6b35", rating: 4.8, image: "/src/assets/home-cleaning.png" },
-    { icon: "🔧", title: "Plumbing Service",   price: "299",  color: "#00d4ff", rating: 4.7, image: "/src/assets/plumbing.png" },
-    { icon: "⚡", title: "Electrical Repair",  price: "349",  color: "#ffbe0b", rating: 4.9, image: "/src/assets/electrical.png" },
-    { icon: "❄️", title: "AC Service & Repair",price: "599",  color: "#60a5fa", rating: 4.8, image: "/src/assets/ac-repair.png" },
-    { icon: "🎨", title: "Home Painting",       price: "1999", color: "#f472b6", rating: 4.6, image: "/src/assets/painting.png" },
-    { icon: "🪴", title: "Garden Maintenance",  price: "399",  color: "#4ade80", rating: 4.7, image: "/src/assets/gardening.png" },
+    { icon: "🧹", title: "Home Cleaning",      price: "499",  color: "#ff6b35", rating: 4.8, image: homeCleaningImage },
+    { icon: "🔧", title: "Plumbing Service",   price: "299",  color: "#00d4ff", rating: 4.7, image: plumbingImage },
+    { icon: "⚡", title: "Electrical Repair",  price: "349",  color: "#ffbe0b", rating: 4.9, image: electricalImage },
+    { icon: "❄️", title: "AC Service & Repair",price: "599",  color: "#60a5fa", rating: 4.8, image: acRepairImage },
+    { icon: "🎨", title: "Home Painting",       price: "1999", color: "#f472b6", rating: 4.6, image: paintingImage },
+    { icon: "🪴", title: "Garden Maintenance",  price: "399",  color: "#4ade80", rating: 4.7, image: gardeningImage },
   ];
 
   const displayServices = services.length > 0 ? services : fallbackServices;
@@ -465,7 +472,7 @@ function Home() {
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
               <img 
-                src="/src/assets/hero.png" 
+                src={heroImage} 
                 alt="Professional Services"
                 style={{
                   width: "100%",
