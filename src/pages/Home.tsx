@@ -46,7 +46,7 @@ const HOME_STYLE = `
   /* ── HERO / WELCOME ── */
   .hm-hero {
     position: relative;
-    padding: 7rem 5% 5rem;
+    padding: 4rem 5% 5rem;
     overflow: hidden;
   }
   .hm-hero::before {
@@ -391,6 +391,7 @@ function Home() {
   const role = localStorage.getItem("role");
   if (role === "provider") return <Navigate to="/provider" replace />;
   if (role === "admin")    return <Navigate to="/admin"    replace />;
+  // Users (customers) stay on home page - don't redirect to bookings
 
   const quickActions = [
     { icon: Search,   label: "Find Services", bg: "rgba(255,107,53,.12)",  color: "#ff6b35",  link: "/services"  },
@@ -410,12 +411,12 @@ function Home() {
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",      price: "499",  color: "#ff6b35", rating: 4.8 },
-    { icon: "🔧", title: "Plumbing Service",   price: "299",  color: "#00d4ff", rating: 4.7 },
-    { icon: "⚡", title: "Electrical Repair",  price: "349",  color: "#ffbe0b", rating: 4.9 },
-    { icon: "❄️", title: "AC Service & Repair",price: "599",  color: "#60a5fa", rating: 4.8 },
-    { icon: "🎨", title: "Home Painting",       price: "1999", color: "#f472b6", rating: 4.6 },
-    { icon: "🪴", title: "Garden Maintenance",  price: "399",  color: "#4ade80", rating: 4.7 },
+    { icon: "🧹", title: "Home Cleaning",      price: "499",  color: "#ff6b35", rating: 4.8, image: "/src/assets/home-cleaning.png" },
+    { icon: "🔧", title: "Plumbing Service",   price: "299",  color: "#00d4ff", rating: 4.7, image: "/src/assets/plumbing.png" },
+    { icon: "⚡", title: "Electrical Repair",  price: "349",  color: "#ffbe0b", rating: 4.9, image: "/src/assets/electrical.png" },
+    { icon: "❄️", title: "AC Service & Repair",price: "599",  color: "#60a5fa", rating: 4.8, image: "/src/assets/ac-repair.png" },
+    { icon: "🎨", title: "Home Painting",       price: "1999", color: "#f472b6", rating: 4.6, image: "/src/assets/painting.png" },
+    { icon: "🪴", title: "Garden Maintenance",  price: "399",  color: "#4ade80", rating: 4.7, image: "/src/assets/gardening.png" },
   ];
 
   const displayServices = services.length > 0 ? services : fallbackServices;
@@ -461,6 +462,19 @@ function Home() {
                   <div className="hm-stat-chip-label">Avg Rating</div>
                 </div>
               </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img 
+                src="/src/assets/hero.png" 
+                alt="Professional Services"
+                style={{
+                  width: "100%",
+                  maxWidth: "600px",
+                  height: "auto",
+                  borderRadius: "20px",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.15)"
+                }}
+              />
             </div>
           </div>
         </section>

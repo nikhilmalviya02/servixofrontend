@@ -66,7 +66,7 @@ const GLOBAL_STYLE = `
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 8rem 5% 5rem;
+    padding: 4rem 5% 5rem;
     z-index: 1;
   }
   .sg-badge {

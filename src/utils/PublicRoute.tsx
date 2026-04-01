@@ -33,7 +33,7 @@ function PublicRoute({ children }: any) {
       case 'provider':
         return <Navigate to="/provider" replace />;
       case 'user':
-        return <Navigate to="/user" replace />;
+        return <Navigate to="/home" replace />;
       default:
         return <Navigate to="/home" replace />;
     }
