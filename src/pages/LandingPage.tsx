@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
   ShieldCheck,
@@ -18,6 +18,10 @@ import {
   Play,
   Zap,
 } from "lucide-react";
+import homeCleaningImage from "../assets/home-cleaning.png";
+import plumbingImage from "../assets/plumbing.png";
+import electricalImage from "../assets/electrical.png";
+import acRepairImage from "../assets/ac-repair.png";
 
 /* ─────────────────────────────────────────────
    Inject light-theme CSS + Inter fonts
@@ -560,10 +564,10 @@ function LandingPage() {
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#3b82f6", image: "/src/assets/home-cleaning.png" },
-    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#06b6d4", image: "/src/assets/plumbing.png" },
-    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#fbbf24", image: "/src/assets/electrical.png" },
-    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa", image: "/src/assets/ac-repair.png" },
+    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#3b82f6", image: homeCleaningImage },
+    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#06b6d4", image: plumbingImage },
+    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#fbbf24", image: electricalImage },
+    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa", image: acRepairImage },
   ];
 
   const displayServices = services.length > 0 ? services : fallbackServices;
