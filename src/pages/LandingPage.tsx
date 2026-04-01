@@ -560,10 +560,10 @@ function LandingPage() {
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#3b82f6" },
-    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#06b6d4" },
-    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#fbbf24" },
-    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa" },
+    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#3b82f6", image: "/src/assets/home-cleaning.png" },
+    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#06b6d4", image: "/src/assets/plumbing.png" },
+    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#fbbf24", image: "/src/assets/electrical.png" },
+    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa", image: "/src/assets/ac-repair.png" },
   ];
 
   const displayServices = services.length > 0 ? services : fallbackServices;
