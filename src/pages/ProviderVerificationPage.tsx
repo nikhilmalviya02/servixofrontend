@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/AuthContext";
 import ProviderVerification from "../components/ProviderVerification";
 import {
   ArrowLeft, Shield, CheckCircle, AlertCircle,
-  Clock, User, Briefcase, CreditCard, Phone, Camera
+  Clock
 } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -234,7 +233,6 @@ interface VerificationStats {
 }
 
 function ProviderVerificationPage() {
-  const { user } = useAuth();
   const [stats, setStats] = useState<VerificationStats>({
     total: 7,
     verified: 0,
@@ -400,7 +398,7 @@ function ProviderVerificationPage() {
           </div>
 
           {/* Verification Component */}
-          <ProviderVerification providerId={user?.id} />
+          <ProviderVerification />
         </div>
       </div>
     </>

@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/AuthContext";
 import {
-  Shield, Upload, CheckCircle, XCircle, Clock, AlertCircle,
+  Shield, Upload, CheckCircle, XCircle, Clock,
   FileText, User, Briefcase, Phone, Camera, CreditCard,
-  Award, Building, Eye, Edit, Trash2, Plus, Download
+  Award, Building, Eye, Trash2, Plus
 } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -503,16 +502,11 @@ interface VerificationData {
   };
 }
 
-interface ProviderVerificationProps {
-  providerId?: string;
-}
-
-function ProviderVerification({ providerId }: ProviderVerificationProps) {
-  const { user } = useAuth();
+function ProviderVerification() {
   const [verification, setVerification] = useState<VerificationData>({});
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [, setUploading] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const token = localStorage.getItem("token");
 
@@ -582,7 +576,7 @@ function ProviderVerification({ providerId }: ProviderVerificationProps) {
 
   const handlePhoneVerification = async (phoneNumber: string) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `https://servixobackend.vercel.app/api/provider/verification/phone/send-otp`,
         { phoneNumber },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -629,7 +623,9 @@ function ProviderVerification({ providerId }: ProviderVerificationProps) {
       verification.profilePhoto
     ];
     
-    const verifiedCount = sections.filter(section => section?.status === "verified").length;
+    const verifiedCount = sections.filter(section => 
+      section && 'status' in section && section.status === "verified"
+    ).length;
     return Math.round((verifiedCount / sections.length) * 100);
   };
 
@@ -727,7 +723,7 @@ function ProviderVerification({ providerId }: ProviderVerificationProps) {
                   verification.phone,
                   verification.bankAccount,
                   verification.profilePhoto
-                ].filter(s => s?.status === "verified").length}
+                ].filter(s => s && 'status' in s && s.status === "verified").length}
               </div>
               <div className="pv-stat-label">Verified</div>
             </div>
@@ -740,7 +736,7 @@ function ProviderVerification({ providerId }: ProviderVerificationProps) {
                   verification.phone,
                   verification.bankAccount,
                   verification.profilePhoto
-                ].filter(s => s?.status === "pending").length}
+                ].filter(s => s && 'status' in s && s.status === "pending").length}
               </div>
               <div className="pv-stat-label">Pending</div>
             </div>

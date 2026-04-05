@@ -8,7 +8,7 @@ import {
   Briefcase, CalendarDays, Star, TrendingUp, Clock,
   CheckCircle, XCircle, AlertCircle, Plus, Trash2,
   ExternalLink, Filter, Search, ChevronRight,
-  BarChart3, Zap, ArrowUpRight, Shield, CreditCard,
+  BarChart3, Zap, ArrowUpRight, Shield,
 } from "lucide-react";
 
 /* ─── Styles ─── */
