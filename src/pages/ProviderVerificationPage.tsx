@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ProviderVerification from "../components/ProviderVerification";
+import ProviderVerificationForm from "../components/ProviderVerificationForm";
 import {
   ArrowLeft, Shield, CheckCircle, AlertCircle,
   Clock
@@ -397,8 +398,8 @@ function ProviderVerificationPage() {
             </div>
           </div>
 
-          {/* Verification Component */}
-          <ProviderVerification />
+          {/* Verification Form Component */}
+          <ProviderVerificationForm />
         </div>
       </div>
     </>
