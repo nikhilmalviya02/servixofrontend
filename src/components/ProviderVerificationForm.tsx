@@ -5,8 +5,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import {
   Shield, Upload, CheckCircle, XCircle, AlertCircle,
-  User, Briefcase, Camera, FileText, Phone, Mail,
-  MapPin, CreditCard, Star, Clock, ArrowLeft, Plus
+  Briefcase, Camera, FileText, Phone, CreditCard, Star, Clock, Plus
 } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -418,7 +417,6 @@ interface VerificationField {
 function ProviderVerificationForm() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [activeField, setActiveField] = useState<string | null>(null);
   
@@ -516,10 +514,10 @@ function ProviderVerificationForm() {
 
   useEffect(() => {
     // Pre-fill phone number if available
-    if (user?.phone) {
+    if (user && (user as any).phone) {
       setFields(prev => prev.map(field => 
         field.id === 'phoneNumber' 
-          ? { ...field, value: user.phone, completed: true }
+          ? { ...field, value: (user as any).phone, completed: true }
           : field
       ));
     }
