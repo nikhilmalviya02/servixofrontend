@@ -22,6 +22,7 @@ const AdminReviews = lazy(() => import("./pages/AdminReviews"));
 const AdminCategories = lazy(() => import("./pages/AdminCategories"));
 const AdminUserDetails = lazy(() => import("./pages/AdminUserDetails"));
 const ProviderProfile = lazy(() => import("./pages/ProviderProfile"));
+const ProviderVerificationPage = lazy(() => import("./pages/ProviderVerificationPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
@@ -125,6 +126,15 @@ function AppContent() {
             element={
               <RoleBasedRoute allowedRoles={["provider"]}>
                 <ProviderBookings />
+              </RoleBasedRoute>
+            }
+          />
+
+          <Route
+            path="/provider/verification"
+            element={
+              <RoleBasedRoute allowedRoles={["provider"]}>
+                <ProviderVerificationPage />
               </RoleBasedRoute>
             }
           />

@@ -8,7 +8,7 @@ import {
   Briefcase, CalendarDays, Star, TrendingUp, Clock,
   CheckCircle, XCircle, AlertCircle, Plus, Trash2,
   ExternalLink, Filter, Search, ChevronRight,
-  BarChart3, Zap, ArrowUpRight,
+  BarChart3, Zap, ArrowUpRight, Shield, CreditCard,
 } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -878,6 +878,29 @@ function ProviderDashboard() {
 
             {/* ── SIDEBAR ── */}
             <div className="pd-col-side">
+
+              {/* Verification Status */}
+              <div className="pd-card">
+                <div className="pd-card-head">
+                  <div className="pd-card-head-left">
+                    <div className="pd-card-head-icon" style={{ background: "rgba(16,185,129,.08)", border: "1px solid rgba(16,185,129,.15)" }}>
+                      <Shield size={17} style={{ color: "#10b981" }} />
+                    </div>
+                    <div>
+                      <div className="pd-card-title">Verification Status</div>
+                      <div className="pd-card-sub">Complete your profile verification</div>
+                    </div>
+                  </div>
+                  <Link to="/provider/verification" className="pd-link-btn">
+                    Manage <ChevronRight size={12} />
+                  </Link>
+                </div>
+                <div className="pd-status-rows">
+                  <StatusRow label="Identity"   count={1}   total={3} barColor="#3b82f6" iconBg="rgba(59,130,246,.1)"  iconColor="#3b82f6" icon={Shield} />
+                  <StatusRow label="Professional"  count={0}  total={2} barColor="#10b981" iconBg="rgba(16,185,129,.1)"   iconColor="#10b981" icon={Briefcase} />
+                  <StatusRow label="Bank & Photo" count={1} total={2} barColor="#f59e0b" iconBg="rgba(245,158,11,.1)" iconColor="#f59e0b" icon={Shield} />
+                </div>
+              </div>
 
               {/* Status Breakdown */}
               <div className="pd-card">
