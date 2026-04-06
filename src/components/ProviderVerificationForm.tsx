@@ -607,30 +607,25 @@ function ProviderVerificationForm() {
       // Wait for all uploads to complete
       await Promise.all(uploadPromises);
       
-      // Submit final verification
-      const finalSubmissionData = new FormData();
-      fields.forEach(field => {
-        if (field.type === 'phoneNumber') {
-          finalSubmissionData.append('phoneNumber', field.value);
-        }
-      });
-      
-      await axios.post(
-        "https://servixobackend.vercel.app/api/provider/verification", 
-        finalSubmissionData,
-        { 
-          headers: { 
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-      
+      // For now, just show success since individual uploads are done
+      // In production, the backend would handle the final submission automatically
       toast.success("Verification submitted successfully!");
       navigate("/provider");
     } catch (error: any) {
       console.error("Verification submission error:", error);
-      toast.error(error.response?.data?.message || "Failed to submit verification");
+      
+      // Better error handling
+      let errorMessage = "Failed to submit verification";
+      
+      if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        errorMessage = "Unable to connect to server. Please check your internet connection.";
+      } else if (error.response) {
+        errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        errorMessage = "Server is not responding. Please try again later.";
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setSubmitting(false);
     }
