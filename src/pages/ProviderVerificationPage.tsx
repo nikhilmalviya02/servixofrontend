@@ -272,9 +272,7 @@ function ProviderVerificationPage() {
       verification.drivingLicense,
       verification.phone,
       verification.bankAccount,
-      verification.profilePhoto,
-      ...(verification.skillCertificates || []),
-      ...(verification.workExperience || [])
+      verification.profilePhoto
     ];
 
     const verified = sections.filter(s => s && s.status === "verified").length;

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import {
   Shield, Upload, CheckCircle, XCircle, AlertCircle,
-  Briefcase, Camera, FileText, Phone, CreditCard, Star, Clock, Plus
+  Camera, FileText, Phone, CreditCard, Clock, Plus
 } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -403,7 +403,7 @@ function InjectPVFStyle() {
 ══════════════════════════════════ */
 interface VerificationField {
   id: string;
-  type: 'aadharCard' | 'panCard' | 'drivingLicense' | 'phoneNumber' | 'skillCertificates' | 'workExperience' | 'bankAccountDetails' | 'profilePhoto';
+  type: 'aadharCard' | 'panCard' | 'drivingLicense' | 'phoneNumber' | 'bankAccountDetails' | 'profilePhoto';
   label: string;
   description: string;
   required: boolean;
@@ -465,30 +465,6 @@ function ProviderVerificationForm() {
       icon: Phone
     },
     {
-      id: 'skillCertificates',
-      type: 'skillCertificates',
-      label: 'Skill Certificates',
-      description: 'Upload your skill and professional certificates',
-      required: false,
-      completed: false,
-      value: [],
-      icon: Star,
-      accept: 'image/*,.pdf',
-      multiple: true
-    },
-    {
-      id: 'workExperience',
-      type: 'workExperience',
-      label: 'Work Experience',
-      description: 'Upload work experience documents and letters',
-      required: true,
-      completed: false,
-      value: [],
-      icon: Briefcase,
-      accept: 'image/*,.pdf',
-      multiple: true
-    },
-    {
       id: 'bankAccountDetails',
       type: 'bankAccountDetails',
       label: 'Bank Account Details',
@@ -528,8 +504,6 @@ function ProviderVerificationForm() {
       if (field.id === fieldId) {
         const completed = field.type === 'phoneNumber' 
           ? value.length > 0 
-          : field.type === 'skillCertificates' || field.type === 'workExperience'
-          ? Array.isArray(value) && value.length > 0
           : value !== null;
         
         return { ...field, value, completed };
