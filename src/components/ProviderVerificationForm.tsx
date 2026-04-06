@@ -556,32 +556,80 @@ function ProviderVerificationForm() {
     
     try {
       const token = localStorage.getItem("token");
-      const submissionData = new FormData();
       
-      // Append all field values
+      // Upload each file individually and handle phone number
+      const uploadPromises = fields.map(async (field) => {
+        if (field.type === 'phoneNumber' && field.value) {
+          // Handle phone number submission
+          return axios.post(
+            "https://servixobackend.vercel.app/api/provider/verification/phone/send-otp",
+            { phoneNumber: field.value },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } else if (field.value && field.value instanceof File) {
+          // Handle single file upload
+          const formData = new FormData();
+          formData.append('file', field.value);
+          
+          return axios.post(
+            `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
+            formData,
+            { 
+              headers: { 
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+              }
+            }
+          );
+        } else if (field.value && Array.isArray(field.value) && field.value.length > 0) {
+          // Handle multiple files (if any field supports it)
+          const uploadPromises = field.value.map((file: File) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            return axios.post(
+              `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
+              formData,
+              { 
+                headers: { 
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data'
+                }
+              }
+            );
+          });
+          
+          return Promise.all(uploadPromises);
+        }
+        return Promise.resolve();
+      });
+      
+      // Wait for all uploads to complete
+      await Promise.all(uploadPromises);
+      
+      // Submit final verification
+      const finalSubmissionData = new FormData();
       fields.forEach(field => {
         if (field.type === 'phoneNumber') {
-          submissionData.append('phoneNumber', field.value);
-        } else if (field.multiple) {
-          const files = field.value as File[];
-          files.forEach((file, index) => {
-            submissionData.append(`${field.id}_${index}`, file);
-          });
-        } else if (field.value) {
-          submissionData.append(field.id, field.value);
+          finalSubmissionData.append('phoneNumber', field.value);
         }
       });
       
-      await axios.post("https://servixobackend.vercel.app/api/provider/verification", submissionData, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        },
-      });
+      await axios.post(
+        "https://servixobackend.vercel.app/api/provider/verification", 
+        finalSubmissionData,
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
       
       toast.success("Verification submitted successfully!");
       navigate("/provider");
     } catch (error: any) {
+      console.error("Verification submission error:", error);
       toast.error(error.response?.data?.message || "Failed to submit verification");
     } finally {
       setSubmitting(false);
