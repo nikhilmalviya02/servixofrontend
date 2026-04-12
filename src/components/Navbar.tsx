@@ -225,6 +225,28 @@ const NAVBAR_STYLE = `
     font-weight: 600;
   }
 
+  .nb-drawer-signin {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--sg-accent);
+    font-size: .95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-bottom: .5rem;
+    -webkit-tap-highlight-color: transparent;
+    border: 1px solid rgba(59,130,246,0.15);
+  }
+  .nb-drawer-signin:hover {
+    color: #2563eb;
+    background: rgba(59,130,246,0.08);
+    transform: translateX(4px);
+    border-color: rgba(59,130,246,0.25);
+  }
+
   .nb-drawer-sep { height: 1px; background: var(--sg-border); margin: .7rem 0; }
 
   .nb-drawer-cta {
@@ -284,18 +306,12 @@ function Navbar() {
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
     } else {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     }
     
     return () => {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     };
   }, [menuOpen]);
 
@@ -382,8 +398,9 @@ function Navbar() {
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
+        </nav>
 
-        {/* Mobile drawer */}
+        {/* Mobile drawer — must be outside <nav> because backdrop-filter on .nb-nav creates a containing block that breaks position:fixed on descendants */}
         <div className={`nb-drawer${menuOpen ? " show" : ""}`}>
             {user && (
               <div className="nb-drawer-user">
@@ -425,7 +442,7 @@ function Navbar() {
             <div className="nb-drawer-sep" />
             {!user ? (
               <>
-                <NavLink to="/login" className={drawerLinkClass} onClick={closeMenu}>Sign In</NavLink>
+                <NavLink to="/login" className="nb-drawer-signin" onClick={closeMenu}>Sign In</NavLink>
                 <Link to="/register" className="nb-drawer-cta" onClick={closeMenu}>Get Started →</Link>
               </>
             ) : (
@@ -434,7 +451,6 @@ function Navbar() {
               </button>
             )}
           </div>
-        </nav>
     </>
   );
 }
