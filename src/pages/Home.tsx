@@ -129,7 +129,7 @@ const HOME_STYLE = `
   .hm-stat-chip-label { font-size: .68rem; color: var(--sg-muted); margin-top: .15rem; letter-spacing: .4px; text-transform: uppercase; }
 
   /* ── SECTIONS COMMON ── */
-  .hm-section { padding: 3.5rem 5%; max-width: 1280px; margin: 0 auto; }
+  .hm-section { padding: 3rem 4%; max-width: 1280px; margin: 0 auto; }
 
   .hm-section-head {
     display: flex; align-items: flex-end; justify-content: space-between;
@@ -213,29 +213,31 @@ const HOME_STYLE = `
   /* ── CATEGORIES ── */
   .hm-cat-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: .8rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
   }
-  @media(min-width:640px){ .hm-cat-grid { grid-template-columns: repeat(8,1fr); } }
+  @media(min-width:480px){ .hm-cat-grid { grid-template-columns: repeat(3,1fr); } }
+  @media(min-width:640px){ .hm-cat-grid { grid-template-columns: repeat(4,1fr); } }
+  @media(min-width:768px){ .hm-cat-grid { grid-template-columns: repeat(8,1fr); } }
 
   .hm-cat-card {
     background: var(--sg-surface);
     border: 1px solid var(--sg-border);
-    border-radius: 16px; padding: .9rem .5rem;
+    border-radius: 16px; padding: 0.8rem 0.5rem;
     text-align: center; text-decoration: none;
     transition: transform .25s, border-color .25s;
     display: block;
   }
   .hm-cat-card:hover { transform: translateY(-3px); border-color: rgba(59,130,246,.22); }
   .hm-cat-icon {
-    width: 44px; height: 44px; border-radius: 12px; margin: 0 auto .6rem;
+    width: 40px; height: 40px; border-radius: 12px; margin: 0 auto 0.5rem;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     box-shadow: 0 4px 14px rgba(0,0,0,.3);
     transition: transform .2s;
   }
   .hm-cat-card:hover .hm-cat-icon { transform: scale(1.1); }
-  .hm-cat-label { font-size:.7rem; font-weight:600; color:var(--sg-muted); }
+  .hm-cat-label { font-size:0.65rem; font-weight:600; color:var(--sg-muted); }
 
   /* ── SERVICE CARDS ── */
   .hm-srv-grid {

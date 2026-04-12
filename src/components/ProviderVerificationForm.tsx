@@ -32,48 +32,58 @@ const PVF_STYLE = `
 
   .pvf-root {
     font-family: 'Inter', sans-serif;
-    margin-top: 4rem;
-    padding: 0 1rem;
+    margin-top: 3rem;
+    padding: 0 0.8rem;
   }
 
   /* ── FIELD LIST ── */
   .pvf-field-list {
     background: #fff;
     border: 1px solid var(--pvf-border);
-    border-radius: 22px;
-    padding: 1.8rem;
+    border-radius: 18px;
+    padding: 1.5rem;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .pvf-field-list-head {
     display: flex; align-items: center; gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--pvf-border);
+    flex-wrap: wrap;
   }
 
   .pvf-field-list-icon {
-    width: 44px; height: 44px; border-radius: 13px;
+    width: 38px; height: 38px; border-radius: 11px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);
   }
 
   .pvf-field-list-title {
     font-family: 'Inter', sans-serif; font-weight: 700;
-    font-size: 1.1rem; color: var(--pvf-text);
+    font-size: clamp(1rem, 3vw, 1.1rem); color: var(--pvf-text);
   }
 
   .pvf-field-list-sub {
-    font-size: .78rem; color: var(--pvf-muted);
+    font-size: .75rem; color: var(--pvf-muted);
     margin-top: .2rem; font-weight: 400;
   }
 
   .pvf-field-item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1.2rem; background: var(--pvf-surface);
-    border: 1px solid var(--pvf-border); border-radius: 14px;
-    margin-bottom: 1.5rem; transition: all .2s;
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 1rem; background: var(--pvf-surface);
+    border: 1px solid var(--pvf-border); border-radius: 12px;
+    margin-bottom: 1rem; transition: all .2s;
+    flex-wrap: wrap;
+  }
+  @media(max-width:480px) {
+    .pvf-field-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.8rem;
+    }
   }
 
   .pvf-field-item:hover {
@@ -87,9 +97,14 @@ const PVF_STYLE = `
   }
 
   .pvf-field-icon {
-    width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);
+  }
+  @media(max-width:480px) {
+    .pvf-field-icon {
+      width: 32px; height: 32px;
+    }
   }
 
   .pvf-field-item.completed .pvf-field-icon {
@@ -99,22 +114,45 @@ const PVF_STYLE = `
   .pvf-field-info {
     flex: 1; min-width: 0;
   }
+  @media(max-width:480px) {
+    .pvf-field-info {
+      flex: 1 1 100%;
+    }
+  }
 
   .pvf-field-name {
-    font-size: .9rem; font-weight: 600; color: var(--pvf-text);
+    font-size: .85rem; font-weight: 600; color: var(--pvf-text);
     margin-bottom: .2rem;
+  }
+  @media(max-width:480px) {
+    .pvf-field-name {
+      font-size: .8rem;
+    }
   }
 
   .pvf-field-desc {
-    font-size: .75rem; color: var(--pvf-muted);
+    font-size: .72rem; color: var(--pvf-muted);
+  }
+  @media(max-width:480px) {
+    .pvf-field-desc {
+      font-size: .68rem;
+    }
   }
 
   .pvf-field-status {
-    display: flex; align-items: center; gap: .5rem;
-    font-size: .73rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .02em; padding: .3rem .8rem;
+    display: flex; align-items: center; gap: .4rem;
+    font-size: .68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .02em; padding: .25rem .6rem;
     border-radius: 100px; background: var(--pvf-surface2);
     color: var(--pvf-muted); border: 1px solid var(--pvf-border);
+    flex-shrink: 0;
+  }
+  @media(max-width:480px) {
+    .pvf-field-status {
+      font-size: .6rem;
+      padding: .2rem .5rem;
+      align-self: flex-start;
+    }
   }
 
   .pvf-field-status.completed {
@@ -123,11 +161,20 @@ const PVF_STYLE = `
   }
 
   .pvf-field-action {
-    display: flex; align-items: center; gap: .5rem;
-    padding: .6rem 1.2rem; border-radius: 10px;
+    display: flex; align-items: center; gap: .4rem;
+    padding: .5rem 1rem; border-radius: 10px;
     background: var(--pvf-accent); color: #fff;
-    border: none; font-size: .8rem; font-weight: 600;
+    border: none; font-size: .75rem; font-weight: 600;
     cursor: pointer; transition: all .2s;
+    flex-shrink: 0;
+  }
+  @media(max-width:480px) {
+    .pvf-field-action {
+      padding: .4rem .8rem;
+      font-size: .7rem;
+      width: 100%;
+      justify-content: center;
+    }
   }
 
   .pvf-field-action:hover {
@@ -147,32 +194,35 @@ const PVF_STYLE = `
   .pvf-form-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,.5);
     display: flex; align-items: center; justify-content: center;
-    z-index: 1000; padding: 2rem;
+    z-index: 1000; padding: 1rem;
   }
 
   .pvf-form-modal {
-    background: #fff; border-radius: 20px; padding: 2rem;
-    max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
+    background: #fff; border-radius: 16px; padding: 1.5rem;
+    max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,.3);
   }
 
   .pvf-form-modal-head {
     display: flex; align-items: center; justify-content: flex-start;
-    margin-bottom: 1.5rem; padding-bottom: 1rem;
+    margin-bottom: 1.2rem; padding-bottom: 1rem;
     border-bottom: 1px solid var(--pvf-border);
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .pvf-form-modal-title {
     font-family: 'Inter', sans-serif; font-weight: 700;
-    font-size: 1.2rem; color: var(--pvf-text);
+    font-size: clamp(1.1rem, 3vw, 1.2rem); color: var(--pvf-text);
   }
 
   .pvf-form-close {
-    width: 32px; height: 32px; border-radius: 8px;
+    width: 28px; height: 28px; border-radius: 8px;
     background: none; border: 1px solid var(--pvf-border);
     color: var(--pvf-muted); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all .2s;
+    flex-shrink: 0;
   }
 
   .pvf-form-close:hover {
@@ -181,13 +231,13 @@ const PVF_STYLE = `
   }
 
   .pvf-form-group {
-    margin-bottom: 1.3rem;
+    margin-bottom: 1.2rem;
   }
 
   .pvf-form-label {
-    display: flex; align-items: center; gap: .5rem;
-    font-size: .85rem; font-weight: 600; color: var(--pvf-text);
-    margin-bottom: .6rem;
+    display: flex; align-items: center; gap: .4rem;
+    font-size: .8rem; font-weight: 600; color: var(--pvf-text);
+    margin-bottom: .5rem;
   }
 
   .pvf-form-label .required {
@@ -196,10 +246,10 @@ const PVF_STYLE = `
 
   .pvf-form-input,
   .pvf-form-textarea {
-    width: 100%; padding: .7rem 1rem;
+    width: 100%; padding: .6rem .8rem;
     background: var(--pvf-surface); border: 1px solid var(--pvf-border);
-    border-radius: 11px; font-family: 'Inter', sans-serif;
-    font-size: .85rem; color: var(--pvf-text);
+    border-radius: 10px; font-family: 'Inter', sans-serif;
+    font-size: .8rem; color: var(--pvf-text);
     transition: all .2s;
   }
 
@@ -214,7 +264,7 @@ const PVF_STYLE = `
 
   .pvf-file-upload {
     border: 2px dashed var(--pvf-border);
-    border-radius: 14px; padding: 1.5rem;
+    border-radius: 12px; padding: 1.2rem;
     text-align: center; transition: all .2s;
     cursor: pointer; background: var(--pvf-surface);
   }
@@ -225,27 +275,27 @@ const PVF_STYLE = `
   }
 
   .pvf-upload-icon {
-    width: 48px; height: 48px; border-radius: 12px;
+    width: 40px; height: 40px; border-radius: 10px;
     background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.8rem;
   }
 
   .pvf-upload-text {
-    font-size: .85rem; font-weight: 600; color: var(--pvf-text);
+    font-size: .8rem; font-weight: 600; color: var(--pvf-text);
     margin-bottom: .4rem;
   }
 
   .pvf-upload-sub {
-    font-size: .73rem; color: var(--pvf-muted);
+    font-size: .7rem; color: var(--pvf-muted);
     margin-bottom: 1rem;
   }
 
   .pvf-upload-btn {
-    display: inline-flex; align-items: center; gap: .5rem;
-    padding: .6rem 1.2rem; border-radius: 10px;
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .5rem 1rem; border-radius: 10px;
     background: var(--pvf-accent); color: #fff;
-    border: none; font-size: .8rem; font-weight: 600;
+    border: none; font-size: .75rem; font-weight: 600;
     cursor: pointer; transition: all .2s;
   }
 
@@ -258,13 +308,13 @@ const PVF_STYLE = `
   }
 
   .pvf-file-item {
-    display: flex; align-items: center; gap: .8rem;
-    padding: .8rem 1rem; background: var(--pvf-surface);
+    display: flex; align-items: center; gap: .6rem;
+    padding: .6rem .8rem; background: var(--pvf-surface);
     border: 1px solid var(--pvf-border); border-radius: 10px;
   }
 
   .pvf-file-icon {
-    width: 32px; height: 32px; border-radius: 8px;
+    width: 28px; height: 28px; border-radius: 8px;
     background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.15);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -275,16 +325,16 @@ const PVF_STYLE = `
   }
 
   .pvf-file-name {
-    font-size: .8rem; font-weight: 600; color: var(--pvf-text);
+    font-size: .75rem; font-weight: 600; color: var(--pvf-text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
   .pvf-file-size {
-    font-size: .7rem; color: var(--pvf-muted);
+    font-size: .65rem; color: var(--pvf-muted);
   }
 
   .pvf-file-remove {
-    width: 28px; height: 28px; border-radius: 8px;
+    width: 24px; height: 24px; border-radius: 8px;
     background: none; border: 1px solid var(--pvf-border);
     color: var(--pvf-muted); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
@@ -303,9 +353,9 @@ const PVF_STYLE = `
   }
 
   .pvf-btn {
-    display: flex; align-items: center; gap: .5rem;
-    padding: .8rem 1.6rem; border-radius: 12px;
-    font-family: 'Inter', sans-serif; font-weight: 600; font-size: .85rem;
+    display: flex; align-items: center; gap: .4rem;
+    padding: .7rem 1.4rem; border-radius: 12px;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: .8rem;
     cursor: pointer; transition: all .2s; border: none;
     letter-spacing: .01em;
   }
@@ -333,9 +383,9 @@ const PVF_STYLE = `
   .pvf-progress {
     background: #fff;
     border: 1px solid var(--pvf-border);
-    border-radius: 20px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
   }
 
@@ -346,12 +396,12 @@ const PVF_STYLE = `
 
   .pvf-progress-title {
     font-family: 'Inter', sans-serif; font-weight: 700;
-    font-size: 1rem; color: var(--pvf-text);
+    font-size: clamp(0.9rem, 3vw, 1rem); color: var(--pvf-text);
   }
 
   .pvf-progress-percentage {
     font-family: 'Inter', sans-serif; font-weight: 800;
-    font-size: 1.5rem; color: var(--pvf-success);
+    font-size: clamp(1.2rem, 4vw, 1.5rem); color: var(--pvf-success);
   }
 
   .pvf-progress-bar {
@@ -367,14 +417,15 @@ const PVF_STYLE = `
   /* ── ACTIONS ── */
   .pvf-actions {
     display: flex; gap: 1rem; justify-content: flex-end;
-    margin-top: 2rem; padding-top: 2rem;
+    margin-top: 1.5rem; padding-top: 1.5rem;
     border-top: 1px solid var(--pvf-border);
+    flex-wrap: wrap;
   }
 
   /* ── LOADING ── */
   .pvf-loading {
     display: flex; align-items: center; justify-content: center;
-    padding: 2rem; gap: .8rem;
+    padding: 1.5rem; gap: .6rem;
   }
 
   .pvf-spinner {
@@ -799,27 +850,27 @@ function ProviderVerificationForm() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {fields.map((field) => {
               const Icon = field.icon;
               return (
                 <div key={field.id} className={`pvf-field-item ${field.completed ? 'completed' : ''}`}>
                   <div className="pvf-field-icon">
-                    <Icon size={18} style={{ color: field.completed ? "var(--pvf-success)" : "var(--pvf-accent)" }} />
+                    <Icon size={16} style={{ color: field.completed ? "var(--pvf-success)" : "var(--pvf-accent)" }} />
                   </div>
                   <div className="pvf-field-info">
                     <div className="pvf-field-name">{field.label}</div>
                     <div className="pvf-field-desc">{field.description}</div>
                   </div>
                   <div className={`pvf-field-status ${field.completed ? 'completed' : ''}`}>
-                    {field.completed ? <CheckCircle size={12} /> : <Clock size={12} />}
+                    {field.completed ? <CheckCircle size={10} /> : <Clock size={10} />}
                     {field.completed ? 'Completed' : 'Pending'}
                   </div>
                   <button
                     className={`pvf-field-action ${field.completed ? 'secondary' : ''}`}
                     onClick={() => setActiveField(field.id)}
                   >
-                    {field.completed ? 'Update' : <><Plus size={14} /> Add</>}
+                    {field.completed ? 'Update' : <><Plus size={12} /> Add</>}
                   </button>
                 </div>
               );

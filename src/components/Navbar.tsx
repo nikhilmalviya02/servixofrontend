@@ -39,11 +39,12 @@ const NAVBAR_STYLE = `
   .nb-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 clamp(16px, 3vw, 40px);
+    padding: 0 clamp(12px, 4vw, 40px);
     height: 64px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    position: relative;
   }
 
   /* ── logo ── */
@@ -140,32 +141,89 @@ const NAVBAR_STYLE = `
   .nb-logout:hover { color: #3b82f6; background: rgba(59,130,246,.08); }
 
   .nb-toggle {
-    display: flex; align-items: center; justify-content: center;
-    width: 38px; height: 38px; border-radius: 10px;
-    background: rgba(255,255,255,.04); border: 1px solid var(--sg-border);
-    color: var(--sg-muted); cursor: pointer; transition: color .2s, background .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--sg-border);
+    color: var(--sg-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+    -webkit-tap-highlight-color: transparent;
   }
-  .nb-toggle:hover { color: var(--sg-text); background: rgba(0,0,0,.04); }
+  .nb-toggle:hover {
+    color: var(--sg-text);
+    background: rgba(0,0,0,.04);
+    transform: scale(1.05);
+  }
+  .nb-toggle:active {
+    transform: scale(0.95);
+  }
   @media(min-width:768px){ .nb-toggle { display:none; } }
 
   /* ── mobile drawer ── */
   .nb-drawer {
-    display: block;
-    background: rgba(255,255,255,.95); backdrop-filter: blur(24px);
-    border-top: 1px solid var(--sg-border); border-bottom: 1px solid var(--sg-border);
-    padding: 1rem 5% 1.4rem;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(24px);
+    border-top: 1px solid var(--sg-border);
+    padding: 1.5rem 5%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
   }
-  @media(min-width:768px){ .nb-drawer { display:none !important; } }
+  .nb-drawer.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  @media(min-width:768px){ 
+    .nb-drawer { 
+      display: none !important; 
+    } 
+  }
+  @media(max-width:767px){ 
+    .nb-drawer { 
+      display: block; 
+    } 
+  }
 
   .nb-drawer-link {
-    display: flex; align-items: center; gap: .75rem;
-    padding: .8rem 1rem; border-radius: 12px;
-    text-decoration: none; color: var(--sg-muted);
-    font-size: .9rem; font-weight: 500;
-    transition: color .2s, background .2s; margin-bottom: .25rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--sg-muted);
+    font-size: .95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: .5rem;
+    -webkit-tap-highlight-color: transparent;
   }
-  .nb-drawer-link:hover  { color: var(--sg-text); background: rgba(0,0,0,.02); }
-  .nb-drawer-link.active { color: var(--sg-accent); background: rgba(59,130,246,.08); font-weight: 600; }
+  .nb-drawer-link:hover  {
+    color: var(--sg-text);
+    background: rgba(0,0,0,.02);
+    transform: translateX(4px);
+  }
+  .nb-drawer-link.active {
+    color: var(--sg-accent);
+    background: rgba(59,130,246,.08);
+    font-weight: 600;
+  }
 
   .nb-drawer-sep { height: 1px; background: var(--sg-border); margin: .7rem 0; }
 
@@ -221,6 +279,25 @@ function Navbar() {
   const { user, logout }: any = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const role = localStorage.getItem("role");
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [menuOpen]);
 
   const handleLogout = () => {
     logout();
@@ -307,8 +384,7 @@ function Navbar() {
         </div>
 
         {/* Mobile drawer */}
-        {menuOpen && (
-          <div className="nb-drawer">
+        <div className={`nb-drawer${menuOpen ? " show" : ""}`}>
             {user && (
               <div className="nb-drawer-user">
                 <div className="nb-drawer-avatar">{avatarLetter}</div>
@@ -358,8 +434,7 @@ function Navbar() {
               </button>
             )}
           </div>
-        )}
-      </nav>
+        </nav>
     </>
   );
 }

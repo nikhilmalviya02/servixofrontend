@@ -85,20 +85,20 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
 
   if (compact) {
     return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="grid grid-cols-1 gap-3">
           <input
             name="title"
             value={form.title}
             placeholder="Service Title"
-            className="border border-gray-200 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+            className="border border-gray-200 rounded-lg p-2.5 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter text-sm"
             onChange={handleChange}
           />
 
           <select
             name="category"
             value={form.category}
-            className="border border-gray-200 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+            className="border border-gray-200 rounded-lg p-2.5 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter text-sm"
             onChange={handleChange}
           >
             <option value="">Select Category</option>
@@ -115,23 +115,23 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           value={form.description}
           placeholder="Service Description"
           rows={3}
-          className="border border-blue-500 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none"
+          className="border border-blue-500 rounded-lg p-2.5 w-full focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none text-sm"
           onChange={handleChange}
         />
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             name="price"
             type="number"
             value={form.price}
             placeholder="Price (₹)"
-            className="border border-gray-200 rounded-lg p-3 w-40 focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+            className="border border-gray-200 rounded-lg p-2.5 w-full sm:w-32 focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 transition font-inter text-sm"
             onChange={handleChange}
           />
 
           <button
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed font-inter"
+            className="bg-blue-600 hover:bg-blue-700 transition text-white px-4 py-2.5 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed font-inter text-sm flex-1 sm:flex-none"
           >
             {loading ? "Adding..." : "Add Service"}
           </button>
@@ -141,12 +141,12 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 transition">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 transition px-4 py-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-4 border border-gray-200"
+        className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md space-y-4 border border-gray-200"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800 font-inter">
+        <h2 className="text-xl font-bold text-center text-gray-800 font-inter">
           Add New Service
         </h2>
 
@@ -154,7 +154,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           name="title"
           value={form.title}
           placeholder="Service Title"
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter text-base"
           onChange={handleChange}
         />
 
@@ -163,14 +163,14 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           value={form.description}
           placeholder="Service Description"
           rows={3}
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter resize-none text-base"
           onChange={handleChange}
         />
 
         <select
           name="category"
           value={form.category}
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter text-base"
           onChange={handleChange}
         >
           <option value="">Select Category</option>
@@ -186,13 +186,13 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
           type="number"
           value={form.price}
           placeholder="Price (₹)"
-          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter"
+          className="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-900 transition font-inter text-base"
           onChange={handleChange}
         />
 
         <button
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-inter"
+          className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-lg w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-inter text-base"
         >
           {loading ? "Adding..." : "Add Service"}
         </button>

@@ -180,7 +180,7 @@ function AdminDashboard() {
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Desktop Sidebar */}
-      <div className="w-64 bg-white border-r border-gray-200 p-6 fixed h-full hidden md:block flex flex-col">
+      <div className="w-64 bg-white border-r border-gray-200 p-6 fixed h-full hidden md:block flex flex-col overflow-y-auto">
         <h2 className="text-xl font-bold mb-6 text-blue-600">
           Admin Panel
         </h2>
@@ -249,7 +249,7 @@ function AdminDashboard() {
       )}
 
       {/* Mobile Sidebar Drawer */}
-      <div className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 md:hidden ${
+      <div className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 md:hidden overflow-y-auto ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="p-6 h-full flex flex-col">
@@ -327,7 +327,7 @@ function AdminDashboard() {
       {/* Main Content */}
       <div className="flex-1 md:ml-64 p-4 sm:p-6 lg:p-8 overflow-y-auto min-h-screen bg-gray-50">
         {/* Mobile Header with Menu Button */}
-        <div className="flex items-center justify-between mb-6 md:hidden">
+        <div className="flex items-center justify-between mb-6 md:hidden sticky top-0 bg-gray-50 z-10 py-2">
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-lg bg-white border border-gray-200"
@@ -364,19 +364,19 @@ function AdminDashboard() {
           {statCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white p-4 sm:p-5 rounded-xl border border-gray-100"
+              className="bg-white p-4 sm:p-5 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 hover:scale-105 hover:border-blue-200 cursor-pointer"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className={`p-2 rounded-lg bg-${card.color}-100 text-${card.color}-600`}>
+                <div className={`p-2 rounded-xl bg-gradient-to-br from-${card.color}-50 to-${card.color}-100 text-${card.color}-600 shadow-sm`}>
                   <card.icon />
                 </div>
-                <span className="flex items-center gap-1 text-xs font-medium text-green-600">
+                <span className="flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
                   <TrendUpIcon />
                   {card.trend}
                 </span>
               </div>
-              <h3 className="text-xs sm:text-sm text-gray-500">{card.title}</h3>
-              <p className={`text-xl sm:text-2xl font-bold text-${card.color}-600 mt-1`}>
+              <h3 className="text-xs sm:text-sm text-gray-500 font-medium">{card.title}</h3>
+              <p className={`text-xl sm:text-2xl font-bold bg-gradient-to-r from-${card.color}-600 to-${card.color}-700 bg-clip-text text-transparent mt-1`}>
                 {card.value?.toLocaleString() || 0}
               </p>
             </div>
@@ -386,10 +386,15 @@ function AdminDashboard() {
         {/* Charts Section */}
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Bar Chart */}
-          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100">
-            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
-              Platform Statistics
-            </h2>
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                Platform Statistics
+              </h2>
+              <div className="p-2 bg-blue-50 rounded-lg">
+                <BarChart className="w-4 h-4 text-blue-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={barData}>
                 <XAxis dataKey="name" tick={{ fill: "#6B7280", fontSize: 12 }} />
@@ -412,10 +417,15 @@ function AdminDashboard() {
           </div>
 
           {/* Pie Chart */}
-          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100">
-            <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
-              Booking Status Distribution
-            </h2>
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                Booking Status Distribution
+              </h2>
+              <div className="p-2 bg-purple-50 rounded-lg">
+                <PieChart className="w-4 h-4 text-purple-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
@@ -448,18 +458,18 @@ function AdminDashboard() {
         {/* Recent Activity Section */}
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Recent Bookings */}
-          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
+            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100">
               <h2 className="text-base sm:text-lg font-semibold text-gray-800">
                 Recent Bookings
               </h2>
-              <Link to="/admin/bookings" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+              <Link to="/admin/bookings" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium bg-indigo-50 px-3 py-1 rounded-full transition-colors duration-200">
                 View All
               </Link>
             </div>
             <div className="divide-y divide-gray-100">
               {recentBookings.map((booking) => (
-                <div key={booking._id} className="p-3 sm:p-4 hover:bg-gray-50">
+                <div key={booking._id} className="p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
                   <div className="flex items-center justify-between">
                     <div className="min-w-0 flex-1">
                       <p className="font-medium text-gray-800 truncate">
@@ -473,7 +483,7 @@ function AdminDashboard() {
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
                         {booking.status}
                       </span>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1 font-semibold">
                         ₹{booking.service?.price || 0}
                       </p>
                     </div>
@@ -482,27 +492,32 @@ function AdminDashboard() {
               ))}
               {recentBookings.length === 0 && (
                 <div className="p-8 text-center text-gray-500">
-                  No recent bookings found
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-3">
+                      <BookingsIcon />
+                    </div>
+                    <p className="text-sm">No recent bookings found</p>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
           {/* Recent Users */}
-          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
+            <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100">
               <h2 className="text-base sm:text-lg font-semibold text-gray-800">
                 Recent Users
               </h2>
-              <Link to="/admin/users" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+              <Link to="/admin/users" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium bg-indigo-50 px-3 py-1 rounded-full transition-colors duration-200">
                 View All
               </Link>
             </div>
             <div className="divide-y divide-gray-100">
               {recentUsers.map((user) => (
-                <div key={user._id} className="p-3 sm:p-4 hover:bg-gray-50">
+                <div key={user._id} className="p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm sm:text-base shadow-sm">
                       {user.name?.charAt(0).toUpperCase() || "U"}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -521,7 +536,12 @@ function AdminDashboard() {
               ))}
               {recentUsers.length === 0 && (
                 <div className="p-8 text-center text-gray-500">
-                  No users found
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-3">
+                      <UsersIcon />
+                    </div>
+                    <p className="text-sm">No users found</p>
+                  </div>
                 </div>
               )}
             </div>

@@ -34,10 +34,10 @@ const UD_STYLE = `
     background: var(--sg-bg);
     color: var(--sg-text);
     font-family: 'Inter', sans-serif;
-    padding: 6rem 5% 4rem;
+    padding: 4rem 4% 4rem;
     position: relative;
   }
-
+  
   /* mesh bg */
   .ud-root::before {
     content: '';
@@ -47,16 +47,17 @@ const UD_STYLE = `
       radial-gradient(ellipse 45% 40% at 10% 80%, rgba(6,182,212,.05) 0%, transparent 60%);
     pointer-events: none; z-index: 0;
   }
-
-  .ud-wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  
+  .ud-wrap { position: relative; z-index: 1; max-width: 100%; margin: 0 auto; }
 
   /* ── page header ── */
   .ud-header {
     display: flex; align-items: center; gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
   }
   .ud-header-icon {
-    width: 48px; height: 48px; border-radius: 14px;
+    width: 44px; height: 44px; border-radius: 14px;
     background: rgba(59,130,246,.12);
     border: 1px solid rgba(59,130,246,.25);
     display: flex; align-items: center; justify-content: center;
@@ -64,10 +65,10 @@ const UD_STYLE = `
   }
   .ud-page-title {
     font-family: 'Inter', sans-serif;
-    font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800; font-size: clamp(1.3rem, 4vw, 1.8rem);
     letter-spacing: -1px; color: var(--sg-text);
   }
-  .ud-page-sub { color: var(--sg-muted); font-size: .85rem; margin-top: .15rem; }
+  .ud-page-sub { color: var(--sg-muted); font-size: .8rem; margin-top: .1rem; }
 
   /* ── empty state ── */
   .ud-empty {
@@ -87,49 +88,49 @@ const UD_STYLE = `
   .ud-empty p  { color:var(--sg-muted); font-size:.88rem; margin-top:.35rem; }
 
   /* ── booking cards ── */
-  .ud-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+  .ud-cards { display: flex; flex-direction: column; gap: 1rem; }
 
   .ud-card {
     background: var(--sg-surface);
     border: 1px solid var(--sg-border);
-    border-radius: 22px;
-    padding: 1.8rem;
+    border-radius: 18px;
+    padding: 1.2rem;
     transition: border-color .25s, box-shadow .25s;
   }
   .ud-card:hover {
     border-color: rgba(59,130,246,.18);
-    box-shadow: 0 8px 32px rgba(59,130,246,.15);
+    box-shadow: 0 6px 24px rgba(59,130,246,.15);
   }
 
   /* card top row */
   .ud-card-top {
     display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 1rem;
+    justify-content: space-between; gap: 0.8rem;
     flex-wrap: wrap;
   }
-  .ud-card-title-row { display: flex; align-items: center; gap: .75rem; }
+  .ud-card-title-row { display: flex; align-items: center; gap: 0.6rem; }
   .ud-svc-icon {
-    width: 46px; height: 46px; border-radius: 14px;
-    background: rgba(59,130,246,.1);
-    border: 1px solid rgba(59,130,246,.2);
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(59,130,246,.08);
+    border: 1px solid rgba(59,130,246,.15);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .ud-svc-name {
     font-family: 'Inter', sans-serif;
-    font-weight: 700; font-size: 1.05rem; color: var(--sg-text);
+    font-weight: 700; font-size: 0.95rem; color: var(--sg-text);
   }
 
   /* meta chips row */
   .ud-meta {
-    display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.1rem;
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem;
   }
   .ud-chip {
-    display: flex; align-items: center; gap: .45rem;
-    background: rgba(255,255,255,.04);
+    display: flex; align-items: center; gap: 0.35rem;
+    background: rgba(255,255,255,.03);
     border: 1px solid var(--sg-border);
-    border-radius: 100px; padding: .38rem .9rem;
-    font-size: .78rem; color: var(--sg-muted);
+    border-radius: 8px; padding: 0.3rem 0.7rem;
+    font-size: 0.7rem; color: var(--sg-muted);
   }
   .ud-chip svg { flex-shrink:0; }
   .ud-chip strong { color: var(--sg-text); font-weight: 600; }
@@ -138,12 +139,12 @@ const UD_STYLE = `
   .ud-hr { border: none; border-top: 1px solid var(--sg-border); margin: 1.3rem 0; }
 
   /* action buttons */
-  .ud-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.2rem; }
+  .ud-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
 
   .ud-btn {
-    display: inline-flex; align-items: center; gap: .45rem;
-    padding: .6rem 1.2rem; border-radius: 10px;
-    font-family: 'Inter', sans-serif; font-weight: 500; font-size: .85rem;
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.5rem 1rem; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.8rem;
     border: 1px solid; cursor: pointer; transition: background .2s, transform .15s;
   }
   .ud-btn:hover { transform: translateY(-1px); }
@@ -186,30 +187,30 @@ const UD_STYLE = `
 
   /* reschedule form */
   .ud-reschedule-form {
-    margin-top: 1.2rem;
-    background: rgba(255,255,255,.03);
+    margin-top: 1rem;
+    background: rgba(255,255,255,.02);
     border: 1px solid var(--sg-border);
-    border-radius: 16px; padding: 1.4rem;
+    border-radius: 14px; padding: 1rem;
   }
   .ud-rs-title {
-    display: flex; align-items: center; gap: .5rem;
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: .9rem;
-    color: var(--sg-text); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85rem;
+    color: var(--sg-text); margin-bottom: 0.8rem;
   }
-  .ud-rs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .ud-rs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
   @media(max-width:500px){ .ud-rs-grid { grid-template-columns: 1fr; } }
 
   .ud-rs-label {
-    display: block; font-size: .72rem; font-weight: 600;
-    color: var(--sg-muted); letter-spacing: .5px;
-    text-transform: uppercase; margin-bottom: .4rem;
+    display: block; font-size: 0.65rem; font-weight: 600;
+    color: var(--sg-muted); letter-spacing: 0.3px;
+    text-transform: uppercase; margin-bottom: 0.3rem;
   }
   .ud-rs-input, .ud-rs-select {
     width: 100%;
     background: var(--sg-surface2);
     border: 1px solid var(--sg-border);
-    border-radius: 10px; padding: .7rem .9rem;
-    color: var(--sg-text); font-family: 'Inter', sans-serif; font-size: .88rem;
+    border-radius: 8px; padding: 0.5rem 0.7rem;
+    color: var(--sg-text); font-family: 'Inter', sans-serif; font-size: 0.8rem;
     outline: none; transition: border-color .2s;
   }
   .ud-rs-input:focus, .ud-rs-select:focus { border-color: rgba(59,130,246,.45); }

@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ProviderVerificationForm from "../components/ProviderVerificationForm";
 import {
-  ArrowLeft, Shield, CheckCircle, AlertCircle,
+  Shield, CheckCircle, AlertCircle,
   Clock
 } from "lucide-react";
 
@@ -32,7 +31,7 @@ const PVP_STYLE = `
     background: var(--sg-bg);
     color: var(--sg-text);
     font-family: 'Inter', sans-serif;
-    padding: 5.5rem 5% 4rem;
+    padding: 4rem 4% 4rem;
     position: relative;
   }
 
@@ -51,28 +50,30 @@ const PVP_STYLE = `
   .pvp-header {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 1.8rem 2.2rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 1.8rem;
     background: linear-gradient(135deg, #fff 0%, var(--sg-surface) 100%);
     border: 1px solid var(--sg-border);
-    border-radius: 20px;
+    border-radius: 16px;
     box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    flex-wrap: wrap;
   }
 
   .pvp-back-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.2rem;
+    padding: 0.6rem 1rem;
     border-radius: 10px;
     background: var(--sg-surface);
     border: 1px solid var(--sg-border);
     color: var(--sg-text);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.2s ease;
+    flex-shrink: 0;
   }
 
   .pvp-back-btn:hover {
@@ -87,29 +88,30 @@ const PVP_STYLE = `
   .pvp-title {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
     color: var(--sg-text);
     margin-bottom: 0.5rem;
   }
 
   .pvp-subtitle {
     color: var(--sg-muted);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   /* ── STATS BAR ── */
   .pvp-stats-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
+  @media(min-width:768px) { .pvp-stats-bar { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
 
   .pvp-stat-card {
     background: #fff;
     border: 1px solid var(--sg-border);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 14px;
+    padding: 1.2rem;
     text-align: center;
     transition: all 0.2s ease;
   }
@@ -120,24 +122,24 @@ const PVP_STYLE = `
   }
 
   .pvp-stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.8rem;
   }
 
   .pvp-stat-value {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: 800;
     color: var(--sg-text);
     margin-bottom: 0.5rem;
   }
 
   .pvp-stat-label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--sg-muted);
     font-weight: 500;
   }
@@ -147,9 +149,10 @@ const PVP_STYLE = `
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 1.5rem;
+    padding: 1rem 1.2rem;
     border-radius: 12px;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
   }
 
   .pvp-alert-info {
@@ -181,10 +184,11 @@ const PVP_STYLE = `
   .pvp-alert-title {
     font-weight: 600;
     margin-bottom: 0.25rem;
+    font-size: 0.95rem;
   }
 
   .pvp-alert-text {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     opacity: 0.9;
   }
 
@@ -193,13 +197,15 @@ const PVP_STYLE = `
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
     color: var(--sg-muted);
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .pvp-spinner {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: 3px solid var(--sg-surface2);
     border-top-color: var(--sg-accent);
     border-radius: 50%;
@@ -340,10 +346,6 @@ function ProviderVerificationPage() {
         <div className="pvp-wrap">
           {/* Header */}
           <div className="pvp-header">
-            <Link to="/provider/dashboard" className="pvp-back-btn">
-              <ArrowLeft size={16} />
-              Back to Dashboard
-            </Link>
             <div className="pvp-header-content">
               <h1 className="pvp-title">Provider Verification</h1>
               <p className="pvp-subtitle">Complete your verification to build trust and unlock more opportunities</p>
