@@ -262,10 +262,11 @@ const HOME_STYLE = `
   .hm-srv-card:hover .hm-srv-img img { transform: scale(1.07); }
   .hm-srv-rating {
     position: absolute; top: 10px; right: 10px;
-    background: rgba(10,10,15,.82); backdrop-filter: blur(8px);
+    background: rgba(255,255,255,.9); backdrop-filter: blur(8px);
     padding: .18rem .55rem; border-radius: 100px;
     font-size: .72rem; font-weight: 600; color: var(--sg-text);
     display: flex; align-items: center; gap: .25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   .hm-srv-body { padding: 1.2rem 1.3rem; }
   .hm-srv-title { font-family:'Syne',sans-serif; font-weight:700; font-size:.97rem; color:var(--sg-text); }

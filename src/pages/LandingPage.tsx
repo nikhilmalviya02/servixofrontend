@@ -370,10 +370,11 @@ const GLOBAL_STYLE = `
   }
   .sg-srv-rating {
     position:absolute; top:10px; right:10px;
-    background:rgba(16,16,20,.8); backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.9); backdrop-filter:blur(8px);
     padding:.2rem .6rem; border-radius:100px;
     font-size:.75rem; font-weight:600; color:var(--sg-text);
     display:flex; align-items:center; gap:.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   .sg-srv-body { padding: 1.3rem 1.5rem; }
   .sg-srv-body h3 { font-family:'Inter',sans-serif; font-weight:700; font-size:.97rem; color:var(--sg-text); }
