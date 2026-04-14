@@ -23,7 +23,7 @@ import electricalImage from "../assets/electrical_new.png";
 import acRepairImage from "../assets/ac_repair_new.png";
 import paintingImage from "../assets/painting.png";
 import gardeningImage from "../assets/garden.png";
-import heroImage from "../assets/hero.png";
+import heroImage from "../assets/Hero.png";
 
 /* ─── Light theme styles ─── */
 const HOME_STYLE = `
