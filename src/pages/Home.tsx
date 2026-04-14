@@ -17,12 +17,12 @@ import {
   ChevronRight,
   HomeIcon,
 } from "lucide-react";
-import homeCleaningImage from "../assets/home-cleaning.png";
-import plumbingImage from "../assets/plumbing.png";
-import electricalImage from "../assets/electrical.png";
-import acRepairImage from "../assets/ac-repair.png";
-import paintingImage from "../assets/painting.png";
-import gardeningImage from "../assets/gardening.png";
+import homeCleaningImage from "../assets/home_cleaning_new.png";
+import plumbingImage from "../assets/plumbing_new.png";
+import electricalImage from "../assets/electrical_new.png";
+import acRepairImage from "../assets/ac_repair_new.png";
+import paintingImage from "../assets/Painting.png";
+import gardeningImage from "../assets/garden.png";
 import heroImage from "../assets/Hero.png";
 
 /* ─── Light theme styles ─── */
@@ -262,9 +262,10 @@ const HOME_STYLE = `
   .hm-srv-card:hover .hm-srv-img img { transform: scale(1.07); }
   .hm-srv-rating {
     position: absolute; top: 10px; right: 10px;
-    background: rgba(10,10,15,.82); backdrop-filter: blur(8px);
-    padding: .18rem .55rem; border-radius: 100px;
-    font-size: .72rem; font-weight: 600; color: var(--sg-text);
+    background: rgba(255,255,255,.9); backdrop-filter: blur(8px);
+    padding: .3rem .7rem; border-radius: 100px;
+    font-size: .75rem; font-weight: 700; color: var(--sg-text);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     display: flex; align-items: center; gap: .25rem;
   }
   .hm-srv-body { padding: 1.2rem 1.3rem; }
@@ -359,10 +360,10 @@ function InjectHomeStyle() {
    COMPONENT
 ═══════════════════════════════ */
 function Home() {
-  const [services, setServices]   = useState<any[]>([]);
-  const [bookings, setBookings]   = useState<any[]>([]);
-  const [userName, setUserName]   = useState("");
-  const [greeting, setGreeting]   = useState("Good morning");
+  const [services, setServices] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [userName, setUserName] = useState("");
+  const [greeting, setGreeting] = useState("Good morning");
 
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -381,60 +382,66 @@ function Home() {
     setUserName(storedName);
 
     const hour = new Date().getHours();
-    if (hour < 12)      setGreeting("Good morning");
+    if (hour < 12) setGreeting("Good morning");
     else if (hour < 17) setGreeting("Good afternoon");
-    else                setGreeting("Good evening");
+    else setGreeting("Good evening");
 
     axios.get("https://servixobackend.vercel.app/api/services?limit=6")
       .then((res) => setServices(res.data.slice(0, 6)))
-      .catch(() => {});
+      .catch(() => { });
 
     const token = localStorage.getItem("token");
     if (token) {
       axios.get("https://servixobackend.vercel.app/api/bookings/my", {
         headers: { Authorization: `Bearer ${token}` },
-      }).then((res) => setBookings(res.data.slice(0, 3))).catch(() => {});
+      }).then((res) => setBookings(res.data.slice(0, 3))).catch(() => { });
     }
   }, []);
 
   const role = localStorage.getItem("role");
   if (role === "provider") return <Navigate to="/provider" replace />;
-  if (role === "admin")    return <Navigate to="/admin"    replace />;
+  if (role === "admin") return <Navigate to="/admin" replace />;
   // Users (customers) stay on home page - don't redirect to bookings
 
   const quickActions = [
-    { icon: Search,   label: "Find Services", bg: "rgba(255,107,53,.12)",  color: "#ff6b35",  link: "/services"  },
-    { icon: Calendar, label: "My Bookings",   bg: "rgba(0,212,255,.12)",   color: "#00d4ff",  link: "/user"      },
-    { icon: HomeIcon, label: "Address",        bg: "rgba(255,190,11,.12)",  color: "#ffbe0b",  link: "/addresses" },
+    { icon: Search, label: "Find Services", bg: "rgba(255,107,53,.12)", color: "#ff6b35", link: "/services" },
+    { icon: Calendar, label: "My Bookings", bg: "rgba(0,212,255,.12)", color: "#00d4ff", link: "/user" },
+    { icon: HomeIcon, label: "Address", bg: "rgba(255,190,11,.12)", color: "#ffbe0b", link: "/addresses" },
   ];
 
   const categories = [
-    { icon: "🧹", name: "Cleaning",  c1: "#4ade80", c2: "#059669" },
-    { icon: "🔧", name: "Plumbing",  c1: "#60a5fa", c2: "#0891b2" },
-    { icon: "⚡", name: "Electrical",c1: "#fbbf24", c2: "#ea580c" },
+    { icon: "🧹", name: "Cleaning", c1: "#4ade80", c2: "#059669" },
+    { icon: "🔧", name: "Plumbing", c1: "#60a5fa", c2: "#0891b2" },
+    { icon: "⚡", name: "Electrical", c1: "#fbbf24", c2: "#ea580c" },
     { icon: "❄️", name: "AC Repair", c1: "#22d3ee", c2: "#2563eb" },
-    { icon: "🎨", name: "Painting",  c1: "#f472b6", c2: "#e11d48" },
+    { icon: "🎨", name: "Painting", c1: "#f472b6", c2: "#e11d48" },
     { icon: "🪴", name: "Gardening", c1: "#4ade80", c2: "#0d9488" },
-    { icon: "🚗", name: "Vehicle",   c1: "#f87171", c2: "#db2777" },
+    { icon: "🚗", name: "Vehicle", c1: "#f87171", c2: "#db2777" },
     { icon: "🔨", name: "Carpentry", c1: "#fb923c", c2: "#d97706" },
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",      price: "499",  color: "#ff6b35", rating: 4.8, image: homeCleaningImage },
-    { icon: "🔧", title: "Plumbing Service",   price: "299",  color: "#00d4ff", rating: 4.7, image: plumbingImage },
-    { icon: "⚡", title: "Electrical Repair",  price: "349",  color: "#ffbe0b", rating: 4.9, image: electricalImage },
-    { icon: "❄️", title: "AC Service & Repair",price: "599",  color: "#60a5fa", rating: 4.8, image: acRepairImage },
-    { icon: "🎨", title: "Home Painting",       price: "1999", color: "#f472b6", rating: 4.6, image: paintingImage },
-    { icon: "🪴", title: "Garden Maintenance",  price: "399",  color: "#4ade80", rating: 4.7, image: gardeningImage },
+    { icon: "🧹", title: "Home Cleaning", price: "499", color: "#ff6b35", rating: 4.8, image: homeCleaningImage },
+    { icon: "🔧", title: "Plumbing Service", price: "299", color: "#00d4ff", rating: 4.7, image: plumbingImage },
+    { icon: "⚡", title: "Electrical Repair", price: "349", color: "#ffbe0b", rating: 4.9, image: electricalImage },
+    { icon: "❄️", title: "AC Service & Repair", price: "599", color: "#60a5fa", rating: 4.8, image: acRepairImage },
+    { icon: "🎨", title: "Home Painting", price: "1999", color: "#f472b6", rating: 4.6, image: paintingImage },
+    { icon: "🪴", title: "Garden Maintenance", price: "399", color: "#4ade80", rating: 4.7, image: gardeningImage },
   ];
 
-  const displayServices = services.length > 0 ? services : fallbackServices;
+  const displayServices = (services.length > 0 ? services : fallbackServices).map(s => {
+    if (!s.image) {
+      if (s.title?.toLowerCase().includes("paint")) return { ...s, image: paintingImage };
+      if (s.title?.toLowerCase().includes("garden")) return { ...s, image: gardeningImage };
+    }
+    return s;
+  });
 
   const statusClass = (status: string) => {
     const map: Record<string, string> = {
       completed: "hm-status hm-status-completed",
       confirmed: "hm-status hm-status-confirmed",
-      pending:   "hm-status hm-status-pending",
+      pending: "hm-status hm-status-pending",
       cancelled: "hm-status hm-status-cancelled",
     };
     return map[status] ?? "hm-status hm-status-default";
@@ -473,8 +480,8 @@ function Home() {
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <img 
-                src={heroImage} 
+              <img
+                src={heroImage}
                 alt="Professional Services"
                 style={{
                   width: "100%",
@@ -614,9 +621,9 @@ function Home() {
         <div className="hm-why">
           <div className="hm-why-grid">
             {[
-              { icon: ShieldCheck,  label: "Verified Professionals", sub: "Background checked experts",   bg: "rgba(255,107,53,.1)",  color: "#ff6b35" },
-              { icon: CalendarCheck,label: "Easy Scheduling",         sub: "Book in just a few clicks",    bg: "rgba(0,212,255,.1)",   color: "#00d4ff" },
-              { icon: CreditCard,   label: "Secure Payments",         sub: "100% secure transactions",     bg: "rgba(255,190,11,.1)",  color: "#ffbe0b" },
+              { icon: ShieldCheck, label: "Verified Professionals", sub: "Background checked experts", bg: "rgba(255,107,53,.1)", color: "#ff6b35" },
+              { icon: CalendarCheck, label: "Easy Scheduling", sub: "Book in just a few clicks", bg: "rgba(0,212,255,.1)", color: "#00d4ff" },
+              { icon: CreditCard, label: "Secure Payments", sub: "100% secure transactions", bg: "rgba(255,190,11,.1)", color: "#ffbe0b" },
             ].map((w) => (
               <div key={w.label} className="hm-why-item">
                 <div className="hm-why-icon" style={{ background: w.bg, border: `1px solid ${w.color}25` }}>
@@ -648,10 +655,10 @@ function Home() {
         {/* ── TRUST STRIP ── */}
         <div className="hm-trust">
           {[
-            { icon: Award,       label: "Top Rated",      color: "#ff6b35" },
-            { icon: ShieldCheck, label: "Verified",        color: "#4ade80" },
-            { icon: Clock,       label: "24/7 Support",    color: "#00d4ff" },
-            { icon: CreditCard,  label: "Secure Payment",  color: "#b478ff" },
+            { icon: Award, label: "Top Rated", color: "#ff6b35" },
+            { icon: ShieldCheck, label: "Verified", color: "#4ade80" },
+            { icon: Clock, label: "24/7 Support", color: "#00d4ff" },
+            { icon: CreditCard, label: "Secure Payment", color: "#b478ff" },
           ].map((t) => (
             <div key={t.label} className="hm-trust-item">
               <t.icon size={18} style={{ color: t.color }} />
