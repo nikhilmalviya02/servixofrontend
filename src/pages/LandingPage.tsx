@@ -18,10 +18,10 @@ import {
   Play,
   Zap,
 } from "lucide-react";
-import homeCleaningImage from "../assets/home_cleaning_new.png";
-import plumbingImage from "../assets/plumbing_new.png";
-import electricalImage from "../assets/electrical_new.png";
-import acRepairImage from "../assets/ac_repair_new.png";
+import homeCleaningImage from "../assets/home-cleaning.png";
+import plumbingImage from "../assets/plumbing.png";
+import electricalImage from "../assets/electrical.png";
+import acRepairImage from "../assets/ac-repair.png";
 
 /* ─────────────────────────────────────────────
    Inject light-theme CSS + Inter fonts
@@ -370,10 +370,9 @@ const GLOBAL_STYLE = `
   }
   .sg-srv-rating {
     position:absolute; top:10px; right:10px;
-    background:rgba(255,255,255,.9); backdrop-filter:blur(8px);
-    padding:.3rem .7rem; border-radius:100px;
-    font-size:.75rem; font-weight:700; color:var(--sg-text);
-    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    background:rgba(16,16,20,.8); backdrop-filter:blur(8px);
+    padding:.2rem .6rem; border-radius:100px;
+    font-size:.75rem; font-weight:600; color:var(--sg-text);
     display:flex; align-items:center; gap:.25rem;
   }
   .sg-srv-body { padding: 1.3rem 1.5rem; }
