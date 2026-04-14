@@ -17,13 +17,13 @@ import {
   ChevronRight,
   HomeIcon,
 } from "lucide-react";
-const homeCleaningImage = "/assets/home_cleaning_new.png";
-const plumbingImage = "/assets/plumbing_new.png";
-const electricalImage = "/assets/electrical_new.png";
-const acRepairImage = "/assets/ac_repair_new.png";
-const paintingImage = "/assets/painting.png";
-const gardeningImage = "/assets/garden.png";
-const heroImage = "/assets/hero.png";
+import homeCleaningImage from "../assets/home_cleaning_new.png";
+import plumbingImage from "../assets/plumbing_new.png";
+import electricalImage from "../assets/electrical_new.png";
+import acRepairImage from "../assets/ac_repair_new.png";
+import paintingImage from "../assets/Painting.png";
+import gardeningImage from "../assets/garden.png";
+import heroImage from "../assets/Hero.png";
 
 /* ─── Light theme styles ─── */
 const HOME_STYLE = `
