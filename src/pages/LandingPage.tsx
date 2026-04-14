@@ -18,10 +18,10 @@ import {
   Play,
   Zap,
 } from "lucide-react";
-import homeCleaningImage from "../assets/home-cleaning.png";
-import plumbingImage from "../assets/plumbing.png";
-import electricalImage from "../assets/electrical.png";
-import acRepairImage from "../assets/ac-repair.png";
+import homeCleaningImage from "../assets/home_cleaning_new.png";
+import plumbingImage from "../assets/plumbing_new.png";
+import electricalImage from "../assets/electrical_new.png";
+import acRepairImage from "../assets/ac_repair_new.png";
 
 /* ─────────────────────────────────────────────
    Inject light-theme CSS + Inter fonts
