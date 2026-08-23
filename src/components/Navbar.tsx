@@ -309,7 +309,7 @@ function Navbar() {
     } else {
       document.body.style.overflow = '';
     }
-    
+
     return () => {
       document.body.style.overflow = '';
     };
@@ -398,59 +398,59 @@ function Navbar() {
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
-        </nav>
+      </nav>
 
-        {/* Mobile drawer — must be outside <nav> because backdrop-filter on .nb-nav creates a containing block that breaks position:fixed on descendants */}
-        <div className={`nb-drawer${menuOpen ? " show" : ""}`}>
-            {user && (
-              <div className="nb-drawer-user">
-                <div className="nb-drawer-avatar">{avatarLetter}</div>
-                <div>
-                  <div className="nb-drawer-uname">{user?.name ?? "User"}</div>
-                  <div className="nb-drawer-urole">{role}</div>
-                </div>
-              </div>
-            )}
-            {showHome && (
-              <NavLink to={user ? "/home" : "/"} className={drawerLinkClass} onClick={closeMenu}>
-                <Home size={17} /> Home
-              </NavLink>
-            )}
-            <NavLink to="/services" className={drawerLinkClass} onClick={closeMenu}>
-              <Grid3X3 size={17} /> Services
-            </NavLink>
-            {user && role === "provider" && (
-              <>
-                <NavLink to="/provider" className={drawerLinkClass} onClick={closeMenu}>
-                  <LayoutDashboard size={17} /> Dashboard
-                </NavLink>
-                <NavLink to="/provider/bookings" className={drawerLinkClass} onClick={closeMenu}>
-                  <CalendarDays size={17} /> Bookings
-                </NavLink>
-              </>
-            )}
-            {user && role === "user" && (
-              <NavLink to="/user" className={drawerLinkClass} onClick={closeMenu}>
-                <CalendarDays size={17} /> My Bookings
-              </NavLink>
-            )}
-            {user && role === "admin" && (
-              <NavLink to="/admin" className={drawerLinkClass} onClick={closeMenu}>
-                <LayoutDashboard size={17} /> Admin Panel
-              </NavLink>
-            )}
-            <div className="nb-drawer-sep" />
-            {!user ? (
-              <>
-                <NavLink to="/login" className="nb-drawer-signin" onClick={closeMenu}>Sign In</NavLink>
-                <Link to="/register" className="nb-drawer-cta" onClick={closeMenu}>Get Started →</Link>
-              </>
-            ) : (
-              <button className="nb-drawer-logout" onClick={handleLogout}>
-                <LogOut size={17} /> Logout
-              </button>
-            )}
+      {/* Mobile drawer — must be outside <nav> because backdrop-filter on .nb-nav creates a containing block that breaks position:fixed on descendants */}
+      <div className={`nb-drawer${menuOpen ? " show" : ""}`}>
+        {user && (
+          <div className="nb-drawer-user">
+            <div className="nb-drawer-avatar">{avatarLetter}</div>
+            <div>
+              <div className="nb-drawer-uname">{user?.name ?? "User"}</div>
+              <div className="nb-drawer-urole">{role}</div>
+            </div>
           </div>
+        )}
+        {showHome && (
+          <NavLink to={user ? "/home" : "/"} className={drawerLinkClass} onClick={closeMenu}>
+            <Home size={17} /> Home
+          </NavLink>
+        )}
+        <NavLink to="/services" className={drawerLinkClass} onClick={closeMenu}>
+          <Grid3X3 size={17} /> Services
+        </NavLink>
+        {user && role === "provider" && (
+          <>
+            <NavLink to="/provider" className={drawerLinkClass} onClick={closeMenu}>
+              <LayoutDashboard size={17} /> Dashboard
+            </NavLink>
+            <NavLink to="/provider/bookings" className={drawerLinkClass} onClick={closeMenu}>
+              <CalendarDays size={17} /> Bookings
+            </NavLink>
+          </>
+        )}
+        {user && role === "user" && (
+          <NavLink to="/user" className={drawerLinkClass} onClick={closeMenu}>
+            <CalendarDays size={17} /> My Bookings
+          </NavLink>
+        )}
+        {user && role === "admin" && (
+          <NavLink to="/admin" className={drawerLinkClass} onClick={closeMenu}>
+            <LayoutDashboard size={17} /> Admin Panel
+          </NavLink>
+        )}
+        <div className="nb-drawer-sep" />
+        {!user ? (
+          <>
+            <NavLink to="/login" className="nb-drawer-signin" onClick={closeMenu}>Sign In</NavLink>
+            <Link to="/register" className="nb-drawer-cta" onClick={closeMenu}>Get Started →</Link>
+          </>
+        ) : (
+          <button className="nb-drawer-logout" onClick={handleLogout}>
+            <LogOut size={17} /> Logout
+          </button>
+        )}
+      </div>
     </>
   );
 }

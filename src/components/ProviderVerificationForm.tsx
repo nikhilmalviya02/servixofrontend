@@ -470,7 +470,7 @@ function ProviderVerificationForm() {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [activeField, setActiveField] = useState<string | null>(null);
-  
+
   const [fields, setFields] = useState<VerificationField[]>([
     {
       id: 'aadharCard',
@@ -542,8 +542,8 @@ function ProviderVerificationForm() {
   useEffect(() => {
     // Pre-fill phone number if available
     if (user && (user as any).phone) {
-      setFields(prev => prev.map(field => 
-        field.id === 'phoneNumber' 
+      setFields(prev => prev.map(field =>
+        field.id === 'phoneNumber'
           ? { ...field, value: (user as any).phone, completed: true }
           : field
       ));
@@ -553,10 +553,10 @@ function ProviderVerificationForm() {
   const handleFieldUpdate = (fieldId: string, value: any) => {
     setFields(prev => prev.map(field => {
       if (field.id === fieldId) {
-        const completed = field.type === 'phoneNumber' 
-          ? value.length > 0 
+        const completed = field.type === 'phoneNumber'
+          ? value.length > 0
           : value !== null;
-        
+
         return { ...field, value, completed };
       }
       return field;
@@ -566,10 +566,10 @@ function ProviderVerificationForm() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, fieldId: string) => {
     const files = e.target.files;
     if (!files) return;
-    
+
     const field = fields.find(f => f.id === fieldId);
     if (!field) return;
-    
+
     if (field.multiple) {
       // Handle multiple files
       const fileArray = Array.from(files);
@@ -586,7 +586,7 @@ function ProviderVerificationForm() {
   const removeFile = (fieldId: string, index?: number) => {
     const field = fields.find(f => f.id === fieldId);
     if (!field) return;
-    
+
     if (field.multiple && index !== undefined) {
       const newFiles = field.value.filter((_: any, i: number) => i !== index);
       handleFieldUpdate(fieldId, newFiles);
@@ -604,10 +604,10 @@ function ProviderVerificationForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    
+
     try {
       const token = localStorage.getItem("token");
-      
+
       // Upload each file individually and handle phone number
       const uploadPromises = fields.map(async (field) => {
         if (field.type === 'phoneNumber' && field.value) {
@@ -621,12 +621,12 @@ function ProviderVerificationForm() {
           // Handle single file upload
           const formData = new FormData();
           formData.append('file', field.value);
-          
+
           return axios.post(
             `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
             formData,
-            { 
-              headers: { 
+            {
+              headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
               }
@@ -637,37 +637,37 @@ function ProviderVerificationForm() {
           const uploadPromises = field.value.map((file: File) => {
             const formData = new FormData();
             formData.append('file', file);
-            
+
             return axios.post(
               `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
               formData,
-              { 
-                headers: { 
+              {
+                headers: {
                   Authorization: `Bearer ${token}`,
                   'Content-Type': 'multipart/form-data'
                 }
               }
             );
           });
-          
+
           return Promise.all(uploadPromises);
         }
         return Promise.resolve();
       });
-      
+
       // Wait for all uploads to complete
       await Promise.all(uploadPromises);
-      
+
       // For now, just show success since individual uploads are done
       // In production, the backend would handle the final submission automatically
       toast.success("Verification submitted successfully!");
       navigate("/provider");
     } catch (error: any) {
       console.error("Verification submission error:", error);
-      
+
       // Better error handling
       let errorMessage = "Failed to submit verification";
-      
+
       if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
         errorMessage = "Unable to connect to server. Please check your internet connection.";
       } else if (error.response) {
@@ -675,7 +675,7 @@ function ProviderVerificationForm() {
       } else if (error.request) {
         errorMessage = "Server is not responding. Please try again later.";
       }
-      
+
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -740,10 +740,10 @@ function ProviderVerificationForm() {
                     <Upload size={20} style={{ color: "var(--pvf-accent)" }} />
                   </div>
                   <div className="pvf-upload-text">
-                    {field.multiple 
-                      ? (field.value?.length > 0 
-                          ? `${field.value.length} files selected` 
-                          : `Choose ${field.label} files`)
+                    {field.multiple
+                      ? (field.value?.length > 0
+                        ? `${field.value.length} files selected`
+                        : `Choose ${field.label} files`)
                       : (field.value?.name || `Choose ${field.label} file`)
                     }
                   </div>
@@ -755,7 +755,7 @@ function ProviderVerificationForm() {
                   </button>
                 </label>
               </div>
-              
+
               {/* Show uploaded files */}
               {field.value && (
                 <div className="pvf-file-list">
@@ -826,7 +826,7 @@ function ProviderVerificationForm() {
     <>
       <InjectPVFStyle />
       <div className="pvf-root">
-        
+
         {/* Progress Bar */}
         <div className="pvf-progress">
           <div className="pvf-progress-head">

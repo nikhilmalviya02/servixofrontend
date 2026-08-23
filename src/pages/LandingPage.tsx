@@ -555,7 +555,7 @@ function LandingPage() {
     axios
       .get("https://servixobackend.vercel.app/api/services?limit=4")
       .then((res) => setServices(res.data.slice(0, 4)))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -595,21 +595,21 @@ function LandingPage() {
   ];
 
   const categories = [
-    { icon: "🧹", name: "Cleaning",      count: "50+ services", c1: "#4ade80", c2: "#059669" },
-    { icon: "🔧", name: "Plumbing",      count: "30+ services", c1: "#60a5fa", c2: "#0891b2" },
-    { icon: "⚡", name: "Electrical",    count: "25+ services", c1: "#fbbf24", c2: "#ea580c" },
-    { icon: "❄️", name: "AC & Appliances",count:"40+ services", c1: "#22d3ee", c2: "#2563eb" },
-    { icon: "🎨", name: "Painting",      count: "20+ services", c1: "#f472b6", c2: "#e11d48" },
-    { icon: "🪴", name: "Gardening",     count: "15+ services", c1: "#4ade80", c2: "#0d9488" },
-    { icon: "🚗", name: "Vehicle Care",  count: "35+ services", c1: "#f87171", c2: "#db2777" },
-    { icon: "🔨", name: "Carpentry",     count: "18+ services", c1: "#fb923c", c2: "#d97706" },
+    { icon: "🧹", name: "Cleaning", count: "50+ services", c1: "#4ade80", c2: "#059669" },
+    { icon: "🔧", name: "Plumbing", count: "30+ services", c1: "#60a5fa", c2: "#0891b2" },
+    { icon: "⚡", name: "Electrical", count: "25+ services", c1: "#fbbf24", c2: "#ea580c" },
+    { icon: "❄️", name: "AC & Appliances", count: "40+ services", c1: "#22d3ee", c2: "#2563eb" },
+    { icon: "🎨", name: "Painting", count: "20+ services", c1: "#f472b6", c2: "#e11d48" },
+    { icon: "🪴", name: "Gardening", count: "15+ services", c1: "#4ade80", c2: "#0d9488" },
+    { icon: "🚗", name: "Vehicle Care", count: "35+ services", c1: "#f87171", c2: "#db2777" },
+    { icon: "🔨", name: "Carpentry", count: "18+ services", c1: "#fb923c", c2: "#d97706" },
   ];
 
   const steps = [
-    { icon: Search,      title: "Search",           desc: "Find the service you need from our wide range" },
-    { icon: UserCheck,   title: "Choose Provider",  desc: "Select from verified professionals near you" },
-    { icon: Calendar,    title: "Book & Pay",        desc: "Schedule and pay securely in seconds" },
-    { icon: CheckCircle, title: "Get It Done",       desc: "Relax while we handle the rest" },
+    { icon: Search, title: "Search", desc: "Find the service you need from our wide range" },
+    { icon: UserCheck, title: "Choose Provider", desc: "Select from verified professionals near you" },
+    { icon: Calendar, title: "Book & Pay", desc: "Schedule and pay securely in seconds" },
+    { icon: CheckCircle, title: "Get It Done", desc: "Relax while we handle the rest" },
   ];
 
   const testimonials = [
@@ -634,10 +634,10 @@ function LandingPage() {
   ];
 
   const fallbackServices = [
-    { icon: "🧹", title: "Home Cleaning",  price: "₹499", color: "#3b82f6", image: homeCleaningImage },
-    { icon: "🔧", title: "Plumbing",        price: "₹299", color: "#06b6d4", image: plumbingImage },
-    { icon: "⚡", title: "Electrical",      price: "₹349", color: "#fbbf24", image: electricalImage },
-    { icon: "❄️", title: "AC Repair",       price: "₹599", color: "#60a5fa", image: acRepairImage },
+    { icon: "🧹", title: "Home Cleaning", price: "₹499", color: "#3b82f6", image: homeCleaningImage },
+    { icon: "🔧", title: "Plumbing", price: "₹299", color: "#06b6d4", image: plumbingImage },
+    { icon: "⚡", title: "Electrical", price: "₹349", color: "#fbbf24", image: electricalImage },
+    { icon: "❄️", title: "AC Repair", price: "₹599", color: "#60a5fa", image: acRepairImage },
   ];
 
   const displayServices = services.length > 0 ? services : fallbackServices;
@@ -686,7 +686,7 @@ function LandingPage() {
             {[
               { num: "500", sup: "+", label: "Verified Providers" },
               { num: "10K", sup: "+", label: "Happy Customers" },
-              { num: "40",  sup: "+", label: "Cities" },
+              { num: "40", sup: "+", label: "Cities" },
               { num: "4.9", sup: "★", label: "Avg Rating" },
             ].map((s) => (
               <div key={s.label} style={{ textAlign: "center" }}>
@@ -915,27 +915,27 @@ function LandingPage() {
           <h2>Ready to Get Started?</h2>
           <p>Download the ServexaGo app and book your first service in under a minute.</p>
           <div className="sg-app-btns">
-            <a 
-              href="https://play.google.com/store" 
-              target="_blank" 
+            <a
+              href="https://play.google.com/store"
+              target="_blank"
               rel="noopener noreferrer"
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
                 gap: '.65rem',
-                backgroundColor: '#1a1a26', 
+                backgroundColor: '#1a1a26',
                 border: '1px solid var(--sg-border)',
-                borderRadius: '14px', 
+                borderRadius: '14px',
                 padding: '.8rem 1.5rem',
-                textDecoration: 'none', 
+                textDecoration: 'none',
                 color: 'var(--sg-text)',
                 transition: 'border-color .2s, background .2s'
               }}
             >
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/270px-Google_Play_Store_badge_EN.svg.png" 
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/270px-Google_Play_Store_badge_EN.svg.png"
                 alt="Get it on Google Play"
-                style={{ 
+                style={{
                   width: '135px',
                   height: '40px'
                 }}
@@ -950,10 +950,10 @@ function LandingPage() {
         {/* ── TRUST STRIP ── */}
         <div className="sg-trust">
           {[
-            { icon: Award,      label: "Top Rated",      color: "#ff6b35" },
-            { icon: ShieldCheck,label: "Verified Pros",   color: "#4ade80" },
-            { icon: Phone,      label: "24/7 Support",    color: "#00d4ff" },
-            { icon: CreditCard, label: "Secure Payment",  color: "#b478ff" },
+            { icon: Award, label: "Top Rated", color: "#ff6b35" },
+            { icon: ShieldCheck, label: "Verified Pros", color: "#4ade80" },
+            { icon: Phone, label: "24/7 Support", color: "#00d4ff" },
+            { icon: CreditCard, label: "Secure Payment", color: "#b478ff" },
           ].map((b) => (
             <div key={b.label} className="sg-trust-item">
               <b.icon size={20} style={{ color: b.color }} />
