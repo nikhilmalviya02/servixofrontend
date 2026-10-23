@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+﻿import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import AddService from "../components/AddService";
 import { useAuth } from "../context/AuthContext";
@@ -580,11 +580,11 @@ function ProviderDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const svcRes = await axios.get("https://servixobackend.vercel.app/api/services", {
+      const svcRes = await axiosInstance.get("/api/services", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setServices(svcRes.data.filter((s: any) => s.provider?._id === user?.id || s.provider === user?.id));
-      const bkRes = await axios.get("https://servixobackend.vercel.app/api/bookings", {
+      const bkRes = await axiosInstance.get("/api/bookings", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(bkRes.data.slice(0, 5));
@@ -623,7 +623,7 @@ function ProviderDashboard() {
   const handleDeleteService = async (id: string) => {
     if (!confirm("Delete this service?")) return;
     try {
-      await axios.delete(`https://servixobackend.vercel.app/api/services/${id}`, {
+      await axiosInstance.delete(`/api/services/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Service deleted");
@@ -633,7 +633,7 @@ function ProviderDashboard() {
 
   const updateBookingStatus = async (id: string, status: string) => {
     try {
-      await axios.put(`https://servixobackend.vercel.app/api/bookings/${id}`, { status }, {
+      await axiosInstance.put(`/api/bookings/${id}`, { status }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success(`Booking ${status}`);

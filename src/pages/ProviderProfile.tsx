@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { Mail, Star, Briefcase, BadgeCheck } from "lucide-react";
 
 /* ─── Styles ─── */
@@ -205,7 +205,7 @@ function ProviderProfile() {
 
   useEffect(() => {
     axios
-      .get(`https://servixobackend.vercel.app/api/user/provider/${id}`)
+      .get(`/api/user/provider/${id}`)
       .then((res) => { setProvider(res.data.provider); setServices(res.data.services); })
       .catch((err) => console.log(err));
   }, [id]);

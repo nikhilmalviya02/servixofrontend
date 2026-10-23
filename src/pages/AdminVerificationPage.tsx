@@ -1,6 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+﻿import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import {
@@ -47,8 +47,7 @@ const AdminVerificationPage = () => {
         params.append("search", searchTerm);
       }
 
-      const response = await axios.get(
-        `https://servixobackend.vercel.app/api/admin/verifications?${params}`,
+      const response = await axiosInstance.get(`/api/admin/verifications?${params}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

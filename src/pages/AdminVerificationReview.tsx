@@ -1,6 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+﻿import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import {
@@ -36,8 +36,7 @@ const AdminVerificationReview = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       
-      const response = await axios.get(
-        `https://servixobackend.vercel.app/api/admin/verification/${userId}`,
+      const response = await axiosInstance.get(`/api/admin/verification/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -109,8 +108,7 @@ const AdminVerificationReview = () => {
       setSubmitting(true);
       const token = localStorage.getItem("token");
       
-      const response = await axios.put(
-        `https://servixobackend.vercel.app/api/admin/verification/${userId}/${section}`,
+      const response = await axiosInstance.put(`/api/admin/verification/${userId}/${section}`,
         {
           status,
           rejectionReason: status === "rejected" ? reviewNotes[section] : null
@@ -141,8 +139,7 @@ const AdminVerificationReview = () => {
       setSubmitting(true);
       const token = localStorage.getItem("token");
       
-      const response = await axios.post(
-        `https://servixobackend.vercel.app/api/admin/verification/${userId}/${section}/review`,
+      const response = await axiosInstance.post(`/api/admin/verification/${userId}/${section}/review`,
         {
           reviewNote: reviewNotes[section],
           action

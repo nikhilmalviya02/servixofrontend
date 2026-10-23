@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+﻿import { useEffect, useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { MapPin, Tag, Home, Map, Building2, Hash, Plus, Pencil, Trash2, X, Check } from "lucide-react";
 
 /* ─── Data ─── */
@@ -238,7 +238,7 @@ function AddressManager() {
 
   const fetchAddresses = () => {
     axios
-      .get("https://servixobackend.vercel.app/api/user/address", {
+      .get("/api/user/address", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setAddresses(res.data));
@@ -249,14 +249,12 @@ function AddressManager() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (editingId) {
-      await axios.put(
-        `https://servixobackend.vercel.app/api/user/address/${editingId}`,
+      await axiosInstance.put(`/api/user/address/${editingId}`,
         form, { headers: { Authorization: `Bearer ${token}` } }
       );
       setEditingId(null);
     } else {
-      await axios.post(
-        "https://servixobackend.vercel.app/api/user/address",
+      await axiosInstance.post("/api/user/address",
         form, { headers: { Authorization: `Bearer ${token}` } }
       );
     }
@@ -265,8 +263,7 @@ function AddressManager() {
   };
 
   const handleDelete = async (id: string) => {
-    await axios.delete(
-      `https://servixobackend.vercel.app/api/user/address/${id}`,
+    await axiosInstance.delete(`/api/user/address/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     fetchAddresses();

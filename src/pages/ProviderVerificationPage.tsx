@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+﻿import { useState, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import ProviderVerificationForm from "../components/ProviderVerificationForm";
 import {
@@ -256,8 +256,7 @@ function ProviderVerificationPage() {
   const fetchVerificationStats = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "https://servixobackend.vercel.app/api/provider/verification",
+      const response = await axiosInstance.get("/api/provider/verification",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       

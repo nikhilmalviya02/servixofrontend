@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useMemo } from "react";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import BookingTimeline from "../components/BookingTimeline";
 import {
@@ -278,7 +278,7 @@ function ProviderBookings() {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/bookings", {
+      const res = await axiosInstance.get("/api/bookings", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(res.data);
@@ -290,8 +290,7 @@ function ProviderBookings() {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      await axios.put(
-        `https://servixobackend.vercel.app/api/bookings/${id}`,
+      await axiosInstance.put(`/api/bookings/${id}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

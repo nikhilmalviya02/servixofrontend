@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useContext } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -83,7 +83,7 @@ function AdminServices() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/admin/services", {
+      const res = await axiosInstance.get("/api/admin/services", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setServices(res.data);
@@ -103,7 +103,7 @@ function AdminServices() {
     
     setDeleteLoading(id);
     try {
-      await axios.delete(`https://servixobackend.vercel.app/api/admin/service/${id}`, {
+      await axiosInstance.delete(`/api/admin/service/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchServices();

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import axios from "axios";
+﻿import { useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 
 interface ServiceForm {
@@ -55,8 +55,7 @@ function AddService({ onServiceAdded, compact = false }: AddServiceProps) {
     try {
       setLoading(true);
 
-      await axios.post(
-        "https://servixobackend.vercel.app/api/services",
+      await axiosInstance.post("/api/services",
         form,
         {
           headers: {

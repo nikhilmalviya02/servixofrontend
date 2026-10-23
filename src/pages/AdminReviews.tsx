@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+﻿import { useEffect, useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { Link } from "react-router-dom";
 
 // Icons
@@ -115,7 +115,7 @@ function AdminReviews() {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/admin/reviews", {
+      const res = await axiosInstance.get("/api/admin/reviews", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setReviews(res.data);
@@ -135,7 +135,7 @@ function AdminReviews() {
 
     setDeleteLoading(id);
     try {
-      await axios.delete(`https://servixobackend.vercel.app/api/admin/review/${id}`, {
+      await axiosInstance.delete(`/api/admin/review/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchReviews();

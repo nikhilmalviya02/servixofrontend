@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+﻿import { useState, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import {
   Shield, Upload, CheckCircle, XCircle, Clock,
@@ -517,8 +517,7 @@ function ProviderVerification() {
   const fetchVerificationData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://servixobackend.vercel.app/api/provider/verification`,
+      const response = await axiosInstance.get(`/api/provider/verification`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setVerification(response.data.verification || {});
@@ -540,8 +539,7 @@ function ProviderVerification() {
 
     try {
       setUploading(true);
-      await axios.post(
-        `https://servixobackend.vercel.app/api/provider/verification/upload/${section}`,
+      await axiosInstance.post(`/api/provider/verification/upload/${section}`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -561,8 +559,8 @@ function ProviderVerification() {
 
     try {
       const url = index !== undefined 
-        ? `https://servixobackend.vercel.app/api/provider/verification/${section}/${index}`
-        : `https://servixobackend.vercel.app/api/provider/verification/${section}`;
+        ? `/api/provider/verification/${section}/${index}`
+        : `/api/provider/verification/${section}`;
       
       await axios.delete(url, {
         headers: { Authorization: `Bearer ${token}` }
@@ -576,16 +574,14 @@ function ProviderVerification() {
 
   const handlePhoneVerification = async (phoneNumber: string) => {
     try {
-      await axios.post(
-        `https://servixobackend.vercel.app/api/provider/verification/phone/send-otp`,
+      await axiosInstance.post(`/api/provider/verification/phone/send-otp`,
         { phoneNumber },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
       const otp = prompt("Enter OTP sent to your phone:");
       if (otp) {
-        await axios.post(
-          `https://servixobackend.vercel.app/api/provider/verification/phone/verify-otp`,
+        await axiosInstance.post(`/api/provider/verification/phone/verify-otp`,
           { otp },
           { headers: { Authorization: `Bearer ${token}` } }
         );

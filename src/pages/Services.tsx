@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+﻿import { useEffect, useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
@@ -655,7 +655,7 @@ function Services() {
     try {
       setLoading(true);
       const params = new URLSearchParams({ search, category, minRating, maxPrice, sort });
-      const res = await axios.get(`https://servixobackend.vercel.app/api/services?${params}`);
+      const res = await axiosInstance.get(`/api/services?${params}`);
       setServices(res.data);
     } catch { toast.error("Failed to load services"); }
     finally { setLoading(false); }
@@ -664,7 +664,7 @@ function Services() {
   const fetchAddresses = async () => {
     if (!token) return;
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/user/address", {
+      const res = await axiosInstance.get("/api/user/address", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAddresses(res.data);
@@ -681,8 +681,7 @@ function Services() {
     if (!timeSlot) return toast.error("Select time slot");
     try {
       setBookingLoading(true);
-      await axios.post(
-        "https://servixobackend.vercel.app/api/bookings",
+      await axiosInstance.post("/api/bookings",
         { serviceId: selectedService._id, address: addresses[selectedAddressIndex], date, timeSlot, isEmergency },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -695,8 +694,7 @@ function Services() {
   const submitReview = async () => {
     if (!token) return toast.error("Login required");
     try {
-      await axios.post(
-        "https://servixobackend.vercel.app/api/reviews",
+      await axiosInstance.post("/api/reviews",
         { serviceId: reviewServiceId, rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -708,7 +706,7 @@ function Services() {
   const fetchReviews = async (serviceId: string, serviceName: string) => {
     setReviewsLoading(true); setSelectedServiceName(serviceName);
     try {
-      const res = await axios.get(`https://servixobackend.vercel.app/api/reviews/${serviceId}`);
+      const res = await axiosInstance.get(`/api/reviews/${serviceId}`);
       setReviewsList(res.data); setViewReviewsModal(true);
     } catch { toast.error("Failed to load reviews"); }
     finally { setReviewsLoading(false); }

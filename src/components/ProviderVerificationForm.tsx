@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -612,8 +612,7 @@ function ProviderVerificationForm() {
       const uploadPromises = fields.map(async (field) => {
         if (field.type === 'phoneNumber' && field.value) {
           // Handle phone number submission
-          return axios.post(
-            "https://servixobackend.vercel.app/api/provider/verification/phone/send-otp",
+          return axiosInstance.post("/api/provider/verification/phone/send-otp",
             { phoneNumber: field.value },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -622,8 +621,7 @@ function ProviderVerificationForm() {
           const formData = new FormData();
           formData.append('file', field.value);
 
-          return axios.post(
-            `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
+          return axiosInstance.post(`/api/provider/verification/upload/${field.id}`,
             formData,
             {
               headers: {
@@ -638,8 +636,7 @@ function ProviderVerificationForm() {
             const formData = new FormData();
             formData.append('file', file);
 
-            return axios.post(
-              `https://servixobackend.vercel.app/api/provider/verification/upload/${field.id}`,
+            return axiosInstance.post(`/api/provider/verification/upload/${field.id}`,
               formData,
               {
                 headers: {

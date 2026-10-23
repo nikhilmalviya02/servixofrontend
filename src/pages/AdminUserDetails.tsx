@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useContext } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -115,7 +115,7 @@ function AdminUserDetails() {
 
   const fetchUserDetails = async () => {
     try {
-      const res = await axios.get(`https://servixobackend.vercel.app/api/admin/user/${id}/details`, {
+      const res = await axiosInstance.get(`/api/admin/user/${id}/details`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data);

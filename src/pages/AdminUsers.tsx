@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useContext } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -98,7 +98,7 @@ function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/admin/users", {
+      const res = await axiosInstance.get("/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -116,8 +116,7 @@ function AdminUsers() {
   const verifyProvider = async (id: string) => {
     setActionLoading(`verify-${id}`);
     try {
-      await axios.put(
-        `https://servixobackend.vercel.app/api/admin/verify/${id}`,
+      await axiosInstance.put(`/api/admin/verify/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -135,7 +134,7 @@ function AdminUsers() {
 
     setActionLoading(`delete-${id}`);
     try {
-      await axios.delete(`https://servixobackend.vercel.app/api/admin/user/${id}`, {
+      await axiosInstance.delete(`/api/admin/user/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();

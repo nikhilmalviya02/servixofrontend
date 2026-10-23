@@ -1,4 +1,5 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 import axios, { type AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -415,8 +416,7 @@ function Register() {
       GoogleAuthProvider.credentialFromResult(result);
       const token = await firebaseUser.getIdToken();
 
-      const res = await axios.post(
-        "https://servixobackend.vercel.app/api/auth/google",
+      const res = await axiosInstance.post("/api/auth/google",
         { token, role: form.role }
       );
 
@@ -446,7 +446,7 @@ function Register() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://servixobackend.vercel.app/api/auth/register", form);
+      await axiosInstance.post("/api/auth/register", form);
       toast.success("Registered successfully 🎉");
       navigate("/login");
     } catch (error) {

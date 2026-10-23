@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useContext } from "react";
+import axiosInstance from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -89,7 +89,7 @@ function AdminCategories() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("https://servixobackend.vercel.app/api/admin/categories", {
+      const res = await axiosInstance.get("/api/admin/categories", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCategories(res.data);
@@ -110,8 +110,7 @@ function AdminCategories() {
 
     setActionLoading(true);
     try {
-      await axios.post(
-        "https://servixobackend.vercel.app/api/admin/categories",
+      await axiosInstance.post("/api/admin/categories",
         { name: categoryName.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -131,8 +130,7 @@ function AdminCategories() {
 
     setActionLoading(true);
     try {
-      await axios.put(
-        "https://servixobackend.vercel.app/api/admin/categories",
+      await axiosInstance.put("/api/admin/categories",
         { oldName: editingCategory, newName: newCategoryName.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -151,7 +149,7 @@ function AdminCategories() {
 
     setActionLoading(true);
     try {
-      await axios.delete(`https://servixobackend.vercel.app/api/admin/categories/${encodeURIComponent(name)}`, {
+      await axiosInstance.delete(`/api/admin/categories/${encodeURIComponent(name)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchCategories();

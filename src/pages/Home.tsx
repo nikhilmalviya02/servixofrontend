@@ -1,6 +1,6 @@
-import { Link, Navigate } from "react-router-dom";
+﻿import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import {
   ShieldCheck,
   CalendarCheck,
@@ -386,13 +386,13 @@ function Home() {
     else if (hour < 17) setGreeting("Good afternoon");
     else                setGreeting("Good evening");
 
-    axios.get("https://servixobackend.vercel.app/api/services?limit=6")
+    axiosInstance.get("/api/services?limit=6")
       .then((res) => setServices(res.data.slice(0, 6)))
       .catch(() => {});
 
     const token = localStorage.getItem("token");
     if (token) {
-      axios.get("https://servixobackend.vercel.app/api/bookings/my", {
+      axiosInstance.get("/api/bookings/my", {
         headers: { Authorization: `Bearer ${token}` },
       }).then((res) => setBookings(res.data.slice(0, 3))).catch(() => {});
     }

@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+﻿import { useEffect, useState, useContext } from "react";
+import axiosInstance from "../api/axiosInstance";
 import {
   BarChart,
   Bar,
@@ -115,13 +115,13 @@ function AdminDashboard() {
         const token = localStorage.getItem("token");
 
         const [statsRes, bookingsRes, usersRes] = await Promise.all([
-          axios.get("https://servixobackend.vercel.app/api/admin/stats", {
+          axiosInstance.get("/api/admin/stats", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://servixobackend.vercel.app/api/admin/bookings", {
+          axiosInstance.get("/api/admin/bookings", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://servixobackend.vercel.app/api/admin/users", {
+          axiosInstance.get("/api/admin/users", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

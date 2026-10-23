@@ -1,4 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+﻿import { useState, useContext, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
@@ -335,8 +336,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(
-        "https://servixobackend.vercel.app/api/auth/login",
+      const res = await axiosInstance.post("/api/auth/login",
         { email, password }
       );
       localStorage.setItem("token", res.data.token);
@@ -359,8 +359,7 @@ function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const token  = await result.user.getIdToken();
-      const res    = await axios.post(
-        "https://servixobackend.vercel.app/api/auth/google",
+      const res    = await axiosInstance.post("/api/auth/google",
         { token }
       );
       localStorage.setItem("token", res.data.token);

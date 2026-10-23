@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import {
   ShieldCheck,
   CalendarCheck,
@@ -553,7 +553,7 @@ function LandingPage() {
 
   useEffect(() => {
     axios
-      .get("https://servixobackend.vercel.app/api/services?limit=4")
+      .get("/api/services?limit=4")
       .then((res) => setServices(res.data.slice(0, 4)))
       .catch(() => { });
   }, []);

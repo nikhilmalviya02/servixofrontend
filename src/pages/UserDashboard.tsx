@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import BookingTimeline from "../components/BookingTimeline";
 import {
   CalendarDays,
@@ -244,8 +244,8 @@ function UserDashboard() {
   const token = localStorage.getItem("token");
 
   const fetchBookings = () => {
-    axios
-      .get("https://servixobackend.vercel.app/api/bookings/user", {
+    axiosInstance
+      .get("/api/bookings/user", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setBookings(res.data))
@@ -256,8 +256,7 @@ function UserDashboard() {
 
   const cancelBooking = async (id: string) => {
     try {
-      await axios.put(
-        `https://servixobackend.vercel.app/api/bookings/cancel/${id}`,
+      await axiosInstance.put(`/api/bookings/cancel/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -267,8 +266,7 @@ function UserDashboard() {
 
   const rescheduleBooking = async (id: string) => {
     try {
-      await axios.put(
-        `https://servixobackend.vercel.app/api/bookings/reschedule/${id}`,
+      await axiosInstance.put(`/api/bookings/reschedule/${id}`,
         { date: newDate, timeSlot: newSlot },
         { headers: { Authorization: `Bearer ${token}` } }
       );
