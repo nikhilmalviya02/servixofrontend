@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { Mail, Star, Briefcase, BadgeCheck } from "lucide-react";
@@ -204,10 +204,10 @@ function ProviderProfile() {
   const [services, setServices] = useState<any[]>([]);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`/api/user/provider/${id}`)
-      .then((res) => { setProvider(res.data.provider); setServices(res.data.services); })
-      .catch((err) => console.log(err));
+      .then((res: any) => { setProvider(res.data.provider); setServices(res.data.services); })
+      .catch((err: any) => console.log(err));
   }, [id]);
 
   if (!provider) return (

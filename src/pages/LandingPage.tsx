@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import {
@@ -552,9 +552,9 @@ function LandingPage() {
   const [searchVal, setSearchVal] = useState("");
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/api/services?limit=4")
-      .then((res) => setServices(res.data.slice(0, 4)))
+      .then((res: any) => setServices(res.data.slice(0, 4)))
       .catch(() => { });
   }, []);
 

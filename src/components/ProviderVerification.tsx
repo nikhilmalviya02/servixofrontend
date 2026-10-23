@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
 import {
@@ -562,7 +562,7 @@ function ProviderVerification() {
         ? `/api/provider/verification/${section}/${index}`
         : `/api/provider/verification/${section}`;
       
-      await axios.delete(url, {
+      await axiosInstance.delete(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Document deleted successfully");

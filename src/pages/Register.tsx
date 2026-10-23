@@ -1,6 +1,6 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
-import axios, { type AxiosError } from "axios";
+import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import {

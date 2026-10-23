@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import { MapPin, Tag, Home, Map, Building2, Hash, Plus, Pencil, Trash2, X, Check } from "lucide-react";
 
@@ -237,11 +237,11 @@ function AddressManager() {
   const token = localStorage.getItem("token");
 
   const fetchAddresses = () => {
-    axios
+    axiosInstance
       .get("/api/user/address", {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => setAddresses(res.data));
+      .then((res: any) => setAddresses(res.data));
   };
 
   useEffect(() => { fetchAddresses(); }, []);
